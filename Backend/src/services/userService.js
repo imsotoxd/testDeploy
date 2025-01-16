@@ -24,12 +24,14 @@ export const createUser = async (
     email,
     password: hashedPassword,
     birthdate,
+    activated: 1,
   });
 };
 
 // Iniciar sesión de un usuario
 export const loginUser = async (email, password) => {
-  const user = await User.findOne({ where: { email, activated: true } });
+  const user = await User.findOne({ where: { email, activated: 1 } });
+  console.log(user)
   if (!user) {
     return null;
   }
