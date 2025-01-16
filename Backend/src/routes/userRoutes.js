@@ -18,6 +18,7 @@ import { handleValidationErrors } from '../middleware/handleValidationErrors.js'
 import {
   validateRegisterUser,
   validateLoginUser,
+  validateUpdateUser,
 } from '../middleware/validation/userValidation.js';
 
 const router = express.Router();
@@ -42,7 +43,7 @@ router.get('/', authenticateToken, verifyAdmin, getAllUsers);
 router.get('/:id', authenticateToken, getUserById);
 router.put(
   '/update/:id',
-  validateRegisterUser,
+  validateUpdateUser,
   handleValidationErrors,
   authenticateToken,
   updateUser

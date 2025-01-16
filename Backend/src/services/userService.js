@@ -70,19 +70,21 @@ export const updateUserService = async (
   password,
   birthdate
 ) => {
-  const user = await User.findOne({ where: { id, activated: true } });
+  const user = await User.findOne({ where: { id, activated: 1 } });
   if (!user) {
     throw new Error('User not found');
   }
-
   const passwordHash = await hashPassword(password);
-  await user.update({
+  
+  const data = {
     firstname,
     lastname,
     email,
-    password: passwordHash,
+    passwordHash,
     birthdate,
-  });
+  };
+
+  await user.update(data);
   return user;
 };
 
