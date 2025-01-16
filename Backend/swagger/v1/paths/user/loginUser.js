@@ -15,7 +15,7 @@ const loginUser = {
                             email: {
                                 type: "string",
                                 description: "Correo electrónico del usuario",
-                                example: "john.doe@example.com"
+                                example: "john.salchichon@example.com"
                             },
                             password: {
                                 type: "string",
