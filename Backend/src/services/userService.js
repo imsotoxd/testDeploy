@@ -1,64 +1,112 @@
-// ./src/services/userService.js
-
-import { createUserModel, getUserByEmail, deleteUserModel, getAllUsersModel, getUserByIdModel, updateUserModel, restoreUserModel } from '../models/MySQL/userModel.js';
+import { User } from '../models/index.js'; // Importar el modelo de usuario inicializado
 import { hashPassword, comparePassword } from '../utils/bcrypt.js';
-import { generateAuthToken } from '../utils/jwt.js'; 
+import { generateAuthToken } from '../utils/jwt.js';
 
 // Crear un nuevo usuario
-export const createUser = async (username, email, password) => {
-    if (!username || !email || !password) {
-        throw new Error('All fields are required');
-    }
+export const createUser = async (
+  firstname,
+  lastname,
+  email,
+  password,
+  birthdate
+) => {
+  if (!firstname || !lastname || !email || !password || !birthdate) {
+    throw new Error('All fields are required');
+  }
 
-    // Cifrar la contraseña
-    const hashedPassword = await hashPassword(password);
+  // Cifrar la contraseña
+  const hashedPassword = await hashPassword(password);
 
-    // Guardar el nuevo usuario en la base de datos
-    return await createUserModel(username, email, hashedPassword);
+  // Guardar el nuevo usuario en la base de datos
+  return await User.create({
+    firstname,
+    lastname,
+    email,
+    password: hashedPassword,
+    birthdate,
+  });
 };
 
 // Iniciar sesión de un usuario
 export const loginUser = async (email, password) => {
-    const user = await getUserByEmail(email);
-    if (!user) {
-        return null;
-    }
-
-    // Comparar la contraseña
-    const isMatch = await comparePassword(password, user.password);
-    if (isMatch) {
-        return user;
-    }
-
+  const user = await User.findOne({ where: { email, activated: true } });
+  if (!user) {
     return null;
+  }
+
+  // Comparar la contraseña
+  const isMatch = await comparePassword(password, user.password);
+  if (isMatch) {
+    return user;
+  }
+
+  return null;
 };
 
 // Obtener todos los usuarios
 export const getAllUsersService = async () => {
-    return await getAllUsersModel();
+  return await User.findAll({
+    attributes: ['id', 'firstname', 'lastname', 'email', 'birthdate'],
+    where: { activated: true },
+  });
 };
 
 // Obtener usuario por ID
 export const getUserByIdService = async (id) => {
-    return await getUserByIdModel(id);
+  return await User.findOne({
+    where: { id, activated: true },
+    attributes: ['id', 'firstname', 'lastname', 'email', 'birthdate'],
+  });
 };
 
 // Actualizar usuario
-export const updateUserService = async (id, username, email, password) => {
-    const passwordHash = await hashPassword(password);
-    return await updateUserModel(id, username, email, passwordHash);
+export const updateUserService = async (
+  id,
+  firstname,
+  lastname,
+  email,
+  password,
+  birthdate
+) => {
+  const user = await User.findOne({ where: { id, activated: true } });
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const passwordHash = await hashPassword(password);
+  await user.update({
+    firstname,
+    lastname,
+    email,
+    password: passwordHash,
+    birthdate,
+  });
+  return user;
 };
 
-// Eliminar usuario
+// Eliminar usuario (soft delete)
 export const deleteUserService = async (id) => {
-    return await deleteUserModel(id);
+  const user = await User.findOne({ where: { id, activated: true } });
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  await user.update({ activated: false });
+  return user;
 };
 
+// Restaurar usuario
 export const restoreUserService = async (id) => {
-    return await restoreUserModel(id);
+  const user = await User.findOne({ where: { id, activated: false } });
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  await user.update({ activated: true });
+  return user;
 };
 
 // Generar el token JWT (ya no es necesario redefinir la función)
 export const generateAuthTokenForUser = (userId) => {
-    return generateAuthToken(userId);  // Usar la función importada
+  return generateAuthToken(userId); // Usar la función importada
 };

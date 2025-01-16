@@ -1,14 +1,15 @@
-import { usernameValidation, emailValidation, passwordValidation } from './fieldsValidation.js';
+import {
+  firstnameValidation,
+  lastnameValidation,
+  emailValidation,
+  passwordValidation,
+  birthdateValidation,
+  validateRegisterUser,
+  validateLoginUser,
+} from './fieldsValidation.js';
 
 // Validaciones para registrar un usuario
-export const validateRegisterUser = [
-    usernameValidation,
-    emailValidation,
-    passwordValidation,
-];
+export { validateRegisterUser };
 
 // Validaciones para iniciar sesión de un usuario
-export const validateLoginUser = [
-    emailValidation,
-    passwordValidation,
-];
+export { validateLoginUser };
