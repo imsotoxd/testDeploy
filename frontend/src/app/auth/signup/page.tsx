@@ -1,11 +1,9 @@
-import Link from "next/link";
+import RegisterForm from "@/components/auth/RegisterForm";
 
 function SignupPage() {
   return (
     <div>
-      <Link href={"/auth/signin"}>
-        <span>Inicia sesion</span>
-      </Link>
+      <RegisterForm />
     </div>
   );
 }
