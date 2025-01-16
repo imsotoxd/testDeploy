@@ -74,13 +74,16 @@ export const updateUserService = async (
   if (!user) {
     throw new Error('User not found');
   }
-  const passwordHash = await hashPassword(password);
+  let passwordHash;
+  if (password) {
+    passwordHash = await hashPassword(password);
+  }
   
   const data = {
     firstname,
     lastname,
     email,
-    passwordHash,
+    password: passwordHash || user.password,
     birthdate,
   };
 
