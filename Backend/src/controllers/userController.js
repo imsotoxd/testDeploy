@@ -13,6 +13,8 @@ export const registerUser = async (req, res) => {
   try {
     const { firstname, lastname, email, password, birthdate } = req.body;
 
+    console.log(firstname, lastname, email, password, birthdate);
+
     const newUser = await createUser(
       firstname,
       lastname,
