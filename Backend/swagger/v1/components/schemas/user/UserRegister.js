@@ -3,20 +3,31 @@
 const UserRegister = {
     type: "object",
     properties: {
-        username: {
+        firstname: {
             type: "string",
             description: "Nombre de usuario",
-            example: "john_doe"
+            example: "john"
+        },
+        lastname: {
+            type: "string",
+            description: "Apellido de usuario",
+            example: "doe"
         },
         email: {
             type: "string",
-            description: "Correo electrónico del usuario",
+            description: "Correo electrónico único del usuario",
             example: "john.doe@example.com"
+        },
+        birthdate: {
+            type: "string",
+            format: "date",
+            description: "Fecha de nacimiento del usuario",
+            example: "1990-01-01"
         },
         password: {
             type: "string",
             description: "Contraseña del usuario",
-            example: "securePassword123"
+            example: "P@ssw0rd123"
         }
     },
     required: ["username", "email", "password"]
