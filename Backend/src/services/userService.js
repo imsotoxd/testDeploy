@@ -49,14 +49,14 @@ export const loginUser = async (email, password) => {
 export const getAllUsersService = async () => {
   return await User.findAll({
     attributes: ['id', 'firstname', 'lastname', 'email', 'birthdate'],
-    where: { activated: true },
+    where: { activated: 1 },
   });
 };
 
 // Obtener usuario por ID
 export const getUserByIdService = async (id) => {
   return await User.findOne({
-    where: { id, activated: true },
+    where: { id, activated: 1 },
     attributes: ['id', 'firstname', 'lastname', 'email', 'birthdate'],
   });
 };

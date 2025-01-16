@@ -32,7 +32,7 @@ const UserModel = (sequelize) => {
       },
       activated: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false,
+        defaultValue: true,
       },
     },
     {

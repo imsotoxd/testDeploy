@@ -17,7 +17,7 @@ const getUserById = {
                 required: true,
                 description: 'ID del usuario',
                 schema: {
-                    type: 'integer',
+                    type: 'string',
                     example: 1
                 }
             }
