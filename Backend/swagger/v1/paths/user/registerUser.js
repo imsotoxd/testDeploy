@@ -12,10 +12,15 @@ const registerUser = {
                     schema: {
                         type: "object",
                         properties: {
-                            username: {
+                            firstname: {
                                 type: "string",
                                 description: "Nombre de usuario",
-                                example: "john_doe"
+                                example: "John"
+                            },
+                            lastname: {
+                                type: "string",
+                                description: "Apellido de usuario",
+                                example: "Doe"
                             },
                             email: {
                                 type: "string",
@@ -26,7 +31,12 @@ const registerUser = {
                                 type: "string",
                                 description: "Contraseña del usuario",
                                 example: "securePassword123"
-                            }
+                            },
+                            birthdate: {
+                                type: "string",
+                                description: "Fecha de nacimiento del usuario",
+                                example: "1990-01-01"
+                            },
                         },
                         required: ["username", "email", "password"]
                     }
@@ -49,8 +59,8 @@ const registerUser = {
                                     type: "object",
                                     properties: {
                                         id: { type: "string", example: "123456" },
-                                        username: { type: "string", example: "john_doe" },
-                                        email: { type: "string", example: "john.doe@example.com" }
+                                        firstname: { type: "string", example: "John" }, lastname: { type: "string", example: "Doe"},
+                                        email: { type: "string", example: "john.doe@example.com" }, birthdate: { type: "string", example: "1990-01-01" }
                                     }
                                 }
                             }

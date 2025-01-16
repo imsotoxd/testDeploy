@@ -24,12 +24,14 @@ export const createUser = async (
     email,
     password: hashedPassword,
     birthdate,
+    activated: 1,
   });
 };
 
 // Iniciar sesión de un usuario
 export const loginUser = async (email, password) => {
-  const user = await User.findOne({ where: { email, activated: true } });
+  const user = await User.findOne({ where: { email, activated: 1 } });
+  console.log(user)
   if (!user) {
     return null;
   }
@@ -47,14 +49,14 @@ export const loginUser = async (email, password) => {
 export const getAllUsersService = async () => {
   return await User.findAll({
     attributes: ['id', 'firstname', 'lastname', 'email', 'birthdate'],
-    where: { activated: true },
+    where: { activated: 1 },
   });
 };
 
 // Obtener usuario por ID
 export const getUserByIdService = async (id) => {
   return await User.findOne({
-    where: { id, activated: true },
+    where: { id, activated: 1 },
     attributes: ['id', 'firstname', 'lastname', 'email', 'birthdate'],
   });
 };
@@ -68,19 +70,24 @@ export const updateUserService = async (
   password,
   birthdate
 ) => {
-  const user = await User.findOne({ where: { id, activated: true } });
+  const user = await User.findOne({ where: { id, activated: 1 } });
   if (!user) {
     throw new Error('User not found');
   }
-
-  const passwordHash = await hashPassword(password);
-  await user.update({
+  let passwordHash;
+  if (password) {
+    passwordHash = await hashPassword(password);
+  }
+  
+  const data = {
     firstname,
     lastname,
     email,
-    password: passwordHash,
+    password: passwordHash || user.password,
     birthdate,
-  });
+  };
+
+  await user.update(data);
   return user;
 };
 
@@ -91,7 +98,7 @@ export const deleteUserService = async (id) => {
     throw new Error('User not found');
   }
 
-  await user.update({ activated: false });
+  await user.update({ activated: 0 });
   return user;
 };
 

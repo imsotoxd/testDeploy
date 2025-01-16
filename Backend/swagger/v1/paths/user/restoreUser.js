@@ -2,7 +2,7 @@ const restoreUser = {
     put: {
         tags: ['Usuarios'],
         summary: 'Restaurar usuario (borrado lógico)',
-        description: 'Restaura un usuario previamente eliminado (borrado lógico) marcando el campo `is_deleted` como `false`. Solo los administradores pueden restaurar usuarios.',
+        description: 'Restaura un usuario previamente eliminado (borrado lógico) marcando el campo `activated` como `1`. Solo los administradores pueden restaurar usuarios.',
         security: [
             {
                 BearerAuth: []
@@ -15,8 +15,8 @@ const restoreUser = {
                 required: true,
                 description: 'ID del usuario a restaurar',
                 schema: {
-                    type: 'integer',
-                    example: 1
+                    type: 'string',
+                    example: "077eff87-4076-4c01-938c-5623c91aedc2"
                 }
             }
         ],

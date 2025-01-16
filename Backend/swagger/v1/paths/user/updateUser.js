@@ -18,7 +18,7 @@ const updateUser = {
                 required: true,
                 description: 'ID del usuario a actualizar',
                 schema: {
-                    type: 'integer',
+                    type: 'string',
                     example: 1
                 }
             }
