@@ -13,7 +13,6 @@ import {
 
 // Middlewares
 import { authenticateToken } from '../middleware/authMiddleware.js';
-import { verifyAdmin } from '../middleware/verifyAdmin.js';
 import { handleValidationErrors } from '../middleware/handleValidationErrors.js';
 import {
   validateRegisterUser,
@@ -39,7 +38,7 @@ router.post('/logout', (req, res) => {
   res.status(200).json({ message: 'Logout successful' });
 });
 
-router.get('/', authenticateToken, verifyAdmin, getAllUsers);
+router.get('/', authenticateToken, getAllUsers);
 router.get('/:id', authenticateToken, getUserById);
 router.put(
   '/update/:id',
@@ -49,6 +48,6 @@ router.put(
   updateUser
 );
 router.delete('/delete/:id', authenticateToken, deleteUser);
-router.put('/restore/:id', authenticateToken, verifyAdmin, restoreUser);
+router.put('/restore/:id', authenticateToken, restoreUser);
 
 export default router;
