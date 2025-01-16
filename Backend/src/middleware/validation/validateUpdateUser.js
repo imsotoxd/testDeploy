@@ -1,3 +1,5 @@
+import { body } from 'express-validator';
+
 export const firstnameValidationUpdate = body('firstname')
     .optional()
     .isLength({ min: 3 })
