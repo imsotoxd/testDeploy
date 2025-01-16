@@ -6,6 +6,7 @@ import Link from "next/link";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState("#hero");
 
   const navItems = [
     { name: "Inicio", href: "#hero" },
@@ -23,19 +24,22 @@ const Navbar = () => {
     <div className="flex justify-between items-center p-4 md:p-8">
       <Image src="/logo.svg" alt="logo" width={264} height={117} />
 
-      <div className="hidden md:flex space-x-11">
+      <div className="hidden md:flex md:justify-center md:items-center space-x-11">
         {navItems.map((item) => (
           <Link
             key={item.name}
             href={item.href}
-            className="text-primary text-2xl"
+            onClick={() => setActiveItem(item.href)}
+            className={`text-primary text-2xl   ${
+              activeItem === item.href ? "font-bold" : "font-normal"
+            }`}
           >
             {item.name}
           </Link>
         ))}
         <Link
           href="/auth"
-          className="bg-primary rounded-xl text-white px-6 py-2"
+          className="bg-primary rounded-xl text-2xl text-white px-6 py-2"
         >
           iniciar sesión
         </Link>
