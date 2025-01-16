@@ -98,7 +98,7 @@ export const deleteUserService = async (id) => {
     throw new Error('User not found');
   }
 
-  await user.update({ activated: false });
+  await user.update({ activated: 0 });
   return user;
 };
 

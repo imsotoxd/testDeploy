@@ -15,8 +15,8 @@ const deleteUser = {
                 required: true,
                 description: 'ID del usuario a eliminar',
                 schema: {
-                    type: 'integer',
-                    example: 1
+                    type: 'string',
+                    example: "077eff87-4076-4c01-938c-5623c91aedc2"
                 }
             }
         ],
