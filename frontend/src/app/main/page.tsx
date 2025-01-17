@@ -1,9 +1,19 @@
+import BenefitsSection from "@/components/landing/BenefitsSection";
+import FeaturesSection from "@/components/landing/FeaturesSection";
+import HeroSection from "@/components/landing/HeroSection";
+import PricingSection from "@/components/landing/PricingSection";
+import ReviewSection from "@/components/landing/ReviewSection";
+
 function LandingPage() {
   return (
-    //! Remplazarlo con contenido de la landing con sections y su id para la navegacion
+    //Pruebas de tailwindConfig Borrarlo al renderizar los componentes -->
 
-    <div className="flex justify-center items-center">
-      <p>Contenido de la landing page</p>
+    <div>
+      <HeroSection />
+      <FeaturesSection />
+      <BenefitsSection />
+      <PricingSection />
+      <ReviewSection />
     </div>
   );
 }
