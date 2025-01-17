@@ -21,7 +21,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center p-4 md:p-8">
+    <div className="flex fixed top-0 left-0 right-0 z-50 justify-between bg-white  items-center p-4 md:p-8">
       <Image src="/logo.svg" alt="logo" width={264} height={117} />
 
       <div className="hidden md:flex md:justify-center md:items-center space-x-11">

@@ -7,9 +7,12 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex scroll-smooth flex-col min-h-screen">
       <Navbar />
-      <main className="flex-grow flex flex-col min-h-0">{children}</main>
+      <main className="flex-grow flex flex-col   min-h-0 mt-[100px]">
+        {" "}
+        {children}
+      </main>
       <Footer />
     </div>
   );

@@ -22,15 +22,16 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: LoginSchemaType) => {
+    console.log("Datos enviados al servidor:", data);
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/login`,
+        `${process.env.NEXT_PUBLIC_API_URL}/users/login`,
         data,
         {
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true,
+          /*    withCredentials: true, */
         }
       );
 
