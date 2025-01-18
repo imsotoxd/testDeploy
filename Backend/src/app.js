@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 
 // Import Routes
 import userRoutes from './routes/userRoutes.js';
+import productRoutes from './routes/productRoutes.js';
 
 // Configuracion
 dotenv.config();
@@ -23,5 +24,6 @@ app.use(
 
 // Routes
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/', productRoutes);
 
 export default app;
