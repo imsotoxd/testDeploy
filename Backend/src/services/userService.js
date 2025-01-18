@@ -31,7 +31,7 @@ export const createUser = async (
 // Iniciar sesión de un usuario
 export const loginUser = async (email, password) => {
   const user = await User.findOne({ where: { email, activated: 1 } });
-  console.log(user)
+  console.log(user);
   if (!user) {
     return null;
   }
@@ -78,7 +78,7 @@ export const updateUserService = async (
   if (password) {
     passwordHash = await hashPassword(password);
   }
-  
+
   const data = {
     firstname,
     lastname,
