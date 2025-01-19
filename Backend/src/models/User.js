@@ -34,10 +34,15 @@ const UserModel = (sequelize) => {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
       },
+      session: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {
       timestamps: true,
       freezeTableName: true,
+      indexes: [{ unique: true, fields: ['email'] }],
     }
   );
 };

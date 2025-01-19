@@ -1,6 +1,7 @@
 import {
   createUser,
   loginUser,
+  logoutUserService,
   deleteUserService,
   getAllUsersService,
   getUserByIdService,
@@ -48,7 +49,7 @@ export const loginUserController = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
     // Generación del token JWT
-    const token = await generateAuthToken(user.id, user.role);
+    const token = await generateAuthToken(user.id);
     // Respuesta exitosa con token
     res.status(200).json({
       message: 'Login successful',
@@ -58,7 +59,6 @@ export const loginUserController = async (req, res) => {
         firstname: user.firstname,
         lastname: user.lastname,
         email: user.email,
-        role: user.role,
       },
     });
   } catch (error) {
@@ -73,6 +73,17 @@ export const loginUserController = async (req, res) => {
     res.status(500).json({
       message: 'Internal server error',
     });
+  }
+};
+
+export const logoutUserController = async (req, res) => {
+  try {
+    const userId = req.userId;
+    await logoutUserService(userId); // Llamar al servicio de logout
+    res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+    console.error('Error in logoutUserController:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
