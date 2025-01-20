@@ -138,7 +138,7 @@ export const updateUser = async (req, res) => {
         .status(404)
         .json({ message: 'Usuario no encontrado para actualizar' });
     }
-    res.status(200).json({ message: 'Usuario actualizado correctamente' });
+    res.status(200).json({ message: 'Usuario actualizado correctamente', updated });
   } catch (error) {
     if (error.name === 'ValidationError') {
       return res.status(422).json({
