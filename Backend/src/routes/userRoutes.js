@@ -4,6 +4,7 @@ import express from 'express';
 import {
   registerUser,
   loginUserController,
+  logoutUserController,
   deleteUser,
   getAllUsers,
   getUserById,
@@ -34,9 +35,7 @@ router.post(
   handleValidationErrors,
   loginUserController
 );
-router.post('/logout', (req, res) => {
-  res.status(200).json({ message: 'Logout successful' });
-});
+router.post('/logout', authenticateToken, logoutUserController);
 
 router.get('/', authenticateToken, getAllUsers);
 router.get('/:id', authenticateToken, getUserById);

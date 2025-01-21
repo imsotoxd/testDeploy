@@ -6,8 +6,6 @@ import ReviewSection from "@/components/landing/ReviewSection";
 
 function LandingPage() {
   return (
-    //Pruebas de tailwindConfig Borrarlo al renderizar los componentes -->
-
     <div>
       <HeroSection />
       <FeaturesSection />

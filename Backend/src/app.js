@@ -2,6 +2,7 @@
 
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 // Import Routes
 import userRoutes from './routes/userRoutes.js';
@@ -10,6 +11,37 @@ import userRoutes from './routes/userRoutes.js';
 dotenv.config();
 const app = express();
 app.use(express.json());
+
+// Configurar CORS
+const allowedOrigin = [
+  'http://localhost:3000', // React local
+  'http://127.0.0.1:3000', // Alternativa local
+  'http://localhost:4000', // Swagger UI u otro puerto
+  process.env.CLIENT_URL,  // URL en producción
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigin.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: 'GET,POST,PUT,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    credentials: true,
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'Content-Disposition',
+      'Access-Control-Allow-Origin',
+      'Access-Control-Allow-Credentials',
+    ],
+  })
+);
 
 // Swagger
 import setupSwaggerV1 from '../swagger/v1/main.js';

@@ -79,4 +79,8 @@ function FeaturesSection() {
     )
 }
 
+<<<<<<< HEAD
 export default FeaturesSection
+=======
+export default FeaturesSection
+>>>>>>> 049c6d8961877b8a2237fdeddb3e91d7c0bd4979

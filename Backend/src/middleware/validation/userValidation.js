@@ -8,9 +8,7 @@ import {
   validateLoginUser,
 } from './fieldsValidation.js';
 
-import {
-  validateUpdateUser
-} from './validateUpdateUser.js';
+import { validateUpdateUser } from './validateUpdateUser.js';
 
 // Validaciones para registrar un usuario
 export { validateRegisterUser };

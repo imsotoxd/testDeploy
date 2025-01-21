@@ -14,6 +14,7 @@ import getUserById from './paths/user/getUserById.js';
 import updateUser from './paths/user/updateUser.js';
 import deleteUser from './paths/user/deleteUser.js';
 import restoreUser from './paths/user/restoreUser.js';
+import logoutUser from './paths/user/logoutUser.js';
 
 const swaggerSpec = {
     openapi: '3.0.0',
@@ -23,6 +24,7 @@ const swaggerSpec = {
         // Users
         '/users/register': UserRegisterP,
         '/users/login': UserLoginP,
+        '/users/logout': logoutUser,
         '/users': getAllUsers,
         '/users/{id}': getUserById,
         '/users/update/{id}': updateUser,

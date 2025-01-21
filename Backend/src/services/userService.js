@@ -24,39 +24,50 @@ export const createUser = async (
     email,
     password: hashedPassword,
     birthdate,
-    activated: 1,
   });
 };
 
 // Iniciar sesión de un usuario
 export const loginUser = async (email, password) => {
-  const user = await User.findOne({ where: { email, activated: 1 } });
-  console.log(user)
+  const user = await User.findOne({
+    where: { email, activated: true, session: false },
+  });
+  console.log(user);
   if (!user) {
     return null;
   }
-
   // Comparar la contraseña
   const isMatch = await comparePassword(password, user.password);
   if (isMatch) {
+    // Actualizar `activated` a `true`
+    await user.update({ session: true });
     return user;
   }
-
   return null;
+};
+
+// Servicio de Logout
+export const logoutUserService = async (userId) => {
+  const user = await User.findByPk(userId);
+  if (!user) {
+    throw new Error('User not found');
+  }
+  await user.update({ session: false });
+  return user;
 };
 
 // Obtener todos los usuarios
 export const getAllUsersService = async () => {
   return await User.findAll({
     attributes: ['id', 'firstname', 'lastname', 'email', 'birthdate'],
-    where: { activated: 1 },
+    where: { activated: true },
   });
 };
 
 // Obtener usuario por ID
 export const getUserByIdService = async (id) => {
   return await User.findOne({
-    where: { id, activated: 1 },
+    where: { id, activated: true },
     attributes: ['id', 'firstname', 'lastname', 'email', 'birthdate'],
   });
 };
@@ -70,7 +81,7 @@ export const updateUserService = async (
   password,
   birthdate
 ) => {
-  const user = await User.findOne({ where: { id, activated: 1 } });
+  const user = await User.findOne({ where: { id, activated: true } });
   if (!user) {
     throw new Error('User not found');
   }
@@ -78,17 +89,16 @@ export const updateUserService = async (
   if (password) {
     passwordHash = await hashPassword(password);
   }
-  
+
   const data = {
     firstname,
     lastname,
     email,
-    password: passwordHash || user.password,
+    password: passwordHash,
     birthdate,
   };
-
-  await user.update(data);
-  return user;
+  await User.update(data, { where: { id } });
+  return data;
 };
 
 // Eliminar usuario (soft delete)
@@ -98,7 +108,7 @@ export const deleteUserService = async (id) => {
     throw new Error('User not found');
   }
 
-  await user.update({ activated: 0 });
+  await user.update({ activated: false });
   return user;
 };
 
