@@ -17,7 +17,7 @@ function PricingSection() {
     pagination: { clickable: true },
     scrollbar: { draggable: true },
     breakpoints: {
-      640: {
+      320: {
         slidesPerView: 1,
         spaceBetween: 20,
       },
@@ -51,7 +51,7 @@ function PricingSection() {
               <li className='text-textPrimary text-2xl'>Válido por 15 días</li>
             </ul>
           </div>
-          <div className="flex justify-center w-full">
+          <div className="flex justify-center w-full mb-8">
   <button className='px-4 py-2 bg-primary text-white rounded-2xl w-1/2'>
     Adquirir plan
   </button>
@@ -69,7 +69,7 @@ function PricingSection() {
               <li className='text-textPrimary text-2xl'>Alertas automáticas</li>
             </ul>
           </div>
-          <div className="flex justify-center w-full">
+          <div className="flex justify-center w-full mb-8">
   <button className='px-4 py-2 bg-primary text-white rounded-2xl w-1/2'>
   Proximamente
   </button>
@@ -89,8 +89,8 @@ function PricingSection() {
               <li className='text-textPrimary text-2xl'>Cuentas integradas de pago</li>
             </ul>
           </div>
-          <div className="flex justify-center w-full">
-  <button className='px-4 py-2 bg-primary text-white rounded-2xl w-1/2'>
+          <div className="flex justify-center w-full mb-8">
+  <button className='px-4 py-2 bg-primary text-white rounded-2xl w-1/2 '>
   Proximamente
   </button>
 </div>
