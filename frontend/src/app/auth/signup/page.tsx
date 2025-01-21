@@ -1,8 +1,9 @@
+import RegisterForm from "@/components/auth/RegisterForm";
 
 function SignupPage() {
   return (
     <div>
-      <span>signup</span>
+      <RegisterForm />
     </div>
   );
 }
