@@ -13,7 +13,7 @@ const Navbar = () => {
     { name: "Funcionalidades", href: "#features" },
     { name: "Beneficios", href: "#benefits" },
     { name: "Precios", href: "#pricing" },
-    { name: "Reseñas", href: "#review" },
+    { name: "Reseñas", href: "#reviews" },
   ];
 
   const toggleMenu = () => {
