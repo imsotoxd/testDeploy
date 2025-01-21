@@ -1,5 +1,5 @@
 <div align="center">
-   <img src="" alt="Logo" width="200px" />
+   <img src="https://res.cloudinary.com/dgnrqnj8y/image/upload/v1737486250/Mesa_de_trabajo_1_adopsh.png" alt="Logo" width="200px" />
    <p><strong>Slogan</strong></p>
 </div>
 
@@ -7,7 +7,7 @@
 
 ## 🚀 Introducción
 
-**Nombre App** texto...
+**Stockify** texto...
 
 ---
 
@@ -17,7 +17,7 @@ texto...
 
 ---
 
-## ✨ Funcionalidades Principales de Nombre App
+## ✨ Funcionalidades Principales de Stockify
 
 🏢 **Funcion 1**  
 - texto...  
