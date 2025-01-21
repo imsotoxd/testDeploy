@@ -1,11 +1,19 @@
+import BenefitsSection from "@/components/landing/BenefitsSection";
+import FeaturesSection from "@/components/landing/FeaturesSection";
+import HeroSection from "@/components/landing/HeroSection";
+import PricingSection from "@/components/landing/PricingSection";
+import ReviewSection from "@/components/landing/ReviewSection";
 
-
-function ProductsPage() {
+function LandingPage() {
   return (
     <div>
-      <span>products</span>
+      <HeroSection />
+      <FeaturesSection />
+      <BenefitsSection />
+      <PricingSection />
+      <ReviewSection />
     </div>
   );
 }
 
-export default ProductsPage;
+export default LandingPage;
