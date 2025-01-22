@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema, type LoginSchemaType } from "@/lib/schemas/auth.schema";
@@ -8,9 +8,12 @@ import Link from "next/link";
 import { handleLogin } from "@/app/api/auth.api";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const LoginForm = () => {
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -63,13 +66,25 @@ const LoginForm = () => {
           )}
         </div>
 
-        <div className="flex flex-col">
+        <div className="relative flex flex-col">
           <input
-            className="border-red border-[1px] h-14 rounded-xl border-primary p-2 "
-            type="password"
+            className="border-[1px] h-14 rounded-xl border-primary p-2 pr-10"
+            type={showPassword ? "text" : "password"}
             placeholder="Contraseña"
             {...register("password")}
           />
+          <button
+            type="button"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-primary"
+            onClick={() => setShowPassword((prev) => !prev)}
+          >
+            <Image
+              src={showPassword ? "/eye-off.svg" : "/eye.svg"}
+              alt="Toggle password visibility"
+              width={24}
+              height={24}
+            />
+          </button>
           {errors.password && (
             <p className="text-xs text-red-500">{errors.password.message}</p>
           )}
@@ -81,7 +96,10 @@ const LoginForm = () => {
       </form>
       <p className="text-center mt-7">
         ¿No tienes una cuenta?
-        <Link className="btn text-primary no-underline btn-link" href={"/auth/signup"}>
+        <Link
+          className="btn text-primary no-underline btn-link"
+          href={"/auth/signup"}
+        >
           Registrate
         </Link>
       </p>
