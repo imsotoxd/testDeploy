@@ -15,14 +15,37 @@ export const LoginSchema = z.object({
 export type LoginSchemaType = z.infer<typeof LoginSchema>;
 
 export const RegisterSchema = z.object({
-  name: z.string().min(1, { message: "El nombre no puede estar vacío." }),
+  firstname: z
+    .string()
+    .min(3, { message: "El nombre debe teer al menos 3 caracteres" })
+    .nonempty({ message: "El nombre es obligatorio" }),
 
-  lastname: z.string().min(1, { message: "El apellido no puede estar vacío." }),
+  lastname: z
+    .string()
+    .min(3, { message: "El apellido no puede estar vacío." })
+    .nonempty({ message: "El apellido es obligatorio" }),
 
-  age: z
-    .number({ invalid_type_error: "La edad debe ser un número." })
-    .int({ message: "La edad debe ser un número entero." })
-    .positive({ message: "La edad debe ser un número positivo." }),
+  birthdate: z
+    .string({ required_error: "La fecha de nacimiento es obligatoria." })
+    .refine(
+      (dateString) => {
+        const birthDate = new Date(dateString);
+
+        if (isNaN(birthDate.getTime())) {
+          return false; // Si no es una fecha válida
+        }
+
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const hasReachedBirthday =
+          today.getMonth() > birthDate.getMonth() ||
+          (today.getMonth() === birthDate.getMonth() &&
+            today.getDate() >= birthDate.getDate());
+
+        return age > 18 || (age === 18 && hasReachedBirthday);
+      },
+      { message: "Debes ser mayor de edad (18 años o más)." }
+    ),
 
   email: z
     .string()
