@@ -103,7 +103,8 @@ export const updateUserService = async (
     password: passwordHash,
     birthdate,
   };
-  return user;
+  await User.update(data, { where: { id } });
+  return data;
 };
 
 // Eliminar usuario (soft delete)
