@@ -26,6 +26,12 @@ export const registerUser = async (req, res) => {
       .status(201)
       .json({ message: 'User created successfully', user: newUser });
   } catch (error) {
+    if (error.message === 'Email already registered') {
+      return res.status(409).json({
+        message:
+          'The email is already registered. Please use a different email.',
+      });
+    }
     if (error.name === 'ValidationError') {
       return res.status(422).json({
         message: 'Validation error',
