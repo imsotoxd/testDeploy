@@ -6,7 +6,7 @@ import ReviewSection from "@/components/landing/ReviewSection";
 
 function LandingPage() {
   return (
-    <div>
+    <div className="max-w-6xl mx-auto">
       <HeroSection />
       <FeaturesSection />
       <BenefitsSection />

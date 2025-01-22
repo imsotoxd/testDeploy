@@ -124,17 +124,17 @@ const RegisterForm = () => {
           )}
         </div>
 
-        <button
-          className="flex w-full h-14 items-center justify-center rounded-xl bg-primary  py-2 font-bold text-white"
-          type="submit"
-        >
+        <button className="btn btn-neutral w-full" type="submit">
           Registrarse
         </button>
       </form>
       <p className="text-center mt-7">
         ¿Ya tienes una cuenta?{" "}
-        <Link href={"/auth/signin"}>
-          <span className="text-primary ml-2">Iniciar sesión</span>
+        <Link
+          className="btn no-underline btn-link text-primary"
+          href={"/auth/signin"}
+        >
+          Iniciar sesión
         </Link>
       </p>
     </div>

@@ -75,17 +75,14 @@ const LoginForm = () => {
           )}
         </div>
 
-        <button
-          className="flex w-full h-14 items-center justify-center rounded-xl bg-primary  py-2 font-bold text-white"
-          type="submit"
-        >
+        <button className="btn btn-neutral w-full" type="submit">
           Ingresar
         </button>
       </form>
       <p className="text-center mt-7">
-        ¿No tienes una cuenta?{" "}
-        <Link href={"/auth/signup"}>
-          <span className="text-primary ml-2">Registrate</span>
+        ¿No tienes una cuenta?
+        <Link className="btn text-primary no-underline btn-link" href={"/auth/signup"}>
+          Registrate
         </Link>
       </p>
     </div>

@@ -3,8 +3,8 @@ import Image from "next/image";
 
 const Footer = () => {
   return (
-    <div className="h-[192px] flex items-center p-4 bg-primary">
-      <Image src={"/logoWhite.svg"} alt="logo" width={264} height={117} />
+    <div className="flex items-center p-4 bg-primary">
+      <Image src={"/logoWhite.svg"} className="max-w-40 w-full" alt="logo" width={900} height={900} />
     </div>
   );
 };
