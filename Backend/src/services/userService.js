@@ -14,6 +14,12 @@ export const createUser = async (
     throw new Error('All fields are required');
   }
 
+  // Verificar si el correo electrónico ya está registrado
+  const existingUser = await User.findOne({ where: { email } });
+  if (existingUser) {
+    throw new Error('Email already registered');
+  }
+
   // Cifrar la contraseña
   const hashedPassword = await hashPassword(password);
 

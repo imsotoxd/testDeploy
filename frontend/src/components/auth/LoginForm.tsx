@@ -5,14 +5,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema, type LoginSchemaType } from "@/lib/schemas/auth.schema";
 import Link from "next/link";
-import axios from "axios";
+import { handleLogin } from "@/app/api/auth.api";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<LoginSchemaType>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -22,31 +24,22 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: LoginSchemaType) => {
-    console.log("Datos enviados al servidor:", data);
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/login`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          /*    withCredentials: true, */
-        }
-      );
+    const { message, wasValid } = await handleLogin(data);
+    if (!wasValid)
+      return Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: message,
+        confirmButtonColor:"var(--primary)"
+      });
 
-      console.log("respuesta del servidor", response);
-
-      reset();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      if (error.response) {
-        console.error("Error en la respuesta", error.response.data);
-      } else {
-        console.error("Error en la peticion", error.message);
-      }
-      reset();
-    }
+    Swal.fire({
+      icon: "success",
+      title: "Bienvenido",
+      text: message,
+      confirmButtonColor:"var(--primary)"
+    });
+    router.push("/dashboard");
   };
 
   return (
