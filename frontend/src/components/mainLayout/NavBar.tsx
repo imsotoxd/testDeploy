@@ -21,26 +21,27 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex fixed top-0 left-0 right-0 z-50 justify-between bg-white  items-center p-4 md:p-8">
-      <Image src="/logo.svg" alt="logo" width={264} height={117} />
+    <div className="flex justify-between items-center px-5 py-3 sticky top-0 bg-white z-10">
+      <Image
+        src="/logo.svg"
+        alt="logo"
+        className="max-w-40 w-full"
+        width={900}
+        height={900}
+      />
 
-      <div className="hidden md:flex md:justify-center md:items-center space-x-11">
+      <div className="hidden lg:flex lg:justify-center lg:items-center space-x-2">
         {navItems.map((item) => (
           <Link
             key={item.name}
             href={item.href}
             onClick={() => setActiveItem(item.href)}
-            className={`text-primary text-2xl   ${
-              activeItem === item.href ? "font-bold" : "font-normal"
-            }`}
+            className="btn btn-ghost"
           >
             {item.name}
           </Link>
         ))}
-        <Link
-          href="/auth"
-          className="bg-primary rounded-xl text-2xl text-white px-6 py-2"
-        >
+        <Link href="/auth" className="btn btn-neutral">
           iniciar sesión
         </Link>
       </div>
@@ -48,36 +49,37 @@ const Navbar = () => {
       {/* Responsive */}
       <button
         onClick={toggleMenu}
-        className="md:hidden flex flex-col space-y-2"
+        className="lg:hidden flex flex-col space-y-2"
         aria-label="Toggle menu"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          stroke-width="1.5"
+          strokeWidth="1.5"
           stroke="currentColor"
           className="text-primary size-10"
         >
           <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"
           />
         </svg>
       </button>
+
       {/* Menu */}
       <div
         className={`${
           isMenuOpen ? "block" : "hidden"
-        } absolute top-20 right-4 bg-white p-6 shadow-lg rounded-xl md:hidden`}
+        } absolute top-20 right-4 bg-white p-6 shadow-lg rounded-xl lg:hidden`}
       >
-        <div className="space-y-4">
+        <div className="flex flex-col gap-1">
           {navItems.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="block text-primary text-xl"
+              className="btn btn-ghost"
               onClick={() => setIsMenuOpen(false)}
             >
               {item.name}
@@ -85,7 +87,7 @@ const Navbar = () => {
           ))}
           <Link
             href="/auth"
-            className="block text-primary text-xl bg-primary rounded-xl text-white px-6 py-2"
+            className=" btn btn-neutral"
             onClick={() => setIsMenuOpen(false)}
           >
             iniciar sesión
