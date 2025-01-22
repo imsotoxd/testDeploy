@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React from "react";
@@ -8,9 +9,13 @@ import {
   type RegisterSchemaType,
 } from "@/lib/schemas/auth.schema";
 import Link from "next/link";
-import axios from "axios";
+import { handleRegister } from "@/app/api/auth.api";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 const RegisterForm = () => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -19,39 +24,35 @@ const RegisterForm = () => {
   } = useForm<RegisterSchemaType>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      name: "",
+      firstname: "",
       lastname: "",
-      age: undefined,
+      birthdate: undefined,
       email: "",
       password: "",
     },
   });
 
   const onSubmit = async (data: RegisterSchemaType) => {
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/register`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
+    const response = await handleRegister(data);
 
-      console.log("respuesta del servidor", response);
-
-      reset();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      if (error.response) {
-        console.error("Error en la respuesta", error.response.data);
-      } else {
-        console.error("Error en la peticion", error.message);
-      }
-      reset();
+    if (response.wasValid) {
+      Swal.fire({
+        icon: "success",
+        title: response.message,
+        confirmButtonColor: "var(--primary)",
+      }).then(() => {
+        router.push("/auth/signin");
+      });
+    } else {
+      Swal.fire({
+        icon: "warning",
+        title: "Oops",
+        text: response.message,
+        confirmButtonColor: "var(--primary)",
+      });
     }
+
+    reset();
   };
 
   return (
@@ -68,10 +69,10 @@ const RegisterForm = () => {
             className=" border-[1px] h-14 border-primary  rounded-xl p-2 "
             type="text"
             placeholder="Nombres"
-            {...register("name")}
+            {...register("firstname")}
           />
-          {errors.name && (
-            <p className="text-xs text-red-500">{errors.name.message}</p>
+          {errors.firstname && (
+            <p className="text-xs text-red-500">{errors.firstname.message}</p>
           )}
         </div>
 
@@ -90,12 +91,12 @@ const RegisterForm = () => {
         <div className="flex flex-col">
           <input
             className=" border-[1px] h-14 border-primary  rounded-xl p-2 "
-            type="number"
+            type="date"
             placeholder="edad"
-            {...(register("age"), { valueAsNumber: true })}
+            {...register("birthdate")}
           />
-          {errors.age && (
-            <p className="text-xs text-red-500">{errors.age.message}</p>
+          {errors.birthdate && (
+            <p className="text-xs text-red-500">{errors.birthdate.message}</p>
           )}
         </div>
 

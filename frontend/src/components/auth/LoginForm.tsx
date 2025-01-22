@@ -30,14 +30,14 @@ const LoginForm = () => {
         icon: "error",
         title: "Oops...",
         text: message,
-        confirmButtonColor:"var(--primary)"
+        confirmButtonColor: "var(--primary)",
       });
 
     Swal.fire({
       icon: "success",
       title: "Bienvenido",
       text: message,
-      confirmButtonColor:"var(--primary)"
+      confirmButtonColor: "var(--primary)",
     });
     router.push("/dashboard");
   };
