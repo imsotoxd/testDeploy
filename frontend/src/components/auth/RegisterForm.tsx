@@ -9,7 +9,7 @@ import {
   type RegisterSchemaType,
 } from "@/lib/schemas/auth.schema";
 import Link from "next/link";
-import axios from "axios";
+import { handleRegister } from "@/app/api/auth.api";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
@@ -33,36 +33,26 @@ const RegisterForm = () => {
   });
 
   const onSubmit = async (data: RegisterSchemaType) => {
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/register`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
+    const response = await handleRegister(data);
 
+    if (response.wasValid) {
       Swal.fire({
         icon: "success",
-        title: "¡Usuario registrado, Inicia sesión!",
+        title: response.message,
+        confirmButtonColor: "var(--primary)",
       }).then(() => {
         router.push("/auth/signin");
       });
-
-      reset();
-    } catch (error: any) {
+    } else {
       Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text:
-          error.response?.data?.message ||
-          "Hubo un error al registrar el usuario.",
+        icon: "warning",
+        title: "Oops",
+        text: response.message,
+        confirmButtonColor: "var(--primary)",
       });
-      reset();
     }
+
+    reset();
   };
 
   return (
