@@ -30,12 +30,12 @@ const updateCategory = {
                             name: {
                                 type: 'string',
                                 description: 'Nombre de la categoría',
-                                example: 'Electrónica'
+                                example: 'Herramientas Eléctricas y Accesorios'
                             },
                             description: {
                                 type: 'string',
                                 description: 'Descripción de la categoría',
-                                example: 'Productos electrónicos como teléfonos, computadoras, etc.'
+                                example: 'Amplia gama de herramientas eléctricas para proyectos de construcción, remodelación y mantenimiento, incluyendo taladros, sierras eléctricas, amoladoras, lijadoras, así como sus accesorios y repuestos.'
                             },
                             custom: {
                                 type: 'boolean',
