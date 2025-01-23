@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 function DashboardLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex h-screen">
+    <div className="flex  h-screen">
       <Sidebar />
       {children}
     </div>

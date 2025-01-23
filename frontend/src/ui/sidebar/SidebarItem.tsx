@@ -1,4 +1,5 @@
-import React from "react";
+import type React from "react";
+import clsx from "clsx";
 
 interface SidebarItemProps {
   text: string;
@@ -10,31 +11,36 @@ interface SidebarItemProps {
 const SidebarItem: React.FC<SidebarItemProps> = ({
   text,
   icon,
-  isActive,
+  isActive = false,
   onClick,
 }) => {
   return (
-    <div
+    <button
       onClick={onClick}
-      className={`flex items-center space-x-4 px-1 py-4 rounded-md  transition-all duration-300 group ${
+      className={clsx(
+        "flex w-full items-center gap-3 rounded-md py-3 px-3",
+        "transition-all duration-300",
         isActive
-          ? " shadow-md scale-150 shadow-white group-text-primary"
-          : "hover:bg-gray-100 hover:shadow-2xl hover:text-primary cursor-pointer text-white"
-      }`}
+          ? "bg-white text-primary font-bold justify-center"
+          : "text-white/70 hover:bg-white/10 hover:text-white"
+      )}
     >
       <span
-        className={`${icon} size-6 transition-colors duration-300 ${
-          isActive ? "text-white" : "group-hover:text-primary"
-        }`}
-      ></span>
-      <p
-        className={`transition-colors duration-300 ${
-          isActive ? "text-white" : "group-hover:text-primary"
-        }`}
+        className={clsx(
+          icon,
+          "text-2xl transition-colors duration-300",
+          isActive ? "text-primary" : "text-white/70"
+        )}
+      />
+      <span
+        className={clsx(
+          "text-sm font-medium transition-colors duration-300",
+          isActive ? "text-primary" : "text-white/70"
+        )}
       >
         {text}
-      </p>
-    </div>
+      </span>
+    </button>
   );
 };
 
