@@ -18,12 +18,12 @@ const createCategory = {
                             name: {
                                 type: 'string',
                                 description: 'Nombre de la categoría',
-                                example: 'Herramienta'
+                                example: 'Herramientas Eléctricas'
                             },
                             description: {
                                 type: 'string',
                                 description: 'Descripción de la categoría',
-                                example: 'Martillo de Uña 16oz'
+                                example: 'Herramientas eléctricas para trabajos de construcción, reparación y mantenimiento, como taladros, sierras eléctricas, amoladoras, entre otros.'
                             },
                             custom: {
                                 type: 'boolean',
