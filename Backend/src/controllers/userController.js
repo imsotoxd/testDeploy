@@ -1,6 +1,7 @@
 import {
   createUser,
   loginUser,
+  logoutUserService,
   deleteUserService,
   getAllUsersService,
   getUserByIdService,
@@ -25,6 +26,12 @@ export const registerUser = async (req, res) => {
       .status(201)
       .json({ message: 'User created successfully', user: newUser });
   } catch (error) {
+    if (error.message === 'Email already registered') {
+      return res.status(409).json({
+        message:
+          'The email is already registered. Please use a different email.',
+      });
+    }
     if (error.name === 'ValidationError') {
       return res.status(422).json({
         message: 'Validation error',
@@ -48,7 +55,7 @@ export const loginUserController = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
     // Generación del token JWT
-    const token = await generateAuthToken(user.id, user.role);
+    const token = await generateAuthToken(user.id);
     // Respuesta exitosa con token
     res.status(200).json({
       message: 'Login successful',
@@ -58,7 +65,6 @@ export const loginUserController = async (req, res) => {
         firstname: user.firstname,
         lastname: user.lastname,
         email: user.email,
-        role: user.role,
       },
     });
   } catch (error) {
@@ -73,6 +79,17 @@ export const loginUserController = async (req, res) => {
     res.status(500).json({
       message: 'Internal server error',
     });
+  }
+};
+
+export const logoutUserController = async (req, res) => {
+  try {
+    const userId = req.userId;
+    await logoutUserService(userId); // Llamar al servicio de logout
+    res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+    console.error('Error in logoutUserController:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -127,7 +144,7 @@ export const updateUser = async (req, res) => {
         .status(404)
         .json({ message: 'Usuario no encontrado para actualizar' });
     }
-    res.status(200).json({ message: 'Usuario actualizado correctamente' });
+    res.status(200).json({ message: 'Usuario actualizado correctamente', updated });
   } catch (error) {
     if (error.name === 'ValidationError') {
       return res.status(422).json({

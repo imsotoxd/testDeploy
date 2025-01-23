@@ -1,24 +1,32 @@
 const UserInput = {
     type: 'object',
     properties: {
-        username: {
-            type: 'string',
-            minLength: 3,
-            description: 'El nombre de usuario del usuario.',
-            example: 'nuevoUsuario'
+        firstname: {
+            type: "string",
+            description: "Nombre de usuario",
+            example: "john"
+        },
+        lastname: {
+            type: "string",
+            description: "Apellido de usuario",
+            example: "salchichon"
         },
         email: {
-            type: 'string',
-            format: 'email',
-            description: 'El correo electrónico del usuario.',
-            example: 'nuevoemail@ejemplo.com'
+            type: "string",
+            description: "Correo electrónico único usuario",
+            example: "john.doe@example.com"
+        },
+        birthdate: {
+            type: "string",
+            format: "date",
+            description: "Fecha de nacimiento del usuario",
+            example: "1990-01-01"
         },
         password: {
-            type: 'string',
-            minLength: 6,
-            description: 'La nueva contraseña del usuario.',
-            example: 'nuevaContraseña123'
-        },
+            type: "string",
+            description: "Contraseña del usuario",
+            example: "P@ssw0rd123"
+        }
     },
     required: ['username', 'email'], // Asumiendo que el correo y el nombre de usuario son obligatorios
     additionalProperties: false, // Para evitar que se incluyan propiedades adicionales no definidas

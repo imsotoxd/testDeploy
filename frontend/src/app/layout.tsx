@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,10 +12,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={` antialiased min-h-screen flex flex-col`}>
-        <main className="flex-grow flex flex-col min-h-0 ">{children}</main>
-      </body>
+    <html data-theme="winter" className="scroll-smooth" lang="en">
+      <body className="antialiased min-h-screen">{children}</body>
     </html>
   );
 }

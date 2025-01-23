@@ -2,6 +2,7 @@
 
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 // Import Routes
 import userRoutes from './routes/userRoutes.js';
@@ -13,10 +14,10 @@ app.use(express.json());
 
 // Configurar CORS
 const allowedOrigin = [
-  // 'https://s17-09-n-node-react-2.onrender.com', link deploy
-  // 'https://s17-09-n-node-react.onrender.com',
-  // 'http://localhost:5173', ruta local
-  process.env.CLIENT_URL, // Usar una variable de entorno para la URL del cliente
+  'http://localhost:3000', // React local
+  'http://127.0.0.1:3000', // Alternativa local
+  'http://localhost:4000', // Swagger UI u otro puerto
+  process.env.CLIENT_URL,  // URL en producción
 ];
 
 app.use(
