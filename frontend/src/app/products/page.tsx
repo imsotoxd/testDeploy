@@ -1,17 +1,11 @@
-import BenefitsSection from "@/components/landing/BenefitsSection";
-import FeaturesSection from "@/components/landing/FeaturesSection";
-import HeroSection from "@/components/landing/HeroSection";
-import PricingSection from "@/components/landing/PricingSection";
-import ReviewSection from "@/components/landing/ReviewSection";
+import ProductFilter from "@/components/products/product.filters";
+import ProductList from "@/components/products/product.list";
 
 function LandingPage() {
   return (
-    <div>
-      <HeroSection />
-      <FeaturesSection />
-      <BenefitsSection />
-      <PricingSection />
-      <ReviewSection />
+    <div className="max-w-4xl mx-auto">
+      <ProductFilter />
+      <ProductList />
     </div>
   );
 }

@@ -22,7 +22,14 @@ const config: Config = {
   },
   plugins: [daisyui, addDynamicIconSelectors()],
   daisyui: {
-    themes: ["winter"],
+    themes: [
+      {
+        light: {
+          ...require("daisyui/src/theming/themes")["winter"],
+          primary: "#1A3D5E",
+        },
+      },
+    ],
   },
 };
 export default config;
