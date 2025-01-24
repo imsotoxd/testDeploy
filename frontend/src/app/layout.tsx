@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html data-theme="winter" className="scroll-smooth" lang="en">
-      <body className="antialiased min-h-screen">{children}</body>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
