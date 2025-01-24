@@ -1,84 +1,90 @@
 <div align="center">
    <img src="https://res.cloudinary.com/dgnrqnj8y/image/upload/v1737486250/Mesa_de_trabajo_1_adopsh.png" alt="Logo" width="200px" />
-   <p><strong>Slogan</strong></p>
+   <p><strong>Stockify</strong></p>
 </div>
-
----
 
 ## 🚀 Introducción
 
-**Stockify** texto...
-
----
+**Stockify** es una aplicación web inteligente para la gestión y control de inventarios. Diseñada para empresas que buscan optimizar su flujo de productos, Stockify notifica automáticamente sobre escasez, analiza los productos más vendidos, y proporciona datos clave para mejorar la toma de decisiones.
 
 ## 🎯 Objetivo Principal
 
-texto...
-
----
+El principal objetivo de **Stockify** es facilitar la gestión eficiente del inventario mediante herramientas inteligentes y automatizadas que permitan a las empresas reducir tiempos de administración, evitar pérdidas por productos agotados y mejorar la planeación de abastecimiento.
 
 ## ✨ Funcionalidades Principales de Stockify
 
-🏢 **Funcion 1**  
-- texto...  
-- texto...  
+🏢 **Gestión de Inventario**  
+- Administración de productos y categorías.  
+- Registro y control de movimientos (entradas y salidas).  
+- Gestión de empresas asociadas al inventario.  
 
-👩‍💼 **Funcion 2**  
-- texto...  
-- texto...  
+👩‍💼 **Alertas y Notificaciones Inteligentes**  
+- Alertas sobre escasez de productos.  
+- Análisis de los productos más vendidos.  
+- Notificaciones sobre puntos clave para la toma de decisiones.  
 
+🔒 **Autenticación y Autorización**  
+- Registro de usuarios con roles específicos.  
+- Seguridad mediante JWT con configuración dinámica.  
 
----
+📊 **Análisis de Datos**  
+- Generación de reportes sobre inventarios y tendencias.  
+- Seguimiento de movimientos y rendimiento del inventario.  
 
 ## 🛠️ Tecnologías
 
-| Front-End                                                                 | Back-End                                                                 | UX/UI                                                                 | Gestión                                                             |
-|---------------------------------------------------------------------------|--------------------------------------------------------------------------|-----------------------------------------------------------------------|--------------------------------------------------------------------|
+| Front-End                               | Back-End                               | UX/UI                               | Gestión                             |
+|-----------------------------------------|----------------------------------------|-------------------------------------|-------------------------------------|
+| Next.js, React, TailwindCSS             | Node.js, Express, Sequelize, MySQL     | Figma                               | Github Projects, Slack, Discord     |
 
----
 
 ## 🧑‍🤝‍🧑 Equipo
 
 ⚛️ *Front-End*
 
-| Nombre         | GitHub                                                                                          | LinkedIn                                                                                         |
-| -------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
-| Jesus Soto Paguay| [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](#) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](#) |
-| Felipe Hernández Diaz de León| [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](https://github.com/fhdzleon) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/fhdzleon/) |
+| Nombre                | GitHub                                                                                       | LinkedIn                                                                                      |
+|-----------------------|---------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| Jesus Soto Paguay     | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](#) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](#) |
+| Felipe Hernández Díaz de León | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](https://github.com/fhdzleon) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/fhdzleon/) |
 
 💻 *Back-End*
 
-| Nombre         | GitHub                                                                                          | LinkedIn                                                                                         |
-| -------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
-| Eduardo Moreno | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](https://github.com/EduMMorenolp) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/eduardo-m-moreno-programador/) |
+| Nombre               | GitHub                                                                                       | LinkedIn                                                                                      |
+|----------------------|---------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| Eduardo Moreno       | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](https://github.com/EduMMorenolp) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/eduardo-m-moreno-programador/) |
 
-📝 *Project Manager*
+🎨 *UX/UI*
 
-| Nombre       | GitHub                                                                                          | LinkedIn                                                                                         |
-| ------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| Nombre                      | GitHub                                                                                       | LinkedIn                                                                                      |
+|-----------------------------|---------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| Milagros Chuctaya Elme      | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](https://github.com/Arianamilagros) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/milagros-chuctaya-elme-69b56021a/) |
+
 
 ♟️ *Team Leader*
-| Nombre      | GitHub                                                                                          | LinkedIn                                                                                         |
-| ----------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
 
----
+| Nombre               | GitHub                                                                                       | LinkedIn                                                                                      |
+|----------------------|---------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| Por asignar          | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](#) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](#) |
 
 ## 🔗 Despliegue
 
-🌐 Front-End
-Puedes ver la versión desplegada del **Front-End** en el siguiente enlace:
+🌐 Front-End  
+Puedes ver la versión desplegada del **Front-End** en el siguiente enlace:  
 
-[Deploy Front-End](#)
+[Deploy Front-End](#)  
 
-💻 Back-End
-La versión desplegada del **Back-End** está disponible en:
+💻 Back-End  
+La versión desplegada del **Back-End** está disponible en:  
 
-[Deploy Back-End](#)
+[Deploy Back-End](#)  
 
----
-## 📸 Vista Previa de la Aplicación
-| Pantalla 1 | Pantalla 2 |
-|------------|------------|
+## 📸 Vista Previa de la Aplicación  
+
+| Pantalla 1                          | Pantalla 2                          |
+|-------------------------------------|-------------------------------------|
+| ![Pantalla 1](#)                    | ![Pantalla 2](#)                    |
+
+
 
 
 | Pantalla 3 | Pantalla 4 |
