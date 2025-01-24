@@ -42,16 +42,18 @@ El principal objetivo de **Stockify** es facilitar la gestión eficiente del inv
 
 ⚛️ *Front-End*
 
-| Nombre                | GitHub                                                                                       | LinkedIn                                                                                      |
-|-----------------------|---------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
-| Jesus Soto Paguay     | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](#) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](#) |
+| Nombre                   | GitHub                                                                                          | LinkedIn                                                                                         |
+| ------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| Jesus Soto Paguay        | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](#) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](#) |
 | Felipe Hernández Díaz de León | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](https://github.com/fhdzleon) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/fhdzleon/) |
+| Isaias Romero            | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](https://github.com/Isa696) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/isaias-romero696) |
 
 💻 *Back-End*
 
-| Nombre               | GitHub                                                                                       | LinkedIn                                                                                      |
-|----------------------|---------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
-| Eduardo Moreno       | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](https://github.com/EduMMorenolp) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/eduardo-m-moreno-programador/) |
+| Nombre           | GitHub                                                                                          | LinkedIn                                                                                         |
+| ----------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| Eduardo Moreno   | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](https://github.com/EduMMorenolp) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/eduardo-m-moreno-programador/) |
+| Samuel Bernal    | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](https://github.com/samuelbernal44) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/samuelbernal44) |
 
 🎨 *UX/UI*
 
