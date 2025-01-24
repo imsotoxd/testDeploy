@@ -1,50 +1,14 @@
 "use client";
-
 import React, { useState } from "react";
 import Image from "next/image";
 import SidebarItem from "@/ui/sidebar/SidebarItem";
 import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
-import { handleLogout } from "@/app/api/auth.api";
+import { useLogout } from "@/hooks/useLogout";
 
 const Sidebar = () => {
+  const { logout } = useLogout();
   const router = useRouter();
   const [activeItem, setActiveItem] = useState<string>("/dashboard");
-
-  const handleLogoutButton = async () => {
-    Swal.fire({
-      title: "¿Estás seguro?",
-      text: "Cerraras tu sesión",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "var(--primary)",
-      cancelButtonColor: "#777777",
-      confirmButtonText: "Sí, cerrar sesión",
-      cancelButtonText: "Cancelar",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const logoutResponse = await handleLogout();
-        if (logoutResponse.wasValid) {
-          Swal.fire({
-            title: "¡Sesión cerrada!",
-            text: "Has cerrado sesión exitosamente.",
-            icon: "success",
-            confirmButtonColor: "var(--primary)",
-          }).then(() => {
-            router.push("/");
-          });
-        } else {
-          Swal.fire({
-            title: "Error",
-            text:
-              logoutResponse.message || "Hubo un problema al cerrar sesión.",
-            icon: "error",
-            confirmButtonColor: "var(--primary)",
-          });
-        }
-      }
-    });
-  };
 
   return (
     <div className="flex flex-col w-[250px] px-4 text-white py-10 h-screen bg-primary">
@@ -95,7 +59,7 @@ const Sidebar = () => {
           text="Cerrar sesión"
           icon="icon-[material-symbols--logout]"
           isActive={activeItem === "/dashboard/logout"}
-          onClick={handleLogoutButton}
+          onClick={logout}
         />
       </div>
     </div>
