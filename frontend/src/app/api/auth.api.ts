@@ -2,6 +2,7 @@
 "use server";
 import { cookies } from "next/headers";
 import { API } from ".";
+import { useUserStore } from "@/store/user.store";
 
 interface LoginProps {
   email: string;
@@ -31,9 +32,10 @@ export const handleLogin = async (
       domain: "localhost",
       httpOnly: true,
       secure: false,
-      maxAge: 60 * 60,
+      maxAge: 60 * 60 * 24,
     };
     const token = data.token;
+
     cookies().set("authToken", token, cookieOptions);
     return {
       wasValid: true,
@@ -70,6 +72,30 @@ export const handleRegister = async (
       message:
         error.response?.data?.message ||
         "Hubo un error al registrar el usuario.",
+    };
+  }
+};
+
+export const handleLogout = async (): Promise<LoginResponse> => {
+  try {
+    await API.post("/users/logout");
+
+    const cookieStore = cookies();
+    cookieStore.delete("authToken");
+
+    const { delData } = useUserStore.getState();
+    delData();
+
+    return {
+      wasValid: true,
+      message: "¡Sesión cerrada exitosamente!",
+    };
+  } catch (error: any) {
+    return {
+      wasValid: false,
+      message:
+        error.response?.data?.message ||
+        "Hubo un error al intentar cerrar la sesión.",
     };
   }
 };

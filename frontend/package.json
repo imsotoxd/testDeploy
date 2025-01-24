@@ -26,6 +26,8 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@iconify/json": "^2.2.298",
+    "@iconify/tailwind": "^1.2.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
