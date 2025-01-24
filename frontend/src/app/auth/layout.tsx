@@ -11,7 +11,10 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex">
-      <div className="w-1/2 relative hidden md:block">
+      <div
+        className="w-1/2 h-screen
+       relative hidden md:block"
+      >
         <Image
           src={imageSrc}
           alt="Imagen de autenticación"

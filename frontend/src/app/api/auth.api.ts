@@ -37,6 +37,9 @@ export const handleLogin = async (
     const token = data.token;
 
     cookies().set("authToken", token, cookieOptions);
+    useUserStore.getState().setData(data.user);
+    console.log("estado de zzustand", useUserStore.getState().data);
+
     return {
       wasValid: true,
       message: data.message,

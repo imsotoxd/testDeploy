@@ -1,11 +1,13 @@
-import React from "react";
+import ProductFilter from "@/components/products/product.filters";
+import ProductList from "@/components/products/product.list";
 
-const Page = () => {
+function LandingPage() {
   return (
-    <div>
-      <p>Dashboard / products</p>
+    <div className="max-w-4xl mx-auto">
+      <ProductFilter />
+      <ProductList />
     </div>
   );
-};
+}
 
-export default Page;
+export default LandingPage;
