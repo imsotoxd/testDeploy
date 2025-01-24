@@ -21,7 +21,14 @@ const config: Config = {
   },
   plugins: [daisyui],
   daisyui: {
-    themes: ["winter"],
+    themes: [
+      {
+        light: {
+          ...require("daisyui/src/theming/themes")["winter"],
+          primary: "#1A3D5E",
+        },
+      },
+    ],
   },
 };
 export default config;
