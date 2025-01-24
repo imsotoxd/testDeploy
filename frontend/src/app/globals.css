@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap");
+
+:root {
+  /*  --background: #ffffff;
+  --foreground: #171717; */
+  --primary: #1a3d5e;
+  --textPrimary: #333333;
+  --alert: #ff4d4d;
+  --success: #4caf50;
+  --warning: #ffc107;
+}
+
+body{
+  background: white;
+}
+
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
