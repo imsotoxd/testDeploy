@@ -32,9 +32,10 @@ export const handleLogin = async (
       domain: "localhost",
       httpOnly: true,
       secure: false,
-      maxAge: 60 * 60,
+      maxAge: 60 * 60 * 24,
     };
     const token = data.token;
+
     cookies().set("authToken", token, cookieOptions);
     return {
       wasValid: true,

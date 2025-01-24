@@ -17,7 +17,8 @@ export const API = axios.create({
 API.interceptors.request.use(
   (config) => {
     if (jwt) {
-      config.headers.Authorization = `Bearer ${jwt}`;
+      const value = jwt.value;
+      config.headers.Authorization = `Bearer ${value}`;
     }
     return config;
   },
