@@ -78,6 +78,10 @@ La versión desplegada del **Back-End** está disponible en:
 
 [Deploy Back-End](#)  
 
+🎨 **Diseño UX/UI**  
+El diseño en Figma del proyecto está disponible aquí:  
+[Ver diseño en Figma](https://www.figma.com/design/VD0trU9yVvEBs56HfMH1Ic/INVENTARIO-PROJECT?node-id=0-1&t=4XWTC6lMhhInoEfG-1)
+
 ## 📸 Vista Previa de la Aplicación  
 
 | Pantalla 1                          | Pantalla 2                          |
