@@ -20,6 +20,8 @@ const Footer = () => {
         <div className="h-[1px] bg-white flex-1"></div>
       </div>
 
+      {/* Links a redes sociales del equipo??  */}
+
       <div className="grid h-3/4 my-2 gap-4 md:gap-32 grid-cols-1 md:grid-cols-2">
         {/*  */}
         <div className="flex space-y-4 flex-col">
