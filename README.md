@@ -62,9 +62,9 @@ El principal objetivo de **Stockify** es facilitar la gestión eficiente del inv
 
 ♟️ *Team Leader*
 
-| Nombre               | GitHub                                                                                       | LinkedIn                                                                                      |
-|----------------------|---------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
-| Por asignar          | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](#) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](#) |
+| Nombre                   | GitHub                                                                                          | LinkedIn                                                                                         |
+| ------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| Violeta Sol Arias Hours  | [![GitHub](https://img.shields.io/badge/github-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)](https://github.com/VioleHours) | [![LinkedIn](https://img.shields.io/badge/linkedin-%230A66C2.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/violetasolariashours) |
 
 ## 🔗 Despliegue
 
