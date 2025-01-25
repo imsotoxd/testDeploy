@@ -5,7 +5,7 @@ import testimonial3 from '../../../public/assets/landing/testimonial-3.jpg'
 
 function ReviewSection() {
   return (
-    <section id='reviews'>
+    <section id='review'>
       <h2 className='text-4xl text-center text-primary font-bold mb-4'>¿Qué dicen nuestros clientes?</h2>
 
       <div className='flex flex-col md:flex-row flex-wrap items-center justify-evenly w-full gap-4  p-4'>
