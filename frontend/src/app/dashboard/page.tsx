@@ -82,9 +82,10 @@ const DashBoard: React.FC = () => {
 </button>
         </div>
       </div>
-      <div className="p-8 bg-background shadow-md rounded-lg flex flex-col items-start">
+      <hr className="h-px my-4 border-primary border-2" />
+      <div className="p-4 bg-background shadow-md rounded-lg flex flex-col items-start">
         {/* Título de la sección */}
-        <h3 className="text-xl font-semibold mb-4 text-primary">Campos creados</h3>
+        <h3 className="text-lg font-semibold mb-4 text-primary">Campos creados</h3>
         {/* Lista de campos creados */}
         <div className="flex flex-wrap gap-4 mb-8">
           {customFields.map((field, index) => (
@@ -102,6 +103,7 @@ const DashBoard: React.FC = () => {
             </div>
           ))}
         </div>
+
         {/* Botón Guardar Cambios */}
         <div className="flex justify-end w-full">
           <button className="btn bg-primary text-white">Guardar Cambios</button>
