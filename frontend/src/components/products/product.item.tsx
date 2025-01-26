@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
-import { FC, useState } from "react";
+import { FC } from "react";
 
 interface Producto {
   data: {
@@ -38,6 +38,17 @@ const ProductItem: FC<Producto> = ({ data, isActive, toggleModal }) => {
     "text-yellow-800 bg-yellow-200": data.estado === Stock.BAJO,
     "text-green-800 bg-green-200": data.estado === Stock.DISPONIBLE,
   });
+
+  const handleDelete = () => {
+    console.log("delete: " + data.codigo);
+    toggleModal();
+  };
+
+  const handleEdit = () => {
+    console.log("edit: " + data.codigo);
+    toggleModal();
+  };
+
   return (
     <li className={statusClass}>
       <span>{data.codigo}</span>
@@ -49,13 +60,11 @@ const ProductItem: FC<Producto> = ({ data, isActive, toggleModal }) => {
       <span>{data.cantidad}</span>
       <span className={stockClass}>{data.estado}</span>
       <div className="relative">
-        <button className=" w-fit px-2 mx-auto" onClick={() => toggleModal()}>
-          <span
-            className="icon-[solar--menu-dots-square-bold-duotone]"
-            role="img"
-            aria-hidden="true"
-          />
-          a
+        <button
+          className=" w-fit px-2 mx-auto h-full grid place-content-center"
+          onClick={() => toggleModal()}
+        >
+          <span className="icon-[codex--menu]" role="img" aria-hidden="true" />
         </button>
         <AnimatePresence>
           {isActive && (
@@ -64,34 +73,40 @@ const ProductItem: FC<Producto> = ({ data, isActive, toggleModal }) => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.5 }}
               transition={{ duration: 0.15 }}
-              className="absolute text-primary rounded text-xs border w-full top-0 mx-1 border-primary z-10  bg-white  shadow-sm"
+              className="absolute text-primary rounded text-xs border w-28 top-0 mx-1 border-primary z-10  bg-white  shadow-sm"
             >
-              <button className="btn-sm w-full btn btn-ghost rounded-none flex items-center justify-center">
+              <button
+                onClick={handleEdit}
+                className="btn-sm w-full btn btn-ghost rounded-none flex items-center justify-between"
+              >
                 <span>Editar</span>
-                {/* <span
+                <span
                   className="icon-[ph--pencil-simple-duotone]"
                   role="img"
                   aria-hidden="true"
-                /> */}
+                />
               </button>
-              <button className="btn-sm w-full btn btn-ghost rounded-none flex items-center justify-center">
+              <button
+                onClick={handleDelete}
+                className="btn-sm w-full btn btn-ghost rounded-none flex items-center justify-between"
+              >
                 <span>Borrar</span>
-                {/* <span
+                <span
                   className="icon-[solar--trash-bin-minimalistic-bold-duotone]"
                   role="img"
                   aria-hidden="true"
-                /> */}
+                />
               </button>
               <button
                 onClick={toggleModal}
-                className="btn-sm w-full btn btn-ghost rounded-none flex items-center justify-center"
+                className="btn-sm w-full btn btn-ghost rounded-none flex items-center justify-between"
               >
                 <span>Cancelar</span>
-                {/* <span
+                <span
                   className="icon-[iconamoon--sign-times-duotone]"
                   role="img"
                   aria-hidden="true"
-                /> */}
+                />
               </button>
             </motion.div>
           )}

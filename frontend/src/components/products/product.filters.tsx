@@ -1,4 +1,4 @@
-import ProductoAgregar from "./producto.agregar";
+import ProductoModal from "./product.modal";
 
 function ProductFilter() {
   return (
@@ -29,14 +29,23 @@ function ProductFilter() {
             />
             <span>Filtros</span>
           </button>
-          <button className="btn btn-primary flex items-center gap-1">
-            <span>Categorias</span>
-            <span
-              className="icon-[iconamoon--arrow-down-2-duotone]"
-              role="img"
-              aria-hidden="true"
-            />
-          </button>
+          <select
+            defaultValue={0}
+            className="select select-bordered bg-primary text-white"
+          >
+            <option className="bg-white text-primary" value={0} disabled>
+              Categoria
+            </option>
+            {categorias.map((categoria, index) => (
+              <option
+                className="bg-white text-primary"
+                value={categoria.name}
+                key={index}
+              >
+                {categoria.name}
+              </option>
+            ))}
+          </select>
           <button className="btn btn-primary flex items-center gap-1">
             <span>A - Z</span>
           </button>
@@ -44,10 +53,19 @@ function ProductFilter() {
             <span>Z - A</span>
           </button>
         </div>
-        <ProductoAgregar />
+        <ProductoModal />
       </div>
     </div>
   );
 }
 
 export default ProductFilter;
+
+const categorias = [
+  { name: "Lacteos" },
+  { name: "Carnes" },
+  { name: "Verduras" },
+  { name: "Frutas" },
+  { name: "Dulces" },
+  { name: "Bebidas" },
+];
