@@ -1,57 +1,60 @@
 import { body } from 'express-validator';
 
 export const validateProduct = [
-  body('name').notEmpty().withMessage('The product name is required'),
+  body('name').notEmpty().withMessage('El nombre del producto es requerido'),
   body('description')
     .notEmpty()
-    .withMessage('The product description is required'),
-  body('sku').notEmpty().withMessage('The product SKU is required'),
+    .withMessage('La descripción del producto es requerida'),
+  body('sku').notEmpty().withMessage('El SKU del producto es requerido'),
   body('quantity')
     .isInt({ min: 0 })
-    .withMessage('Quantity must be a non-negative integer'),
+    .withMessage('La cantidad debe ser un entero positivo'),
   body('finalPrice')
     .isFloat({ gt: 0 })
-    .withMessage('Final price must be a positive number'),
+    .withMessage('El precio final debe ser un numero positivo'),
   body('costPrice')
     .isFloat({ gt: 0 })
-    .withMessage('Cost price must be a positive number'),
+    .withMessage('El precio de costo debe ser un numero positivo'),
   body('expirationDate')
-    .optional()
+    .optional({ checkFalsy: true })
     .isDate()
-    .withMessage('Expiration date must be a valid date'),
+    .withMessage('El vencimiento debe ser una valor de fecha válido'),
   body('minimumQuantity')
     .isInt({ min: 0 })
-    .withMessage('Minimum quantity must be a non-negative integer'),
+    .withMessage('La cantidad mínima debe ser un número entero positivo'),
 ];
 
 export const validateProductUpdate = [
   body('name')
     .optional()
     .notEmpty()
-    .withMessage('The product name is required'),
+    .withMessage('El nombre del producto es requerido'),
   body('description')
     .optional()
     .notEmpty()
-    .withMessage('The product description is required'),
-  body('sku').optional().notEmpty().withMessage('The product SKU is required'),
+    .withMessage('La descripción del producto es requerida'),
+  body('sku')
+    .optional()
+    .notEmpty()
+    .withMessage('El SKU del producto es requerido'),
   body('quantity')
     .optional()
     .isInt({ min: 0 })
-    .withMessage('Quantity must be a non-negative integer'),
+    .withMessage('La cantidad debe ser un entero positivo'),
   body('finalPrice')
     .optional()
     .isFloat({ gt: 0 })
-    .withMessage('Final price must be a positive number'),
+    .withMessage('El precio final debe ser un numero positivo'),
   body('costPrice')
     .optional()
     .isFloat({ gt: 0 })
-    .withMessage('Cost price must be a positive number'),
+    .withMessage('El precio de costo debe ser un numero positivo'),
   body('expirationDate')
-    .optional()
+    .optional({ nullable: true })
     .isDate()
-    .withMessage('Expiration date must be a valid date'),
+    .withMessage('El vencimiento debe ser una valor de fecha válido'),
   body('minimumQuantity')
     .optional()
     .isInt({ min: 0 })
-    .withMessage('Minimum quantity must be a non-negative integer'),
+    .withMessage('La cantidad mínima debe ser un número entero positivo'),
 ];

@@ -86,10 +86,10 @@ export const logoutUserController = async (req, res) => {
   try {
     const userId = req.userId;
     await logoutUserService(userId); // Llamar al servicio de logout
-    res.status(200).json({ message: 'Logout successful' });
+    res.status(200).json({ message: 'Cierre de sesión exitoso' });
   } catch (error) {
     console.error('Error in logoutUserController:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
 
@@ -144,7 +144,9 @@ export const updateUser = async (req, res) => {
         .status(404)
         .json({ message: 'Usuario no encontrado para actualizar' });
     }
-    res.status(200).json({ message: 'Usuario actualizado correctamente', updated });
+    res
+      .status(200)
+      .json({ message: 'Usuario actualizado correctamente', updated });
   } catch (error) {
     if (error.name === 'ValidationError') {
       return res.status(422).json({
