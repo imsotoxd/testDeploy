@@ -25,7 +25,7 @@ router.post(
   handleValidationErrors,
   createProduct
 );
-router.get('/products', authenticateToken, getAllProducts);
+router.get('/products/all', authenticateToken, getAllProducts);
 router.get('/products/:id', authenticateToken, getProductById);
 router.put(
   '/products/update/:id',
