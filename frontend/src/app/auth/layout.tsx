@@ -10,8 +10,11 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
   const imageSrc = pathname === "/auth/signin" ? "/signin.jpg" : "/signup.jpg";
 
   return (
-    <div className="flex h-screen">
-      <div className="w-1/2 relative hidden md:block">
+    <div className="flex">
+      <div
+        className="w-1/2 h-screen
+       relative hidden md:block"
+      >
         <Image
           src={imageSrc}
           alt="Imagen de autenticación"

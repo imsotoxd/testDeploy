@@ -7,6 +7,7 @@ import cors from 'cors';
 // Import Routes
 import userRoutes from './routes/userRoutes.js';
 import categoryRoutes from './routes/categoriesRoutes.js';
+import productRoutes from './routes/productRoutes.js';
 
 // Configuracion
 dotenv.config();
@@ -57,5 +58,6 @@ app.use(
 // Routes
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/categories', categoryRoutes);
+app.use('/api/v1/', productRoutes);
 
 export default app;

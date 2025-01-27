@@ -1,12 +1,13 @@
 import type { Config } from "tailwindcss";
 import daisyui from "daisyui";
+import { addDynamicIconSelectors } from "@iconify/tailwind";
 
 const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-
+    "./src/ui/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
@@ -19,9 +20,16 @@ const config: Config = {
       },
     },
   },
-  plugins: [daisyui],
+  plugins: [daisyui, addDynamicIconSelectors()],
   daisyui: {
-    themes: ["winter"],
+    themes: [
+      {
+        light: {
+          ...require("daisyui/src/theming/themes")["winter"],
+          primary: "#1A3D5E",
+        },
+      },
+    ],
   },
 };
 export default config;
