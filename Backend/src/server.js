@@ -4,7 +4,7 @@ import { sequelize } from './models/index.js'; // Importar la instancia de seque
 
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || 'localhost';
 
 // Conectar a la base de datos y sincronizar modelos

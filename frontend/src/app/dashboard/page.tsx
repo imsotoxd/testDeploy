@@ -1,3 +1,4 @@
+ 
 'use client';
 import React, { useState } from "react";
 
@@ -24,6 +25,9 @@ const DashBoard: React.FC = () => {
     setCustomFields(customFields.filter((f) => f !== field));
   };
 
+ 
+function DashBoardPage() {
+ 
   return (
     <div className="p-8 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-bold mb-6 text-primary">Nombre de la Empresa</h2>
@@ -111,6 +115,8 @@ const DashBoard: React.FC = () => {
       </div>
     </div>
   );
-};
+ 
+}
 
-export default DashBoard;
+export default DashBoardPage;
+ 
