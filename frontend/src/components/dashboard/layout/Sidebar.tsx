@@ -42,6 +42,17 @@ const Sidebar = () => {
           </li>
           <li>
             <SidebarItem
+              text="Registro de E/S"
+              icon="icon-[tabler--arrows-diff]"
+              isActive={activeItem === "/dashboard/movements"}
+              onClick={() => {
+                setActiveItem("/dashboard/movements");
+                router.push("/dashboard/movements");
+              }}
+            />
+          </li>
+          <li>
+            <SidebarItem
               text="Administración"
               icon="icon-[clarity--administrator-line]"
               isActive={activeItem === "/dashboard/admin"}
