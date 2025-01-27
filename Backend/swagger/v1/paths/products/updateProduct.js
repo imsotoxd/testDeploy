@@ -17,7 +17,7 @@ const updateProduct = {
         description: 'ID del producto',
         schema: {
           type: 'string',
-          example: '077eff87-4076-4c01-938c-5623c91aedc2',
+          example: '0156009e-965c-47a3-a790-52bf6472359b',
         },
       },
     ],
