@@ -6,6 +6,7 @@ import cors from 'cors';
 
 // Import Routes
 import userRoutes from './routes/userRoutes.js';
+import categoryRoutes from './routes/categoriesRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 
 // Configuracion
@@ -15,8 +16,8 @@ app.use(express.json());
 
 // Configurar CORS
 const allowedOrigin = [
-  'http://localhost:3000', // React local
-  'http://127.0.0.1:3000', // Alternativa local
+  'http://localhost:3001', // React local
+  'http://127.0.0.1:3001', // Alternativa local
   'http://localhost:4000', // Swagger UI u otro puerto
   process.env.CLIENT_URL,  // URL en producción
 ];
@@ -56,6 +57,7 @@ app.use(
 
 // Routes
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/categories', categoryRoutes);
 app.use('/api/v1/', productRoutes);
 
 export default app;
