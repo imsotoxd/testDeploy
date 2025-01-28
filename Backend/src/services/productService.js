@@ -1,4 +1,6 @@
+/* eslint-disable prettier/prettier */
 import { Product } from '../models/index.js';
+import { Op, Sequelize } from 'sequelize';
 
 // Crear un nuevo producto
 export const createProduct = async (productData) => {
@@ -40,4 +42,70 @@ export const restoreProduct = async (id) => {
     throw new Error('Product not found');
   }
   return await product.update({ activated: true });
+};
+
+// Nuevo servicio para consultas de filtrado y ordenamiento
+export const queryProducts = async (filter, sort, page = 1, limit = 10) => {
+  const whereClause = {};
+  const orderClause = [];
+
+  if (filter.minimumQuantity) {
+    whereClause.quantity = {
+      [Op.and]: [
+        { [Op.lte]: Sequelize.col('minimumQuantity') },
+        { [Op.ne]: 0 }, // Excluir productos con quantity igual a cero
+      ],
+    };
+  }
+
+  if (filter.zeroQuantity) {
+    whereClause.quantity = { [Op.eq]: 0 };
+  }
+
+  // Condición adicional: productos cuya cantidad sea distinta de cero
+  if (filter.nonZeroQuantity) {
+    whereClause.quantity = { [Op.ne]: 0 };
+  }
+
+  if (sort.by) {
+    orderClause.push([sort.by, sort.order || 'ASC']);
+  }
+
+  // Calcular el offset y el límite para la paginación
+  const offset = (page - 1) * limit;
+
+  // Consulta para obtener el total de la cantidad de productos disponibles
+  const totalAvailableQuantityResult = await Product.findAll({
+    where: whereClause,
+    attributes: [
+      [
+        Sequelize.fn('SUM', Sequelize.col('quantity')),
+        'totalAvailableQuantity',
+      ],
+    ],
+    raw: true,
+  });
+
+  const totalAvailableQuantity =
+    totalAvailableQuantityResult[0].totalAvailableQuantity || 0;
+
+  // Consulta para obtener el total de productos
+  const totalItems = await Product.count({
+    where: whereClause,
+  });
+
+  // Consulta para obtener los productos paginados y la cantidad total de la página actual
+  const products = await Product.findAll({
+    where: whereClause,
+    order: orderClause,
+    offset,
+    limit,
+  });
+
+  const totalQuantity = products.reduce(
+    (sum, product) => sum + product.quantity,
+    0
+  );
+
+  return { products, totalQuantity, totalAvailableQuantity, totalItems };
 };

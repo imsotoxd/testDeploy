@@ -1,6 +1,6 @@
+/* eslint-disable prettier/prettier */
 import express from 'express';
 import { authenticateToken } from '../middleware/authMiddleware.js';
-import { verifyAdmin } from '../middleware/verifyAdmin.js';
 import { handleValidationErrors } from '../middleware/handleValidationErrors.js';
 import {
   validateProduct,
@@ -13,6 +13,7 @@ import {
   updateProduct,
   deleteProduct,
   restoreProduct,
+  queryProducts,
 } from '../controllers/productController.js';
 
 const router = express.Router();
@@ -24,7 +25,7 @@ router.post(
   handleValidationErrors,
   createProduct
 );
-router.get('/products', authenticateToken, getAllProducts);
+router.get('/products/all', authenticateToken, getAllProducts);
 router.get('/products/:id', authenticateToken, getProductById);
 router.put(
   '/products/update/:id',
@@ -35,5 +36,8 @@ router.put(
 );
 router.delete('/products/delete/:id', authenticateToken, deleteProduct);
 router.put('/products/restore/:id', authenticateToken, restoreProduct);
+
+// Nueva ruta para consultas de filtrado y ordenamiento
+router.get('/product/query', authenticateToken, queryProducts);
 
 export default router;
