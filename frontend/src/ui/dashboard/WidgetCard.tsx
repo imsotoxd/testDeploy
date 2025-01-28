@@ -1,16 +1,29 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface WidgetCardProps {
   title: string;
   bg: string;
-  action: string;
+  action: () => Promise<number>;
 }
 
-const WidgetsCards: React.FC<WidgetCardProps> = ({ title, bg, action }) => {
+const WidgetCard: React.FC<WidgetCardProps> = ({ title, bg, action }) => {
+  const [response, setResponse] = useState<string | number>("Cargando...");
+
   useEffect(() => {
-    console.log(`Montado con acción: ${action}`);
+    const fetchData = async () => {
+      try {
+        const result = await action();
+        setResponse(result);
+      } catch (error) {
+        setResponse("Error");
+      }
+    };
+
+    fetchData();
   }, [action]);
 
   const handleOpenModal = () => {
@@ -38,7 +51,7 @@ const WidgetsCards: React.FC<WidgetCardProps> = ({ title, bg, action }) => {
             />
           </svg>
         </div>
-        <p className="text-2xl font-bold">{action}</p>
+        <p className="text-2xl font-bold">{response}</p>
       </div>
       <p
         className="flex justify-end text-base font-bold text-primary cursor-pointer"
@@ -50,4 +63,4 @@ const WidgetsCards: React.FC<WidgetCardProps> = ({ title, bg, action }) => {
   );
 };
 
-export default WidgetsCards;
+export default WidgetCard;
