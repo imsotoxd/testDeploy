@@ -114,12 +114,20 @@ export const queryProducts = async (req, res) => {
   try {
     const filter = req.query.filter || {};
     const sort = req.query.sort || {};
-    const { products, totalQuantity } = await queryProductsService(
-      filter,
-      sort
-    );
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
 
-    const response = { products };
+    const { products, totalQuantity, totalAvailableQuantity, totalItems } =
+      await queryProductsService(filter, sort, page, limit);
+
+    const response = {
+      products,
+      totalQuantity, // Cantidad total de la página actual
+      totalAvailableQuantity, // Cantidad total disponible de todos los productos sin importar la paginación
+      totalItems, // Total de productos disponibles sin importar la paginación
+      page,
+      limit,
+    };
 
     // Incluir el total de productos en la lista si se aplica un filtro
     if (
@@ -128,11 +136,6 @@ export const queryProducts = async (req, res) => {
       filter.nonZeroQuantity
     ) {
       response.total = products.length;
-    }
-
-    // Incluir el total de cantidades de productos disponibles
-    if (filter.nonZeroQuantity) {
-      response.totalQuantity = totalQuantity;
     }
 
     res.status(200).json(response);

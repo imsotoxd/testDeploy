@@ -1,9 +1,9 @@
 const queryProducts = {
   get: {
     tags: ['Productos'],
-    summary: 'Consultar productos con filtrado y ordenamiento',
+    summary: 'Consultar productos con filtrado, ordenamiento y paginación',
     description:
-      'Obtiene una lista de productos aplicando filtros y ordenamientos.',
+      'Obtiene una lista de productos aplicando filtros, ordenamientos y paginación.',
     security: [
       {
         BearerAuth: [],
@@ -62,11 +62,31 @@ const queryProducts = {
           example: 'asc',
         },
       },
+      {
+        name: 'page',
+        in: 'query',
+        required: false,
+        description: 'Número de página',
+        schema: {
+          type: 'integer',
+          example: 1,
+        },
+      },
+      {
+        name: 'limit',
+        in: 'query',
+        required: false,
+        description: 'Cantidad de productos por página',
+        schema: {
+          type: 'integer',
+          example: 10,
+        },
+      },
     ],
     responses: {
       200: {
         description:
-          'Lista de productos filtrada y ordenada obtenida correctamente',
+          'Lista de productos filtrada, ordenada y paginada obtenida correctamente',
         content: {
           'application/json': {
             schema: {
@@ -75,19 +95,40 @@ const queryProducts = {
                 total: {
                   type: 'integer',
                   description: 'Total de productos filtrados',
-                  example: 10,
+                  example: 100,
                 },
                 totalQuantity: {
                   type: 'integer',
+                  description: 'Cantidad total de la página actual',
+                  example: 300,
+                },
+                totalAvailableQuantity: {
+                  type: 'integer',
                   description:
-                    'Suma total de cantidades de productos disponibles',
-                  example: 150,
+                    'Cantidad total disponible de todos los productos sin importar la paginación',
+                  example: 500,
+                },
+                totalItems: {
+                  type: 'integer',
+                  description:
+                    'Total de productos disponibles sin importar la paginación',
+                  example: 20,
                 },
                 products: {
                   type: 'array',
                   items: {
                     $ref: '#/components/schemas/ProductOutput',
                   },
+                },
+                page: {
+                  type: 'integer',
+                  description: 'Número de página actual',
+                  example: 1,
+                },
+                limit: {
+                  type: 'integer',
+                  description: 'Cantidad de productos por página',
+                  example: 10,
                 },
               },
             },

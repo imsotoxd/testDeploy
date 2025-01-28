@@ -45,10 +45,9 @@ export const restoreProduct = async (id) => {
 };
 
 // Nuevo servicio para consultas de filtrado y ordenamiento
-export const queryProducts = async (filter, sort) => {
+export const queryProducts = async (filter, sort, page = 1, limit = 10) => {
   const whereClause = {};
   const orderClause = [];
-  let totalQuantity = 0;
 
   if (filter.minimumQuantity) {
     whereClause.quantity = {
@@ -72,18 +71,41 @@ export const queryProducts = async (filter, sort) => {
     orderClause.push([sort.by, sort.order || 'ASC']);
   }
 
+  // Calcular el offset y el límite para la paginación
+  const offset = (page - 1) * limit;
+
+  // Consulta para obtener el total de la cantidad de productos disponibles
+  const totalAvailableQuantityResult = await Product.findAll({
+    where: whereClause,
+    attributes: [
+      [
+        Sequelize.fn('SUM', Sequelize.col('quantity')),
+        'totalAvailableQuantity',
+      ],
+    ],
+    raw: true,
+  });
+
+  const totalAvailableQuantity =
+    totalAvailableQuantityResult[0].totalAvailableQuantity || 0;
+
+  // Consulta para obtener el total de productos
+  const totalItems = await Product.count({
+    where: whereClause,
+  });
+
+  // Consulta para obtener los productos paginados y la cantidad total de la página actual
   const products = await Product.findAll({
     where: whereClause,
     order: orderClause,
+    offset,
+    limit,
   });
 
-  // Sumar todas las cantidades de productos disponibles
-  if (filter.nonZeroQuantity) {
-    totalQuantity = products.reduce(
-      (sum, product) => sum + product.quantity,
-      0
-    );
-  }
+  const totalQuantity = products.reduce(
+    (sum, product) => sum + product.quantity,
+    0
+  );
 
-  return { products, totalQuantity };
+  return { products, totalQuantity, totalAvailableQuantity, totalItems };
 };
