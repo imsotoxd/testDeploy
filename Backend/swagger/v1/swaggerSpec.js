@@ -26,6 +26,8 @@ import getAllCategories from './paths/categories/getAllCategories.js';
 import getCategoryById from './paths/categories/getCategoryById.js';
 import updateCategory from './paths/categories/updateCategory.js';
 import deleteCategory from './paths/categories/deleteCategory.js';
+import bulkCreateCategories from './paths/categories/bulkCreateCategories.js';
+import createDefaultCategories from './paths/categories/createDefaultCategories.js';
 
 // Product
 import ProductInput from './components/schemas/products/ProductInput.js';
@@ -55,6 +57,8 @@ const swaggerSpec = {
     '/users/restore/{id}': restoreUser,
     // Categories
     '/categories': createCategory,
+    '/categories/bulk': bulkCreateCategories,
+    '/categories/defaults': createDefaultCategories,
     '/categories/all': getAllCategories,
     '/categories/{id}': getCategoryById,
     '/categories/update/{id}': updateCategory,

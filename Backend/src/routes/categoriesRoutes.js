@@ -5,15 +5,19 @@ import {
     getCategoryByIdController,
     updateCategoryController,
     deleteCategoryController,
+    bulkCreateCategoriesController,
+    createDefaultCategoriesController,
 } from '../controllers/categoriesController.js';
 import { validateCategory } from '../middleware/validation/categoryValidation.js';
 import { authenticateToken } from '../middleware/authMiddleware.js';
 import { handleValidationErrors } from '../middleware/handleValidationErrors.js';
 
-
 const router = express.Router();
 
 router.post('/', authenticateToken, validateCategory, handleValidationErrors, createCategoryController);
+router.post('/bulk', authenticateToken, bulkCreateCategoriesController);
+router.post('/defaults', authenticateToken, handleValidationErrors, createDefaultCategoriesController);
+
 router.get('/all', getAllCategoriesController);
 router.get('/:id', getCategoryByIdController);
 router.put('/update/:id', authenticateToken, validateCategory, handleValidationErrors, updateCategoryController);
