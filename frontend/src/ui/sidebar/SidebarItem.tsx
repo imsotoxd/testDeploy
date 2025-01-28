@@ -1,45 +1,36 @@
+"use client";
 import type React from "react";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 
 interface SidebarItemProps {
   text: string;
   icon: string;
-  isActive: boolean;
-  onClick: () => void;
+  path: string;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({
-  text,
-  icon,
-  isActive = false,
-  onClick,
-}) => {
+const SidebarItem: React.FC<SidebarItemProps> = ({ text, icon, path }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const handleRouter = () => router.push(path);
+  const isActive = pathname === path;
+  const sharedClass = clsx("relative transition-colors duration-300 ", {
+    "text-primary": isActive,
+  });
+  const iconClass = clsx(sharedClass, icon, "text-2xl");
+  const textClass = clsx(sharedClass, "text-sm font-medium");
   return (
     <button
-      onClick={onClick}
-      className={clsx(
-        "flex w-full items-center gap-3 rounded-md py-3 px-3",
-        "transition-all duration-300",
-        isActive
-          ? "bg-white text-primary font-bold justify-center"
-          : "text-white/70 hover:bg-white/10 hover:text-white"
-      )}
+      onClick={handleRouter}
+      className="flex w-full relative items-center gap-3 rounded-md py-3 px-3"
     >
-      <span
-        className={clsx(
-          icon,
-          "text-2xl transition-colors duration-300",
-          isActive ? "text-primary" : "text-white/70"
-        )}
-      />
-      <span
-        className={clsx(
-          "text-sm font-medium transition-colors duration-300",
-          isActive ? "text-primary" : "text-white/70"
-        )}
-      >
-        {text}
-      </span>
+      {isActive && (
+        <motion.div layoutId="pill" className="inset-0 absolute rounded bg-white" />
+      )}
+      <span className={iconClass} />
+      <span className={textClass}>{text}</span>
     </button>
   );
 };

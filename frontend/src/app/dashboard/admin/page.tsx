@@ -37,7 +37,7 @@ const Page = () => {
         <input
           id="nombre"
           type="text"
-          className="input   input-ghost border-primary w-full sm:w-96 md:w-[500px] lg:w-[600px] max-w-full px-4 py-2 bg-background"
+          className="input input-ghost input-primary w-full sm:w-96 md:w-[500px] lg:w-[600px] max-w-full px-4 py-2 bg-background"
           placeholder="Ingrese el nombre de la empresa"
         />
       </div>
@@ -51,7 +51,7 @@ const Page = () => {
         <input
           id="rubro"
           type="text"
-          className="input  input-ghost border-primary w-full sm:w-96 md:w-[500px] lg:w-[600px] max-w-full px-4 py-2 bg-background"
+          className="input  input-ghost input-primary w-full sm:w-96 md:w-[500px] lg:w-[600px] max-w-full px-4 py-2 bg-background"
           placeholder="Ingrese el rubro de la empresa"
         />
       </div>
@@ -62,7 +62,7 @@ const Page = () => {
             <input
               type="radio"
               name="fieldType"
-              className="radio mr-2 border-primary"
+              className="radio mr-2 input-primary"
             />
             <span className="text-sm">
               Automático (Código, Nombre del Producto, Categoría, Caducidad,
@@ -81,7 +81,7 @@ const Page = () => {
         <div className="flex items-center gap-2 mb-4">
           <input
             type="text"
-            className="input   input-ghost border-primary w-full sm:w-96 md:w-[500px] lg:w-[600px] max-w-full px-4 py-2 bg-background"
+            className="input   input-ghost input-primary w-full sm:w-96 md:w-[500px] lg:w-[600px] max-w-full px-4 py-2 bg-background"
             placeholder="Agregar campo personalizado"
             value={newField.field}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -89,7 +89,7 @@ const Page = () => {
             }
           />
           <button
-            className="btn btn-circle btn-outline btn-sm border-2 border-primary text-primary hover:bg-primary hover:text-white"
+            className="btn btn-circle size-10 btn-outline btn-sm border-2 border-primary text-primary hover:bg-primary hover:text-white"
             onClick={addField}
             disabled={!newField.field.trim() || customFields.length >= 10}
           >
