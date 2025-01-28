@@ -74,10 +74,11 @@ export const loginUserController = async (req, res) => {
         errors: error.errors,
       });
     }
-    // Manejo de errores desconocidos
-    console.error('Error in loginUserController:', error);
-    res.status(500).json({
-      message: 'Internal server error',
+    const statusCode = error.statusCode || 500;
+    const message = error.message || 'Error interno del servidor';
+    res.status(statusCode).json({
+      success: false,
+      message: message,
     });
   }
 };

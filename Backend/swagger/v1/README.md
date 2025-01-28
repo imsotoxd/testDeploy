@@ -56,3 +56,25 @@ npm run dev
 - **Explorar endpoints**: Descubre las rutas disponibles en la API, sus métodos y parámetros requeridos.
 - **Probar la API**: Envía solicitudes directamente desde la interfaz de Swagger.
 - **Ver respuestas esperadas**: Consulta ejemplos y códigos de estado para cada endpoint.
+
+## **Estructura de Swagger**
+
+```bash
+swagger/
+    v1/
+        components/
+            schemas/
+                categories/
+                products/
+                user/
+            securitySchemes/
+        paths/
+            categories/
+            products/
+            user/
+    info.js
+    main.js
+    README.md
+    server.js
+    swaggerSpec.js
+```

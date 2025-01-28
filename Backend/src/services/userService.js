@@ -36,18 +36,23 @@ export const createUser = async (
 // Iniciar sesión de un usuario
 export const loginUser = async (email, password) => {
   const user = await User.findOne({
-    where: { email, activated: true, session: false },
+    where: { email, activated: true },
   });
-  console.log(user);
-  if (!user) {
-    return null;
-  }
   // Comparar la contraseña
   const isMatch = await comparePassword(password, user.password);
   if (isMatch) {
     // Actualizar `activated` a `true`
-    await user.update({ session: true });
-    return user;
+    if (!user.session) {
+      await user.update({ session: true });
+      return user;
+    } else {
+      await user.update({ session: false });
+      const error = new Error(
+        'El usuario ya estaba conectado. Se ha cerrado la sesión correctamente.'
+      );
+      error.statusCode = 400;
+      throw error;
+    }
   }
   return null;
 };
