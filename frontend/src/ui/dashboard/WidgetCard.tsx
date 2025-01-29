@@ -45,7 +45,7 @@ const WidgetCard: React.FC<WidgetCardProps> = ({ title, bg, action }) => {
   };
 
   return (
-    <div className="px-3 py-2 space-y-4 mx-2 my-14 flex flex-col border-[1px] w-1/5 border-primary rounded-lg">
+    <div className="px-3 py-2 space-y-4 mx-2 mt-14 flex flex-col border-[1px] w-1/5 border-primary rounded-lg">
       <p className="text-base text-center font-bold">{title}</p>
       <div className="flex items-center space-x-4 justify-center">
         <div
