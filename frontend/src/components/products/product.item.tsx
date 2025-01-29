@@ -2,116 +2,117 @@
 
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
-import { FC } from "react";
+import { FC, useRef, useState } from "react";
+import { ProductsResponse } from "./product.list";
+import ProductEdit from "./product.edit";
+import ProductDelete from "./product.delete";
+import { MouseEvent } from "react";
 
 interface Producto {
-  data: {
-    codigo: string;
-    nombreProducto: string;
-    categoria: string;
-    fechaCaducidad: string;
-    precioInicial: number;
-    precioVenta: number;
-    cantidad: number;
-    estado: string;
-  };
+  data: ProductsResponse;
   isActive: boolean;
-  toggleModal: () => void;
+  openModal: () => void;
+  closeModal: () => void;
 }
 
-enum Stock {
-  BAJO = "BAJO",
-  NULO = "NULO",
-  DISPONIBLE = "DISPONIBLE",
-}
-
-const ProductItem: FC<Producto> = ({ data, isActive, toggleModal }) => {
+const ProductItem: FC<Producto> = ({
+  data,
+  isActive,
+  openModal,
+  closeModal,
+}) => {
   const statusClass = clsx(
-    "text-center grid grid-cols-10 gap-5 p-2 transition-colors",
+    "text-center grid grid-cols-9 gap-5 p-2 cursor-pointer transition-colors",
     {
-      "bg-zinc-100": isActive,
-      "hover:bg-zinc-100": !isActive,
+      "bg-blue-50": isActive,
+      "hover:bg-blue-50": !isActive,
     }
   );
-  const stockClass = clsx("font-semibold rounded text-xs w-fit h-fit p-1", {
-    "text-red-800 bg-red-200": data.estado === Stock.NULO,
-    "text-yellow-800 bg-yellow-200": data.estado === Stock.BAJO,
-    "text-green-800 bg-green-200": data.estado === Stock.DISPONIBLE,
-  });
-
-  const handleDelete = () => {
-    console.log("delete: " + data.codigo);
-    toggleModal();
+  const caducidadText = data.expirationDate ?? "N/A";
+  const stockText = () => {
+    return data.quantity === 0
+      ? "nulo"
+      : data.quantity <= data.minimumQuantity
+      ? "bajo"
+      : "disponible";
   };
 
-  const handleEdit = () => {
-    console.log("edit: " + data.codigo);
-    toggleModal();
+  const stockClass = clsx("font-semibold rounded text-xs w-full h-fit p-1", {
+    "text-red-800 bg-red-200": data.quantity === 0,
+    "text-yellow-800 bg-yellow-200":
+      data.quantity <= data.minimumQuantity && data.quantity > 0,
+    "text-green-800 bg-green-200": data.quantity > data.minimumQuantity,
+  });
+
+  const [axis, setAxis] = useState({
+    x: 0,
+    y: 0,
+  });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const handleOptions = (e: MouseEvent<HTMLDivElement>) => {
+    if (isActive) return;
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setAxis({ x, y });
+    openModal();
   };
 
   return (
-    <li className={statusClass}>
-      <span>{data.codigo}</span>
-      <span className="col-span-2 text-start">{data.nombreProducto}</span>
-      <span className="text-start">{data.categoria}</span>
-      <span>{data.fechaCaducidad}</span>
-      <span>{data.precioInicial}</span>
-      <span>{data.precioVenta}</span>
-      <span>{data.cantidad}</span>
-      <span className={stockClass}>{data.estado}</span>
-      <div className="relative">
-        <button
-          className=" w-fit px-2 mx-auto h-full grid place-content-center"
-          onClick={() => toggleModal()}
+    <li className="relative">
+      <div ref={containerRef} onClick={handleOptions} className={statusClass}>
+        <span
+          title={data.name}
+          className="col-span-2 text-start max-w-40 w-full line-clamp-2"
         >
-          <span className="icon-[codex--menu]" role="img" aria-hidden="true" />
-        </button>
-        <AnimatePresence>
-          {isActive && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              transition={{ duration: 0.15 }}
-              className="absolute text-primary rounded text-xs border w-28 top-0 mx-1 border-primary z-10  bg-white  shadow-sm"
-            >
-              <button
-                onClick={handleEdit}
-                className="btn-sm w-full btn btn-ghost rounded-none flex items-center justify-between"
-              >
-                <span>Editar</span>
-                <span
-                  className="icon-[ph--pencil-simple-duotone]"
-                  role="img"
-                  aria-hidden="true"
-                />
-              </button>
-              <button
-                onClick={handleDelete}
-                className="btn-sm w-full btn btn-ghost rounded-none flex items-center justify-between"
-              >
-                <span>Borrar</span>
-                <span
-                  className="icon-[solar--trash-bin-minimalistic-bold-duotone]"
-                  role="img"
-                  aria-hidden="true"
-                />
-              </button>
-              <button
-                onClick={toggleModal}
-                className="btn-sm w-full btn btn-ghost rounded-none flex items-center justify-between"
-              >
-                <span>Cancelar</span>
-                <span
-                  className="icon-[iconamoon--sign-times-duotone]"
-                  role="img"
-                  aria-hidden="true"
-                />
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+          {data.name}
+        </span>
+        <span className="text-start col-span-2">{data.categoryId}</span>
+        <span>{caducidadText}</span>
+        <span>{data.costPrice}</span>
+        <span>{data.finalPrice}</span>
+        <span>{data.quantity}</span>
+        <span className={stockClass}>{stockText()}</span>
       </div>
+      <AnimatePresence>
+        {isActive && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{
+              type: "spring",
+              stiffness: 280,
+              damping: 20,
+              duration: 0.3,
+            }}
+            style={{
+              top: axis.y,
+              left: axis.x,
+            }}
+            className="absolute top-0 rounded text-xs border w-28 border-primary z-10 bg-white shadow-sm"
+          >
+            <ProductEdit closeModal={closeModal} product={data} />
+            <ProductDelete
+              productID={data.id}
+              productName={data.name}
+              closeModal={closeModal}
+            />
+            <button
+              onClick={closeModal}
+              className="btn-sm w-full btn btn-ghost rounded-none flex items-center justify-between"
+            >
+              <span>Cancelar</span>
+              <span
+                className="icon-[iconamoon--sign-times-duotone]"
+                role="img"
+                aria-hidden="true"
+              />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </li>
   );
 };
