@@ -3,21 +3,25 @@
 
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import ProductListModal from "./ProductListModal";
+import { ProductModal } from "./ProductListModal";
 
 interface WidgetCardProps {
   title: string;
   bg: string;
-  action: () => Promise<number>;
+  action: () => Promise<ProductModal[]>;
 }
 
 const WidgetCard: React.FC<WidgetCardProps> = ({ title, bg, action }) => {
   const [response, setResponse] = useState<string | number>("Cargando...");
+  const [showModal, setShowModal] = useState(false);
+  const [products, setProducts] = useState<ProductModal[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await action();
-        setResponse(result);
+        setResponse(result.length);
       } catch (error) {
         setResponse("Error");
       }
@@ -26,8 +30,18 @@ const WidgetCard: React.FC<WidgetCardProps> = ({ title, bg, action }) => {
     fetchData();
   }, [action]);
 
-  const handleOpenModal = () => {
-    alert("Modal abierto");
+  const handleOpenModal = async () => {
+    setShowModal(true);
+    try {
+      const result = await action();
+      setProducts(result);
+    } catch (error) {
+      setProducts([]);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -59,6 +73,31 @@ const WidgetCard: React.FC<WidgetCardProps> = ({ title, bg, action }) => {
       >
         Ver más
       </p>
+      <AnimatePresence>
+        {showModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-black backdrop-blur bg-opacity-50 flex justify-center items-center z-50"
+          >
+            <motion.div
+              initial={{ y: 100 }}
+              animate={{ y: 0 }}
+              exit={{ y: 100 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white rounded-lg p-6 w-1/2 max-h-[80vh] overflow-y-auto"
+            >
+              <ProductListModal
+                close={handleCloseModal}
+                products={products}
+                title={title}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
