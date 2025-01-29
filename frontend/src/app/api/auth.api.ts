@@ -1,32 +1,28 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 import { cookies } from "next/headers";
 import { API } from ".";
 import { useUserStore } from "@/store/user.store";
+import { ApiResponse, LoginProps, RegisterProps } from "./config";
 
-interface LoginProps {
-  email: string;
-  password: string;
+export interface LoginResponse {
+  message: string;
+  token: string;
+  user: User;
 }
 
-interface RegisterProps {
+export interface User {
+  id: string;
   firstname: string;
   lastname: string;
   email: string;
-  password: string;
-  birthdate: string;
 }
 
-interface LoginResponse {
-  wasValid: boolean;
-  message: string;
-}
 
 export const handleLogin = async (
   dataLogin: LoginProps
-): Promise<LoginResponse> => {
+): Promise<ApiResponse> => {
   try {
-    const { data } = await API.post("/users/login", dataLogin);
+    const { data } = await API.post<LoginResponse>("/users/login", dataLogin);
     const cookieOptions = {
       path: "/",
       domain: "localhost",
@@ -35,26 +31,25 @@ export const handleLogin = async (
       maxAge: 60 * 60 * 24,
     };
     const token = data.token;
-
     cookies().set("authToken", token, cookieOptions);
-    useUserStore.getState().setData(data.user);
-    console.log("estado de zzustand", useUserStore.getState().data);
 
     return {
       wasValid: true,
       message: data.message,
+      data: data.user
     };
   } catch (error: any) {
+    const errorMessage = error.response?.data?.message || error.message || "Error Obteniendo Productos"
     return {
       wasValid: false,
-      message: error.response.data.message,
+      message: errorMessage
     };
   }
 };
 
 export const handleRegister = async (
   dataRegister: RegisterProps
-): Promise<LoginResponse> => {
+): Promise<ApiResponse> => {
   try {
     await API.post("/users/register", dataRegister);
 
@@ -79,7 +74,7 @@ export const handleRegister = async (
   }
 };
 
-export const handleLogout = async (): Promise<LoginResponse> => {
+export const handleLogout = async (): Promise<ApiResponse> => {
   try {
     await API.post("/users/logout");
 

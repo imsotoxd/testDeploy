@@ -57,7 +57,6 @@ const Sidebar = () => {
         <SidebarItem
           text="Cerrar sesión"
           icon="icon-[material-symbols--logout]"
-          path={"/dashboard/logout"}
         />
       </div>
     </div>

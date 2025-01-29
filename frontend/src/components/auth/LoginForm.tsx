@@ -9,11 +9,12 @@ import { handleLogin } from "@/app/api/auth.api";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useUserStore } from "@/store/user.store";
 
 const LoginForm = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-
+  const { setData } = useUserStore();
   const {
     register,
     handleSubmit,
@@ -26,8 +27,8 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = async (data: LoginSchemaType) => {
-    const { message, wasValid } = await handleLogin(data);
+  const onSubmit = async (LoginData: LoginSchemaType) => {
+    const { message, wasValid, data } = await handleLogin(LoginData);
     if (!wasValid)
       return Swal.fire({
         icon: "error",
@@ -42,6 +43,7 @@ const LoginForm = () => {
       text: message,
       confirmButtonColor: "var(--primary)",
     });
+    setData(data);
     router.push("/dashboard");
   };
 
