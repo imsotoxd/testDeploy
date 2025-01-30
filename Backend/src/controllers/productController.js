@@ -153,7 +153,8 @@ export const queryProducts = async (req, res) => {
     if (
       filter.minimumQuantity ||
       filter.zeroQuantity ||
-      filter.nonZeroQuantity
+      filter.nonZeroQuantity ||
+      filter.totalProducts
     ) {
       response.total = products.length;
     }
