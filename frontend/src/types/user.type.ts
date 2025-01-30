@@ -9,4 +9,6 @@ export interface BasicUserInfo {
   firstname: string;
   lastname: string;
   email: string;
+  nameCompany: string;
+  businessArea: string;
 }

@@ -58,7 +58,7 @@ const LoginForm = () => {
       >
         <div className="flex flex-col">
           <input
-            className=" border-[1px] h-14 border-primary  rounded-xl p-2 "
+            className=" border-[1px] h-12 border-primary  rounded-xl p-2 "
             type="email"
             placeholder="Email"
             {...register("email")}
@@ -70,7 +70,7 @@ const LoginForm = () => {
 
         <div className="relative flex flex-col">
           <input
-            className="border-[1px] h-14 rounded-xl border-primary p-2 pr-10"
+            className="border-[1px] h-12 rounded-xl border-primary p-2 pr-10"
             type={showPassword ? "text" : "password"}
             placeholder="Contraseña"
             {...register("password")}
