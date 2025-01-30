@@ -8,16 +8,18 @@ export const createUser = async (
   lastname,
   email,
   password,
-  birthdate
+  birthdate,
+  nameCompany,
+  businessArea
 ) => {
-  if (!firstname || !lastname || !email || !password || !birthdate) {
-    throw new Error('All fields are required');
+  if (!firstname || !lastname || !email || !password || !birthdate || !nameCompany || !businessArea) {
+    throw new Error('Todos los campos son obligatorios');
   }
 
   // Verificar si el correo electrónico ya está registrado
   const existingUser = await User.findOne({ where: { email } });
   if (existingUser) {
-    throw new Error('Email already registered');
+    throw new Error('El correo ya está registrado');
   }
 
   // Cifrar la contraseña
@@ -30,6 +32,8 @@ export const createUser = async (
     email,
     password: hashedPassword,
     birthdate,
+    nameCompany,
+    businessArea,
   });
 };
 
@@ -70,7 +74,7 @@ export const logoutUserService = async (userId) => {
 // Obtener todos los usuarios
 export const getAllUsersService = async () => {
   return await User.findAll({
-    attributes: ['id', 'firstname', 'lastname', 'email', 'birthdate'],
+    attributes: ['id', 'firstname', 'lastname', 'email', 'birthdate', 'nameCompany', 'businessArea'],
     where: { activated: true },
   });
 };
@@ -79,7 +83,7 @@ export const getAllUsersService = async () => {
 export const getUserByIdService = async (id) => {
   return await User.findOne({
     where: { id, activated: true },
-    attributes: ['id', 'firstname', 'lastname', 'email', 'birthdate'],
+    attributes: ['id', 'firstname', 'lastname', 'email', 'birthdate', 'nameCompany', 'businessArea'],
   });
 };
 
@@ -90,7 +94,9 @@ export const updateUserService = async (
   lastname,
   email,
   password,
-  birthdate
+  birthdate,
+  nameCompany,
+  businessArea,
 ) => {
   const user = await User.findOne({ where: { id, activated: true } });
   if (!user) {
@@ -107,6 +113,8 @@ export const updateUserService = async (
     email,
     password: passwordHash,
     birthdate,
+    nameCompany,
+    businessArea,
   };
   await User.update(data, { where: { id } });
   return data;
