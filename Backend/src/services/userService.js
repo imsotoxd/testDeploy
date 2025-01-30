@@ -1,6 +1,8 @@
 import { User } from '../models/index.js'; // Importar el modelo de usuario inicializado
 import { hashPassword, comparePassword } from '../utils/bcrypt.js';
 import { generateAuthToken } from '../utils/jwt.js';
+import { createCategory } from './categoriesService.js';
+import {predefinedCategories} from '../utils/categoryTypes.js';
 
 // Crear un nuevo usuario
 export const createUser = async (
@@ -26,7 +28,7 @@ export const createUser = async (
   const hashedPassword = await hashPassword(password);
 
   // Guardar el nuevo usuario en la base de datos
-  return await User.create({
+  const user = await User.create({
     firstname,
     lastname,
     email,
@@ -35,6 +37,26 @@ export const createUser = async (
     nameCompany,
     businessArea,
   });
+
+  if (!user.id) {
+    throw new Error('Error al crear el usuario');
+  }
+
+  // Crear categorías predeterminadas basadas en el businessArea
+  
+  const categoriesToCreate = predefinedCategories[businessArea];
+  if (categoriesToCreate && user.id) {
+    for (const categoryName of categoriesToCreate) {
+      await createCategory({
+        name: String(categoryName), // Asegúrate de que categoryName es una cadena
+        description: '', // Puedes agregar una descripción si es necesario
+        custom: false, // Categorías predeterminadas
+        userId: user.id, // Asocia la categoría con el usuario
+      });
+    }
+  }
+
+  return user;
 };
 
 // Iniciar sesión de un usuario

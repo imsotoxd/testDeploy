@@ -18,8 +18,8 @@ router.post('/', authenticateToken, validateCategory, handleValidationErrors, cr
 router.post('/bulk', authenticateToken, bulkCreateCategoriesController);
 router.post('/defaults', authenticateToken, handleValidationErrors, createDefaultCategoriesController);
 
-router.get('/all', getAllCategoriesController);
-router.get('/:id', getCategoryByIdController);
+router.get('/all', authenticateToken, getAllCategoriesController);
+router.get('/:id', authenticateToken, getCategoryByIdController);
 router.put('/update/:id', authenticateToken, validateCategory, handleValidationErrors, updateCategoryController);
 router.delete('/delete/:id', authenticateToken, deleteCategoryController);
 
