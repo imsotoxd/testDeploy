@@ -12,7 +12,7 @@ export function getQueryClient() {
           refetchOnMount: false,
           refetchOnReconnect: false,
           retry: 2,
-          // staleTime: 5 * 1000,
+          staleTime: 5 * 1000,
         },
       }
     });

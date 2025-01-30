@@ -3,19 +3,12 @@
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import { FC, useRef, useState } from "react";
-import { ProductsResponse } from "./product.list";
 import ProductEdit from "./product.edit";
 import ProductDelete from "./product.delete";
 import { MouseEvent } from "react";
+import { ProductoProps } from "@/types/product.types";
 
-interface Producto {
-  data: ProductsResponse;
-  isActive: boolean;
-  openModal: () => void;
-  closeModal: () => void;
-}
-
-const ProductItem: FC<Producto> = ({
+const ProductItem: FC<ProductoProps> = ({
   data,
   isActive,
   openModal,

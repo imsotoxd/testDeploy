@@ -1,90 +1,60 @@
 "use server";
 import {
-  OptionalProductSchema,
   ProductSchema,
 } from "@/lib/schemas/products.schema";
 import { API } from ".";
 import { randomUUID } from "crypto";
-import { ProductsResponse } from "@/components/products/product.list";
+import { MutationResponse, ProductsResponse, QueriesResponse } from "@/types/product.types";
 
-interface response {
-  message: string;
-  errors?: ErrorPost[];
-  wasValid: boolean;
-  data?: ProductsResponse;
-}
 
-interface ErrorPost {
-  type: string;
-  msg: string;
-  path: string;
-  location: string;
-}
-
-export const getAllProducts = async (): Promise<any> => {
-  const { data } = await API.get("/products/all");
-  return data;
-};
-
-export const postProduct = async (
-  product: ProductSchema,
-  userId: string | undefined
-): Promise<response> => {
-  const newProduct = {
-    ...product,
-    sku: randomUUID(),
-    userId,
-  };
+export const getAllProducts = async (pageParam: number | unknown): Promise<QueriesResponse> => {
   try {
-    const { data } = await API.post("/products", newProduct);
+    const { data } = await API.get(`/product/query?filter[nonZeroQuantity]=10&filter[page]=${pageParam}`);
     return {
-      message: data.message,
-      wasValid: true,
-      data: data.product,
+      data: data.products,
+      pagination: {
+        currentPage: data.currentPage,
+        totalPages: data.totalPages,
+      },
     };
   } catch (error: any) {
-    return {
-      message: error.response.data.message,
-      errors: error.response.data.errors,
-      wasValid: false,
-    };
+    return { data: [], pagination: null, error: error.response?.data?.message || error.message };
   }
 };
 
-export const deleteProduct = async (id: string): Promise<response> => {
+
+export const postProduct = async (
+  product: ProductSchema,
+): Promise<MutationResponse> => {
+  const newProduct = {
+    ...product,
+    sku: randomUUID(),
+  };
+  try {
+    const { data } = await API.post("/products", newProduct);
+    return { success: true, data };
+  } catch (error: any) {
+    return { success: false, error: error.response.data.message || error.message };
+  }
+};
+
+export const deleteProduct = async (id: string): Promise<MutationResponse> => {
   try {
     const { data } = await API.delete(`/products/delete/${id}`);
-    return {
-      message: data.message,
-      wasValid: true,
-      data: data.product,
-    };
+    return { success: true, data };
   } catch (error: any) {
-    return {
-      message: error.response.data.message,
-      errors: error.response.data.errors,
-      wasValid: false,
-    };
+    return { success: false, error: error.response.data.message || error.message };
   }
 };
 
 export const putProduct = async (
-  product: ProductsResponse,
-  id: string | undefined
-): Promise<response> => {
+  product: ProductsResponse
+): Promise<MutationResponse> => {
   try {
-    const { data } = await API.put(`/products/update/${id}`, product);
-    return {
-      message: data.message,
-      wasValid: true,
-      data: data.product,
-    };
+    const { data } = await API.put(`/products/update`, product);
+    return { success: true, data };
   } catch (error: any) {
-    return {
-      message: error.response.data.message,
-      errors: error.response.data.errors,
-      wasValid: false,
-    };
+    return { success: false, error: error.response.data.message || error.message };
   }
 };
 

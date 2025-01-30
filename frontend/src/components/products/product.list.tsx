@@ -1,9 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useProducts } from "@/hooks/useProduct";
 import ProductItem from "./product.item";
-import { useQuery } from "@tanstack/react-query";
-import { getAllProducts } from "@/app/api/product.api";
-import { useFilterProduct } from "@/store/product.store";
+import ProductItemSkeleton from "./product.item.skeleton";
 
 export function ProductList() {
   const [isVisible, setIsVisible] = useState<string | null>(null);
@@ -12,31 +11,21 @@ export function ProductList() {
   };
   const closeModal = () => setIsVisible(null);
 
-  const { data, isError, isLoading, error } = useQuery<ProductsResponse[]>({
-    queryKey: ["products"],
-    queryFn: getAllProducts,
-  });
-  const { filter } = useFilterProduct();
-  const [products, setProducts] = useState<ProductsResponse[]>([]);
-  if (isLoading) return <p>Loading...</p>;
-  if (isError && !data) return <p>{error.message}</p>;
-
-  useEffect(() => {
-    const res = data?.filter((product) => {
-      return (
-        product.categoryId === filter ||
-        product.name.toLowerCase().includes(filter.toLowerCase())
-      );
-    });
-    if (res) setProducts(res);
-    else setProducts(data as ProductsResponse[]);
-  }, [filter]);
+  const {
+    products,
+    error,
+    isLoading,
+    hasPreviousPage,
+    hasNextPage,
+    fetchNextPage,
+    fetchPreviousPage,
+  } = useProducts();
 
   return (
-    <div className="flex flex-col gap-5 mb-5">
+    <div className="flex flex-col h-full justify-between gap-5 mb-5 mt-5 w-full">
       {
-        <ul className="max-w-6xl mx-auto text-sm">
-          <li className="text-center rounded-t bg-primary gap-5 text-white grid grid-cols-9 p-2 transition-colors">
+        <ul className="max-w-6xl mx-auto h-full shadow-sm text-sm w-full">
+          <li className="text-center rounded-t bg-primary gap-5 text-white sticky top-0 grid grid-cols-9 p-2 transition-colors">
             <span className="col-span-2 text-start">Producto</span>
             <span className="text-start col-span-2">Categoria</span>
             <span>Caducidad</span>
@@ -45,45 +34,60 @@ export function ProductList() {
             <span>Cantidad</span>
             <span>Estado</span>
           </li>
-          {products?.map((product, index) => (
-            <ProductItem
-              data={product}
-              key={index}
-              isActive={isVisible === product.id}
-              openModal={() => openModal(product.id)}
-              closeModal={closeModal}
-            />
-          ))}
+          {isLoading && <ProductItemSkeleton />}
+          {error && (
+            <div className="alert">
+              <span
+                className="icon-[iconamoon--sign-times-duotone]"
+                role="img"
+                aria-hidden="true"
+              />
+              <span>{error.message}</span>
+            </div>
+          )}
+          {products.length === 0 && !isLoading && (
+            <div className="alert mt-5">
+              <span
+                className="icon-[iconamoon--sign-times-duotone]"
+                role="img"
+                aria-hidden="true"
+              />
+              <span>No hay productos</span>
+            </div>
+          )}
+          {products &&
+            products.map((product, index) => (
+              <ProductItem
+                data={product}
+                key={index}
+                isActive={isVisible === product.id}
+                openModal={() => openModal(product.id)}
+                closeModal={closeModal}
+              />
+            ))}
         </ul>
       }
 
       <div className="join self-center">
-        <button className="join-item btn btn-primary btn-md">1</button>
-        <button className="join-item btn btn-primary btn-md btn-active">
-          2
+        <button
+          onClick={() => fetchPreviousPage()}
+          disabled={!hasPreviousPage}
+          className="disabled:cursor-not-allowed join-item btn btn-primary btn-md"
+        >
+          <span className="icon-[ps--left]" role="img" aria-hidden="true" />
+          <span>Anterior</span>
         </button>
-        <button className="join-item btn btn-primary btn-md">3</button>
-        <button className="join-item btn btn-primary btn-md">4</button>
+        <button
+          onClick={() => fetchNextPage()}
+          disabled={!hasNextPage}
+          className="disabled:cursor-not-allowed join-item btn btn-primary btn-md"
+        >
+          <span>Siguiente</span>
+          <span className="icon-[ps--right]" role="img" aria-hidden="true" />
+        </button>
       </div>
     </div>
   );
 }
 
 export default ProductList;
-
-export interface ProductsResponse {
-  id: string;
-  sku: string;
-  name: string;
-  description: string;
-  quantity: number;
-  finalPrice: number;
-  costPrice: number;
-  expirationDate: string | null;
-  minimumQuantity: number;
-  activated: boolean;
-  userId: string;
-  categoryId: string;
-  createdAt: Date;
-  updatedAt: Date;
-}

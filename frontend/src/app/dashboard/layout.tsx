@@ -8,7 +8,7 @@ function DashboardLayout({ children }: { children: ReactNode }) {
       <Sidebar />
       <div className="flex flex-col flex-grow">
         <DashboardNavbar />
-        <div className="flex-grow">{children}</div>
+        <div className="flex-grow h-full">{children}</div>
       </div>
     </div>
   );
