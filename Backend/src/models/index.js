@@ -19,12 +19,22 @@ const Category = CategoryModel(sequelize, Sequelize);
 const Movement = MovementModel(sequelize, Sequelize);
 const Notification = NotificationModel(sequelize, Sequelize);
 
-Category.hasMany(Product, { foreignKey: 'categoryId' });
+User.hasMany(Product, { foreignKey: 'userId' });
+Product.belongsTo(User, { foreignKey: 'userId' });
+
 User.hasMany(Category, { foreignKey: 'userId' });
 Category.belongsTo(User, { foreignKey: 'userId' });
-User.hasMany(Product, { foreignKey: 'userId' });
+
+Category.hasMany(Product, { foreignKey: 'categoryId' });
+Product.belongsTo(Category, { foreignKey: 'categoryId' });
+
 User.hasMany(Movement, { foreignKey: 'userId' });
+Movement.belongsTo(User, { foreignKey: 'userId' });
+
 Product.hasMany(Movement, { foreignKey: 'productId' });
+Movement.belongsTo(Product, { foreignKey: 'productId' });
+
 Product.hasMany(Notification, { foreignKey: 'notificationId' });
+Notification.belongsTo(Product, { foreignKey: 'productId' });
 
 export { sequelize, User, Product, Category, Movement, Notification };

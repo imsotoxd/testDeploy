@@ -59,6 +59,9 @@ const ProductOutput = {
       description: 'ID de la categoría a la que pertenece el producto.',
       example: '06b8892d-7c6e-4448-9dfc-3d4e678efc09',
     },
+    category: {
+      $ref: '#/components/schemas/Category',
+    },
   },
   additionalProperties: false,
 };

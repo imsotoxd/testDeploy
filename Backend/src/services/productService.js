@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Product } from '../models/index.js';
+import { Product, Category } from '../models/index.js';
 import { Op, Sequelize } from 'sequelize';
 
 // Crear un nuevo producto
@@ -45,7 +45,7 @@ export const restoreProduct = async (userId, id) => {
 };
 
 // Nuevo servicio para consultas de filtrado y ordenamiento
-export const queryProducts = async (userId, filter, sort, page = 1, limit = 10) => {
+export const queryProducts = async (userId, filter={}, sort={}, page = 1, limit = 10) => {
   const whereClause = {userId, activated: true};
   const orderClause = [];  
 
@@ -65,6 +65,10 @@ export const queryProducts = async (userId, filter, sort, page = 1, limit = 10) 
   // Condición adicional: productos cuya cantidad sea distinta de cero
   if (filter.nonZeroQuantity) {
     whereClause.quantity = { [Op.ne]: 0 };
+  }
+
+  if (filter.totalProducts) {
+    delete whereClause.quantity; // Eliminar cualquier filtro de cantidad para incluir todos los productos activos
   }
 
   if (sort.by) {
@@ -100,6 +104,10 @@ export const queryProducts = async (userId, filter, sort, page = 1, limit = 10) 
     order: orderClause,
     offset,
     limit,
+    include: [{
+      model: Category,
+      attributes: ['name'], // Incluir el nombre de la categoría
+    }],
   });
 
   const totalQuantity = products.reduce(
