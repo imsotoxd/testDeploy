@@ -166,9 +166,10 @@ const RegisterForm = () => {
                 {...register("businessArea")}
               >
                 <option value="">Selecciona un rubro</option>
-                <option value="tech">Tecnología</option>
-                <option value="health">Salud</option>
-                <option value="finance">Finanzas</option>
+                <option value="Alimentos y bebidas">Alimentos y bebidas</option>
+                <option value="Bienes e insumos">Bienes e insumos</option>
+                <option value="Tecnología">Tecnología</option>
+                <option value="Salud">Salud</option>
               </select>
               {errors.businessArea && (
                 <p className="text-xs text-red-500">

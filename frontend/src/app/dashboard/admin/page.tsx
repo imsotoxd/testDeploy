@@ -1,8 +1,11 @@
 "use client";
 import React from "react";
 import { useState } from "react";
+import { useUserStore } from "@/store/user.store";
 
 const Page = () => {
+  const { data } = useUserStore();
+
   type Category = string;
 
   interface FieldState {
@@ -37,8 +40,9 @@ const Page = () => {
         <input
           id="nombre"
           type="text"
-          className="input input-ghost input-primary w-full sm:w-96 md:w-[500px] lg:w-[600px] max-w-full px-4 py-2 bg-background"
-          placeholder="Ingrese el nombre de la empresa"
+          disabled
+          className="input input-ghost input-primary placeholder:text-gray-700 w-full sm:w-96 md:w-[500px] lg:w-[600px] max-w-full px-4 py-2 bg-background"
+          placeholder={data?.nameCompany}
         />
       </div>
       <div className="mb-4">
@@ -51,8 +55,9 @@ const Page = () => {
         <input
           id="rubro"
           type="text"
+          disabled
           className="input  input-ghost input-primary w-full sm:w-96 md:w-[500px] lg:w-[600px] max-w-full px-4 py-2 bg-background"
-          placeholder="Ingrese el rubro de la empresa"
+          placeholder={data?.businessArea}
         />
       </div>
       <div className="mb-6">
