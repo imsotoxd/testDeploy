@@ -1,4 +1,4 @@
-"use server";
+
 import axios from "axios";
 import { getDatabaseConfig } from "./config";
 import { cookies } from "next/headers";
@@ -27,3 +27,12 @@ API.interceptors.request.use(
   }
 );
 
+
+API.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
