@@ -56,14 +56,14 @@ export const RegisterSchema = z.object({
     .string()
     .min(6, { message: "La contraseña debe tener al menos 6 caracteres." }),
 
-  company: z
+  nameCompany: z
     .string()
     .min(3, {
       message: "El nombre de la empresa debe contener al menos 3 caracteres",
     })
     .nonempty({ message: "El nombre de la empresa es obligatorio" }),
 
-  sector: z.string().nonempty({ message: "El sector es obligatorio" }),
+  businessArea: z.string().nonempty({ message: "El sector es obligatorio" }),
 });
 
 export type RegisterSchemaType = z.infer<typeof RegisterSchema>;

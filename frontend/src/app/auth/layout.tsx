@@ -9,7 +9,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const imageSrc = pathname === "/auth/signin" ? "/signin.jpg" : "/signup.jpg";
 
-  const logoWidth = pathname === "/auth/signup" ? 170 : 264;
+  /*   const logoWidth = pathname === "/auth/signup" ? 250 : 264; */
 
   return (
     <div className="flex">
@@ -27,7 +27,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
       </div>
       <div className="w-full md:w-1/2 flex flex-col items-center justify-center bg-white p-8">
         <Link href={"/"}>
-          <Image src="/logo.svg" alt="logo" width={logoWidth} height={0} />
+          <Image src="/logo.svg" alt="logo" width={264} height={0} />
         </Link>
         {children}
       </div>
