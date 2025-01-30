@@ -1,9 +1,7 @@
-// swagger/paths/users/registerUser.js
-
 const registerUser = {
     post: {
         summary: "Registrar un nuevo usuario",
-        description: "Crea un nuevo usuario en la plataforma con su nombre de usuario, correo electrónico y contraseña.",
+        description: "Crea un nuevo usuario en la plataforma con su nombre, apellido, correo electrónico, contraseña, fecha de nacimiento, nombre de la empresa y área de negocio.",
         tags: ["Autenticador"],
         requestBody: {
             required: true,
@@ -14,12 +12,12 @@ const registerUser = {
                         properties: {
                             firstname: {
                                 type: "string",
-                                description: "Nombre de usuario",
+                                description: "Nombre del usuario",
                                 example: "John"
                             },
                             lastname: {
                                 type: "string",
-                                description: "Apellido de usuario",
+                                description: "Apellido del usuario",
                                 example: "Doe"
                             },
                             email: {
@@ -37,8 +35,19 @@ const registerUser = {
                                 description: "Fecha de nacimiento del usuario",
                                 example: "1990-01-01"
                             },
+                            nameCompany: {
+                                type: "string",
+                                description: "Nombre de la empresa",
+                                example: "Tech Innovators Inc."
+                            },
+                            businessArea: {
+                                type: "string",
+                                description: "Área de negocio del usuario",
+                                example: "Tecnología",
+                                enum: ["Alimentos y bebidas", "Bienes e insumos", "Tecnología", "Salud"]
+                            }
                         },
-                        required: ["username", "email", "password"]
+                        required: ["firstname", "lastname", "email", "password", "birthdate", "nameCompany", "businessArea"]
                     }
                 }
             }
@@ -59,8 +68,12 @@ const registerUser = {
                                     type: "object",
                                     properties: {
                                         id: { type: "string", example: "123456" },
-                                        firstname: { type: "string", example: "John" }, lastname: { type: "string", example: "Doe"},
-                                        email: { type: "string", example: "john.doe@example.com" }, birthdate: { type: "string", example: "1990-01-01" }
+                                        firstname: { type: "string", example: "John" },
+                                        lastname: { type: "string", example: "Doe" },
+                                        email: { type: "string", example: "john.doe@example.com" },
+                                        birthdate: { type: "string", example: "1990-01-01" },
+                                        nameCompany: { type: "string", example: "Tech Innovators Inc." },
+                                        businessArea: { type: "string", example: "Tecnología" }
                                     }
                                 }
                             }

@@ -38,6 +38,14 @@ const UserModel = (sequelize) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
+       nameCompany: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      businessArea: {
+        type: DataTypes.ENUM('Alimentos y bebidas', 'Bienes e insumos', 'Tecnología', 'Salud'),
+        allowNull: false,
+      },
     },
     {
       timestamps: true,
