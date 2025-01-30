@@ -31,6 +31,8 @@ const RegisterForm = () => {
       birthdate: undefined,
       email: "",
       password: "",
+      company: "",
+      sector: "",
     },
   });
 
@@ -58,17 +60,17 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="mt-16">
+    <div className="mt-6">
       <p className="text-2xl font-semibold text-primary text-center ">
         Registrate
       </p>
       <form
-        className="space-y-8 w-[400px]  mt-7"
+        className="space-y-4 w-[400px]  mt-6"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex flex-col">
           <input
-            className=" border-[1px] h-14 border-primary  rounded-xl p-2 "
+            className=" border-[1px] h-12 border-primary  rounded-xl p-2 "
             type="text"
             placeholder="Nombres"
             {...register("firstname")}
@@ -80,7 +82,7 @@ const RegisterForm = () => {
 
         <div className="flex flex-col">
           <input
-            className=" border-[1px] h-14 border-primary  rounded-xl p-2 "
+            className=" border-[1px] h-12 border-primary  rounded-xl p-2 "
             type="text"
             placeholder="Apellidos"
             {...register("lastname")}
@@ -92,9 +94,39 @@ const RegisterForm = () => {
 
         <div className="flex flex-col">
           <input
-            className=" border-[1px] h-14 border-primary  rounded-xl p-2 "
+            className=" border-[1px] h-12 border-primary  rounded-xl p-2 "
+            type="text"
+            placeholder="Empresa"
+            {...register("company")}
+          />
+          {errors.company && (
+            <p className="text-xs text-red-500">{errors.company.message}</p>
+          )}
+        </div>
+
+        <div className="flex flex-col">
+          <select
+            className="border-[1px] h-12 bg-transparent border-primary rounded-xl p-2"
+            {...register("sector")}
+          >
+            <option value="">Selecciona un rubro</option>
+            <option value="tech">Tecnología</option>
+            <option value="health">Salud</option>
+            <option value="finance">Finanzas</option>
+          </select>
+          {errors.sector && (
+            <p className="text-xs text-red-500">{errors.sector.message}</p>
+          )}
+        </div>
+
+        <div className="flex flex-col">
+          <label htmlFor="birthdate" className="text-gray-500 text-sm mb-1">
+            Fecha de nacimiento
+          </label>{" "}
+          <input
+            className="border-[1px] h-12 border-primary rounded-xl p-2"
             type="date"
-            placeholder="edad"
+            id="birthdate"
             {...register("birthdate")}
           />
           {errors.birthdate && (
@@ -104,7 +136,7 @@ const RegisterForm = () => {
 
         <div className="flex flex-col">
           <input
-            className=" border-[1px] h-14 border-primary  rounded-xl p-2 "
+            className=" border-[1px] h-12 border-primary  rounded-xl p-2 "
             type="email"
             placeholder="Email"
             {...register("email")}
@@ -116,7 +148,7 @@ const RegisterForm = () => {
 
         <div className="relative flex flex-col">
           <input
-            className="border-[1px] h-14 rounded-xl border-primary p-2 pr-10"
+            className="border-[1px] h-12 rounded-xl border-primary p-2 pr-10"
             type={showPassword ? "text" : "password"}
             placeholder="Contraseña"
             {...register("password")}
@@ -142,7 +174,7 @@ const RegisterForm = () => {
           Registrarse
         </button>
       </form>
-      <p className="text-center mt-7">
+      <p className="text-center mt-4">
         ¿Ya tienes una cuenta?{" "}
         <Link
           className="btn no-underline btn-link text-primary"
