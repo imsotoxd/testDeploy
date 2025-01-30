@@ -1,4 +1,7 @@
 export interface ProductsResponse {
+  Category: {
+    name: string
+  }
   id: string;
   sku: string;
   name: string;

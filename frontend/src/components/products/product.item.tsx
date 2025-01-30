@@ -7,6 +7,7 @@ import ProductEdit from "./product.edit";
 import ProductDelete from "./product.delete";
 import { MouseEvent } from "react";
 import { ProductoProps } from "@/types/product.types";
+import formatDate from "@/utils/formatDate.util";
 
 const ProductItem: FC<ProductoProps> = ({
   data,
@@ -21,7 +22,9 @@ const ProductItem: FC<ProductoProps> = ({
       "hover:bg-blue-50": !isActive,
     }
   );
-  const caducidadText = data.expirationDate ?? "N/A";
+  const caducidadText = !data.expirationDate
+    ? "N/A"
+    : formatDate(data.expirationDate!);
   const stockText = () => {
     return data.quantity === 0
       ? "nulo"
@@ -61,7 +64,9 @@ const ProductItem: FC<ProductoProps> = ({
         >
           {data.name}
         </span>
-        <span className="text-start truncate text-ellipsis col-span-2">{data.categoryId}</span>
+        <span className="text-start truncate text-ellipsis col-span-2">
+          {data.Category.name}
+        </span>
         <span>{caducidadText}</span>
         <span>{data.costPrice}</span>
         <span>{data.finalPrice}</span>
