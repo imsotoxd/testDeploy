@@ -1,38 +1,51 @@
 import { Category } from "../models/index.js";
 import { predefinedCategories } from '../utils/categoryTypes.js';
 
-export const createCategory = async (name, description = '', custom = true) => {
-    const existingCategories = await getAllCategories();
-    if (existingCategories.length > 15) {
-        const error = new Error(
-            'Se alcanzó el máximo de categorías. Para más, use el plan de pago.'
-        );
-        error.statusCode = 400;
-        throw error;
-    }
-    return await Category.create({
-        name,
-        description,
-        custom,
-    });
+export const createCategory = async (categoryData) => {
+  const { name, description = '', custom = true, userId } = categoryData;
+
+  // Verificar que userId no sea undefined
+  if (!userId) {
+    throw new Error('El userId es obligatorio para crear una categoría');
+  }
+
+  const existingCategories = await Category.findAll({ where: { userId } });
+  if (existingCategories.length > 15) {
+    const error = new Error(
+      'Se alcanzó el máximo de categorías. Para más, use el plan de pago.'
+    );
+    error.statusCode = 400;
+    throw error;
+  }
+
+  return await Category.create({
+    name,
+    description,
+    custom,
+    userId,
+  });
 };
 
-export const getAllCategories = async () => {
-    return await Category.findAll();
+export const getAllCategories = async (userId) => {
+    return await Category.findAll({
+    where: { userId },
+  });
 };
 
-export const getCategoryById = async (id) => {
+export const getCategoryById = async (id, userId) => {
     const category = await Category.findOne({
-        where: { id },
+        where: { id, userId },
     });
     if (!category) throw new Error('Categoría no encontrada.');
     return category;
 };
 
-export const updateCategory = async (id, data) => {
+export const updateCategory = async (id, data, userId) => {
     const category = await Category.findByPk(id);
     if (!category) throw new Error('Categoría no encontrada.');
-    await category.update(data);
+    await Category.update(data, {
+    where: { id, userId },
+  });
     return category;
 };
 

@@ -12,7 +12,7 @@ sequelize
   .authenticate()
   .then(() => {
     console.log('✅ Conexión a la base de datos exitosa');
-    return sequelize.sync({ alter: false });
+    return sequelize.sync({ alter: true });
   })
   .then(() => {
     console.log('✅ Modelos sincronizados con la base de datos');
