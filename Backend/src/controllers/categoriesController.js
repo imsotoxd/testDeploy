@@ -32,7 +32,7 @@ export const createCategoryController = async (req, res) => {
 
 export const getAllCategoriesController = async (req, res) => {
     try {
-        const categories = await getAllCategories();
+        const categories = await getAllCategories(req.userId);
         res.status(200).json({
             success: true,
             data: categories,
@@ -48,7 +48,7 @@ export const getAllCategoriesController = async (req, res) => {
 export const getCategoryByIdController = async (req, res) => {
     try {
         const { id } = req.params;
-        const category = await getCategoryById(id);
+        const category = await getCategoryById(id, req.userId);
         res.status(200).json({
             success: true,
             data: category,
@@ -64,7 +64,7 @@ export const getCategoryByIdController = async (req, res) => {
 export const updateCategoryController = async (req, res) => {
     try {
         const { id } = req.params;
-        const updatedCategory = await updateCategory(id, req.body);
+        const updatedCategory = await updateCategory(id, req.body, req.userId);
         res.status(200).json({
             success: true,
             message: 'Categoría actualizada exitosamente.',

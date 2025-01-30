@@ -47,16 +47,4 @@ export const predefinedCategories = {
         'Ropa médica',
         'Productos de higiene',
     ],
-    'Otros': [
-        'Categoría 1',
-        'Categoría 2',
-        'Categoría 3',
-        'Categoría 4',
-        'Categoría 5',
-        'Categoría 6',
-        'Categoría 7',
-        'Categoría 8',
-        'Categoría 9',
-        'Categoría 10',
-    ],
 };
