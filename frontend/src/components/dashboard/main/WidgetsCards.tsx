@@ -1,21 +1,32 @@
+// app/dashboard/page.tsx
 import React from "react";
 import WidgetCard from "../../../ui/dashboard/WidgetCard";
+import {
+  handleLowStock,
+  handleZeroStock,
+  handleStock,
+} from "@/app/api/product.api";
 
 const WidgetsCards = () => {
   return (
     <div className="flex justify-center">
       <WidgetCard
-        title="Producto mas vendido"
-        bg="bg-primary"
-        action="Pinturas"
+        title="Productos Disponibles"
+        bg="bg-success"
+        action={handleStock}
       />
-      <WidgetCard title="Productos disponibles" bg="bg-success" action="5820" />
+
       <WidgetCard
-        title="Productos de bajo stock"
+        title="Productos con bajo stock"
         bg="bg-warning"
-        action="300"
+        action={handleLowStock}
       />
-      <WidgetCard title="Productos sin stock " bg="bg-alert" action="10" />
+
+      <WidgetCard
+        title="Productos sin stock"
+        bg="bg-alert"
+        action={handleZeroStock}
+      />
     </div>
   );
 };

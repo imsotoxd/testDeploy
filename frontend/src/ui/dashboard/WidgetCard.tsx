@@ -1,24 +1,51 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import ProductListModal from "./ProductListModal";
+import { ProductModal } from "./ProductListModal";
 
 interface WidgetCardProps {
   title: string;
   bg: string;
-  action: string;
+  action: () => Promise<ProductModal[]>;
 }
 
-const WidgetsCards: React.FC<WidgetCardProps> = ({ title, bg, action }) => {
+const WidgetCard: React.FC<WidgetCardProps> = ({ title, bg, action }) => {
+  const [response, setResponse] = useState<string | number>("Cargando...");
+  const [showModal, setShowModal] = useState(false);
+  const [products, setProducts] = useState<ProductModal[]>([]);
+
   useEffect(() => {
-    console.log(`Montado con acción: ${action}`);
+    const fetchData = async () => {
+      try {
+        const result = await action();
+        setResponse(result.length);
+      } catch (error) {
+        setResponse("Error");
+      }
+    };
+
+    fetchData();
   }, [action]);
 
-  const handleOpenModal = () => {
-    alert("Modal abierto");
+  const handleOpenModal = async () => {
+    setShowModal(true);
+    try {
+      const result = await action();
+      setProducts(result);
+    } catch (error) {
+      setProducts([]);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   return (
-    <div className="px-3 py-2 space-y-4 mx-2 my-14 flex flex-col border-[1px] w-1/5 border-primary rounded-lg">
+    <div className="px-3 py-2 space-y-4 mx-2 mt-14 flex flex-col border-[1px] w-1/5 border-primary rounded-lg">
       <p className="text-base text-center font-bold">{title}</p>
       <div className="flex items-center space-x-4 justify-center">
         <div
@@ -38,7 +65,7 @@ const WidgetsCards: React.FC<WidgetCardProps> = ({ title, bg, action }) => {
             />
           </svg>
         </div>
-        <p className="text-2xl font-bold">{action}</p>
+        <p className="text-2xl font-bold">{response}</p>
       </div>
       <p
         className="flex justify-end text-base font-bold text-primary cursor-pointer"
@@ -46,8 +73,33 @@ const WidgetsCards: React.FC<WidgetCardProps> = ({ title, bg, action }) => {
       >
         Ver más
       </p>
+      <AnimatePresence>
+        {showModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-black backdrop-blur bg-opacity-50 flex justify-center items-center z-50"
+          >
+            <motion.div
+              initial={{ y: 100 }}
+              animate={{ y: 0 }}
+              exit={{ y: 100 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white rounded-lg p-6 w-1/2 max-h-[80vh] overflow-y-auto"
+            >
+              <ProductListModal
+                close={handleCloseModal}
+                products={products}
+                title={title}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
 
-export default WidgetsCards;
+export default WidgetCard;
