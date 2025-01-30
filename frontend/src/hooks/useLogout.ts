@@ -20,6 +20,7 @@ export const useLogout = () => {
       if (result.isConfirmed) {
         const logoutResponse = await handleLogout();
         if (logoutResponse.wasValid) {
+          localStorage.clear();
           Swal.fire({
             title: "¡Sesión cerrada!",
             text: "Has cerrado sesión exitosamente.",
