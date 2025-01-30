@@ -23,7 +23,9 @@ const ProfileNavbar = () => {
     <div className="relative flex items-center space-x-1">
       <span className="icon-[radix-icons--avatar] text-3xl"></span>
       <div className="flex items-center">
-        <span className="text-base">{data?.firstname ?? "Usuario"}</span>
+        <span className="text-base font-semibold">
+          {data?.firstname ?? "Usuario"}
+        </span>
         <span
           className={`icon-[uis--angle-down] cursor-pointer text-2xl mt-1 transform transition-transform duration-200 ${
             isMenuOpen ? "rotate-180" : "rotate-0"
