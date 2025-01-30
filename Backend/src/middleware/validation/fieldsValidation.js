@@ -28,9 +28,7 @@ export const birthdateValidation = body('birthdate')
   .notEmpty()
   .withMessage('La fecha de nacimiento es obligatoria.')
   .isDate()
-  .withMessage(
-    'La fecha de nacimiento debe tener un formato válido (YYYY-MM-DD).'
-  )
+  .withMessage('La fecha de nacimiento debe tener un formato válido (YYYY-MM-DD).')
   .custom((value) => {
     const birthdate = new Date(value);
     const today = new Date();
@@ -45,12 +43,26 @@ export const birthdateValidation = body('birthdate')
     return true;
   });
 
+export const nameCompanyValidation = body('nameCompany')
+  .notEmpty()
+  .withMessage('El nombre de la empresa es obligatorio.')
+  .isLength({ min: 3 })
+  .withMessage('El nombre de la empresa debe tener al menos 3 caracteres.');
+
+export const businessAreaValidation = body('businessArea')
+  .notEmpty()
+  .withMessage('El área de negocio es obligatoria.')
+  .isIn(['Alimentos y bebidas', 'Bienes e insumos', 'Tecnología', 'Salud'])
+  .withMessage('El área de negocio debe ser una de las opciones válidas.');
+
 export const validateRegisterUser = [
   firstnameValidation,
   lastnameValidation,
   emailValidation,
   passwordValidation,
   birthdateValidation,
+  nameCompanyValidation,
+  businessAreaValidation,
 ];
 
 export const validateLoginUser = [emailValidation, passwordValidation];

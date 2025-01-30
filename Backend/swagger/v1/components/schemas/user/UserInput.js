@@ -3,17 +3,17 @@ const UserInput = {
     properties: {
         firstname: {
             type: "string",
-            description: "Nombre de usuario",
+            description: "Nombre del usuario",
             example: "john"
         },
         lastname: {
             type: "string",
-            description: "Apellido de usuario",
+            description: "Apellido del usuario",
             example: "salchichon"
         },
         email: {
             type: "string",
-            description: "Correo electrónico único usuario",
+            description: "Correo electrónico único del usuario",
             example: "john.doe@example.com"
         },
         birthdate: {
@@ -26,9 +26,20 @@ const UserInput = {
             type: "string",
             description: "Contraseña del usuario",
             example: "P@ssw0rd123"
+        },
+        nameCompany: {
+            type: "string",
+            description: "Nombre de la empresa",
+            example: "Tech Innovators Inc."
+        },
+        businessArea: {
+            type: "string",
+            description: "Área de negocio del usuario",
+            example: "Tecnología",
+            enum: ["Alimentos y bebidas", "Bienes e insumos", "Tecnología", "Salud"]
         }
     },
-    required: ['username', 'email'], // Asumiendo que el correo y el nombre de usuario son obligatorios
+    required: ['firstname', 'lastname', 'email', 'birthdate', 'password', 'nameCompany', 'businessArea'], // Campos obligatorios
     additionalProperties: false, // Para evitar que se incluyan propiedades adicionales no definidas
 };
 
