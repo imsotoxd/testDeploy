@@ -18,14 +18,13 @@ export function useProducts() {
   const {
     data: productsQuery,
     fetchNextPage,
-    fetchPreviousPage,
     hasNextPage,
     hasPreviousPage,
     isLoading,
     error,
   } = useInfiniteQuery<QueriesResponse>({
     queryKey: ["infinityProducts"],
-    queryFn: ({ pageParam = 1 }) => getAllProducts(pageParam),
+    queryFn: ({ pageParam = 1 }) => getAllProducts(Number(pageParam)),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       if (!lastPage.pagination) return undefined;
@@ -37,30 +36,29 @@ export function useProducts() {
   const addProductQuery = useMutation({
     mutationFn: postProduct,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["infinityProducts"] });
     },
   });
 
   const updateProductQuery = useMutation({
     mutationFn: putProduct,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["infinityProducts"] });
     },
   });
 
   const deleteProductQuery = useMutation({
     mutationFn: deleteProduct,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["infinityProducts"] });
     },
   });
 
   return {
-    products: productsQuery?.pages.flatMap((page) => page.data) ?? [],
+    products: productsQuery,
     isLoading,
     error,
     fetchNextPage,
-    fetchPreviousPage,
     hasNextPage,
     hasPreviousPage,
 

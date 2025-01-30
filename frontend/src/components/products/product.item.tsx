@@ -15,7 +15,7 @@ const ProductItem: FC<ProductoProps> = ({
   closeModal,
 }) => {
   const statusClass = clsx(
-    "text-center grid grid-cols-9 gap-5 p-2 cursor-pointer transition-colors",
+    "text-center grid grid-cols-9 gap-5 h-14 items-center p-2 cursor-pointer transition-colors",
     {
       "bg-blue-50": isActive,
       "hover:bg-blue-50": !isActive,
@@ -61,7 +61,7 @@ const ProductItem: FC<ProductoProps> = ({
         >
           {data.name}
         </span>
-        <span className="text-start col-span-2">{data.categoryId}</span>
+        <span className="text-start truncate text-ellipsis col-span-2">{data.categoryId}</span>
         <span>{caducidadText}</span>
         <span>{data.costPrice}</span>
         <span>{data.finalPrice}</span>

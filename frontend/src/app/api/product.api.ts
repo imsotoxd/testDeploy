@@ -7,9 +7,9 @@ import { randomUUID } from "crypto";
 import { MutationResponse, ProductsResponse, QueriesResponse } from "@/types/product.types";
 
 
-export const getAllProducts = async (pageParam: number | unknown): Promise<QueriesResponse> => {
+export const getAllProducts = async (pageParam: number): Promise<QueriesResponse> => {
   try {
-    const { data } = await API.get(`/product/query?filter[nonZeroQuantity]=10&filter[page]=${pageParam}`);
+    const { data } = await API.get(`/product/query?filter[totalProducts]=true&limit=10&page=${pageParam}`);
     return {
       data: data.products,
       pagination: {
