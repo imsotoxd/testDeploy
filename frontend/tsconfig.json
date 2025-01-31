@@ -28,5 +28,5 @@
     ".next/types/**/*.ts",
     "src/components/authLayout/AuthLayout.jsx"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["src/lib/tanstack/prefetchers.ts", "node_modules"]
 }
