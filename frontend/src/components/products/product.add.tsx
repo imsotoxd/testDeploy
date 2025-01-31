@@ -4,12 +4,10 @@ import InputGroup from "@/ui/input.group";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { postProduct } from "@/app/api/product.api";
-import { useCategoriesStore } from "@/store/product.store";
 import Swal from "sweetalert2";
 import { useUserStore } from "@/store/user.store";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useProducts } from "@/hooks/useProduct";
+import { useCategories } from "@/hooks/useCategories";
 
 interface Props {
   close: () => void;
@@ -25,17 +23,16 @@ function ProductAdd({ close }: Props) {
     resolver: zodResolver(ProductSchema),
   });
 
-  const qc = useQueryClient();
-  const { data } = useCategoriesStore();
   const { data: userData } = useUserStore();
-
   const { createProduct, isCreating, error } = useProducts();
+  const { categoriesData } = useCategories();
 
   const handleSave: SubmitHandler<ProductSchema> = (data) => {
     createProduct({ ...data, userId: userData?.id });
     if (!error) {
-      qc.invalidateQueries({ queryKey: ["products"] });
-      Swal.fire({
+      close();
+      reset();
+      return Swal.fire({
         icon: "success",
         title: "Producto agregado",
         html: "<small>Producto agregado</small>",
@@ -45,14 +42,12 @@ function ProductAdd({ close }: Props) {
         position: "bottom-end",
         timerProgressBar: true,
       });
-      close();
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error.message,
-      });
     }
+    return Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: error.message,
+    });
   };
 
   return (
@@ -90,7 +85,7 @@ function ProductAdd({ close }: Props) {
             <option value={0} disabled>
               Categoria
             </option>
-            {data?.map((categoria, index) => (
+            {categoriesData?.map((categoria, index) => (
               <option value={categoria.id} key={index}>
                 {categoria.name}
               </option>

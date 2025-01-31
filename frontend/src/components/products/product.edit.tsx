@@ -1,23 +1,22 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
-import { Fragment, useState } from "react";
-import { ProductsResponse } from "./product.list";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { OptionalProductSchema } from "@/lib/schemas/products.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputGroup from "@/ui/input.group";
-import { useCategoriesStore } from "@/store/product.store";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { putProduct } from "@/app/api/product.api";
 import { useUserStore } from "@/store/user.store";
 import Swal from "sweetalert2";
+import { useProducts } from "@/hooks/useProduct";
+import { ProductsResponse } from "@/types/product.types";
+import { useCategories } from "@/hooks/useCategories";
 
 interface EditProps {
   product: ProductsResponse;
   closeModal: () => void;
 }
 
-function ProductEdit({ product }: EditProps) {
+function ProductEdit({ product, closeModal }: EditProps) {
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisible = () => setIsVisible(!isVisible);
   const {
@@ -40,28 +39,34 @@ function ProductEdit({ product }: EditProps) {
     resolver: zodResolver(OptionalProductSchema),
   });
 
-  const qc = useQueryClient();
-  const { data } = useCategoriesStore();
+  const { categoriesData } = useCategories();
   const { data: userData } = useUserStore();
 
-  const { mutateAsync } = useMutation({
-    mutationFn: (data: ProductsResponse) => putProduct(data, userData?.id),
-    mutationKey: ["products", product.id],
-    onSuccess: ({ wasValid, message, data, errors }) => {
-      Swal.fire({
-        title: wasValid ? "Producto editado" : "Error al editar",
-        text: message || errors?.[0]?.msg || "Error desconocido",
-        icon: wasValid ? "success" : "error",
-        confirmButtonColor: "var(--primary)",
-      });
-      qc.invalidateQueries({ queryKey: ["products"] });
-      wasValid && toggleVisible();
-    },
-  });
+  const { updateProduct, isUpdating, updateError, error } = useProducts();
 
   const handleSave: SubmitHandler<OptionalProductSchema> = async (data) => {
-    const fulldata: ProductsResponse = { ...product, ...data };
-    await mutateAsync(fulldata);
+    const fulldata: ProductsResponse = {
+      ...product,
+      ...data,
+      userId: userData?.id!,
+    };
+    updateProduct(fulldata);
+    if (updateError) {
+      toggleVisible();
+      reset();
+      return Swal.fire({
+        icon: "error",
+        title: "Fallo edicion de producto",
+        text: updateError.error,
+      });
+    }
+    toggleVisible();
+    closeModal();
+    return Swal.fire({
+      icon: "success",
+      title: "Producto editado",
+      text: "Producto editado correctamente",
+    });
   };
 
   return (
@@ -109,7 +114,7 @@ function ProductEdit({ product }: EditProps) {
                   <option value={0} disabled>
                     Categoria
                   </option>
-                  {data?.map((categoria, index) => (
+                  {categoriesData?.map((categoria, index) => (
                     <option value={categoria.id} key={index}>
                       {categoria.name}
                     </option>
@@ -179,7 +184,7 @@ function ProductEdit({ product }: EditProps) {
               />
               <div className="col-span-8 mt-5 mx-auto grid border place-content-center">
                 <button
-                  // disabled={isPending}
+                  disabled={isUpdating}
                   type="submit"
                   className="btn btn-primary"
                 >
@@ -206,123 +211,6 @@ function ProductEdit({ product }: EditProps) {
           </motion.div>
         )}
       </AnimatePresence>
-      {/* <dialog id="my_modal_1" className="modal">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">Editar Producto</h3>
-          <small className="py-4">
-            Press ESC key or click the button below to close
-          </small>
-          <div className="modal-action">
-            <form
-              onSubmit={handleSubmit(handleSave)}
-              className="bg-white relative items-center max-w-3xl min-w-96 w-full flex flex-col gap-3  rounded lg:grid grid-cols-8"
-            >
-              <InputGroup
-                {...register("name")}
-                extendClass="col-span-4"
-                id="Nombre"
-                label="Nombre"
-                errors={errors.name}
-              />
-
-              <div className="col-span-4 flex flex-col gap-2">
-                <span className="font-semibold">Categoria</span>
-                <select
-                  {...register("categoryId")}
-                  defaultValue={0}
-                  className={`select select-bordered ${
-                    errors.categoryId ? "select-error" : "select-primary"
-                  }`}
-                >
-                  <option value={0} disabled>
-                    Categoria
-                  </option>
-                  {data?.map((categoria, index) => (
-                    <option value={categoria.id} key={index}>
-                      {categoria.name}
-                    </option>
-                  ))}
-                </select>
-                <AnimatePresence>
-                  <div className="h-6">
-                    {errors.categoryId && (
-                      <motion.small
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="text-error"
-                      >
-                        {errors.categoryId.message}
-                      </motion.small>
-                    )}
-                  </div>
-                </AnimatePresence>
-              </div>
-              <InputGroup
-                {...register("description")}
-                extendClass="col-span-5"
-                id="Descripción"
-                label="Descripción"
-                errors={errors.description}
-              />
-              <InputGroup
-                errors={errors.expirationDate}
-                {...register("expirationDate")}
-                type="date"
-                extendClass="col-span-3"
-                id="Fecha de Caducidad"
-                label="Fecha de Caducidad"
-              />
-              <InputGroup
-                type="number"
-                errors={errors.costPrice}
-                {...register("costPrice")}
-                extendClass="col-span-2"
-                id="Precio Inicial"
-                label="Precio Inicial"
-              />
-              <InputGroup
-                type="number"
-                errors={errors.finalPrice}
-                {...register("finalPrice")}
-                extendClass="col-span-2"
-                id="Precio de Venta"
-                label="Precio de Venta"
-              />
-              <InputGroup
-                type="number"
-                errors={errors.quantity}
-                {...register("quantity")}
-                extendClass="col-span-2"
-                id="Cantidad"
-                label="Cantidad"
-              />
-              <InputGroup
-                type="number"
-                errors={errors.minimumQuantity}
-                {...register("minimumQuantity")}
-                extendClass="col-span-2"
-                id="Cantidad min"
-                label="Cantidad min"
-              />
-              <div className="col-span-8 mt-5 mx-auto grid border place-content-center">
-                <button
-                  // disabled={isPending}
-                  type="submit"
-                  className="btn btn-primary"
-                >
-                  <span>Guardar</span>
-                  <span
-                    className="icon-[lets-icons--save-duotone]"
-                    role="img"
-                    aria-hidden="true"
-                  />
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </dialog> */}
     </>
   );
 }

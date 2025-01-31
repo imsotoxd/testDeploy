@@ -20,7 +20,10 @@ const ProfileNavbar = () => {
   };
 
   return (
-    <div className="relative flex items-center space-x-1">
+    <div
+      onClick={handleMenuToggle}
+      className="relative flex cursor-pointer hover:bg-black/5 rounded p-1 items-center space-x-1"
+    >
       <span className="icon-[radix-icons--avatar] text-3xl"></span>
       <div className="flex items-center">
         <span className="text-base font-semibold">
@@ -30,7 +33,6 @@ const ProfileNavbar = () => {
           className={`icon-[uis--angle-down] cursor-pointer text-2xl mt-1 transform transition-transform duration-200 ${
             isMenuOpen ? "rotate-180" : "rotate-0"
           }`}
-          onClick={handleMenuToggle}
         ></span>
       </div>
       {showMenu && (

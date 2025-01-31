@@ -31,7 +31,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="flex flex-col w-[250px] px-4 text-white py-10 h-screen bg-primary">
+    <div className="flex flex-col w-[250px] px-4 text-white py-10 sticky top-0 h-screen bg-primary">
       <div className="mb-8">
         <Image
           priority={true}
