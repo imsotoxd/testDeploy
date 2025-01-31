@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useUserStore } from "@/store/user.store";
+import { BasicUserInfo } from "@/types/user.type";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -28,22 +29,43 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (LoginData: LoginSchemaType) => {
-    const { message, wasValid, data } = await handleLogin(LoginData);
-    if (!wasValid)
+    const response = await handleLogin(LoginData);
+
+    if (!response.wasValid) {
       return Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: message,
+        text: response.message,
         confirmButtonColor: "var(--primary)",
       });
+    }
+
+    if (!response.data) {
+      return Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se recibieron datos del usuario",
+        confirmButtonColor: "var(--primary)",
+      });
+    }
+
+    const userData: BasicUserInfo = {
+      id: response.data.id,
+      firstname: response.data.firstname,
+      lastname: response.data.lastname,
+      email: response.data.email,
+      nameCompany: response.data.nameCompany,
+      businessArea: response.data.businessArea,
+    };
 
     Swal.fire({
       icon: "success",
       title: "Bienvenido",
-      text: message,
+      text: response.message,
       confirmButtonColor: "var(--primary)",
     });
-    setData(data);
+
+    setData(userData);
     router.push("/dashboard");
   };
 

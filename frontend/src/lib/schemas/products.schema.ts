@@ -9,7 +9,9 @@ export const ProductSchema = z
   .object({
     name: z.string().nonempty("Nombre requerido"),
     description: z.string().nonempty("Descripción requerida"),
-    categoryId: z.string() /* .refine((val) => validIds.includes(val), {
+    categoryId: z.string() /* .refine((val) => {
+    return validIds.includes(val)
+  }, {
     message: "Categoria no valida"
   }) */,
     expirationDate: z
@@ -56,6 +58,7 @@ export const ProductSchema = z
       .refine((value) => !isNaN(value) && value > 0, {
         message: "Cantidad mínima debe ser un número entero mayor a 0",
       }),
+    userId: z.string().optional(),
   })
   .refine((data) => data.finalPrice > data.costPrice, {
     message: "Precio de venta muy bajo",

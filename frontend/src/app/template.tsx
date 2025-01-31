@@ -1,6 +1,6 @@
 "use client";
 import { getQueryClient } from "@/lib/tanstack/queryClient";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 
 const queryClient = getQueryClient();

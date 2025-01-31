@@ -1,10 +1,8 @@
-const {
-  API_URL
-} = process.env
+const { API_URL } = process.env;
 
 export const getDatabaseConfig = {
-  API_URL
-}
+  API_URL,
+};
 
 export interface LoginProps {
   email: string;
@@ -19,8 +17,8 @@ export interface RegisterProps {
   birthdate: string;
 }
 
-export interface ApiResponse {
+export interface ApiResponse<T = void> {
   wasValid: boolean;
   message: string;
-  data?: any;
+  data?: T;
 }

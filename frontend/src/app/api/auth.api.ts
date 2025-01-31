@@ -1,8 +1,9 @@
 "use server";
 import { cookies } from "next/headers";
-import { API, logoutHandler } from ".";
+import { API } from ".";
 import { useUserStore } from "@/store/user.store";
 import { ApiResponse, LoginProps, RegisterProps } from "./config";
+import { AxiosError } from "axios";
 
 export interface LoginResponse {
   message: string;
@@ -15,11 +16,18 @@ export interface User {
   firstname: string;
   lastname: string;
   email: string;
+  nameCompany: string;
+  businessArea: string;
+}
+
+export interface ErrorResponse {
+  message: string;
+  statusCode?: number;
 }
 
 export const handleLogin = async (
   dataLogin: LoginProps
-): Promise<ApiResponse> => {
+): Promise<ApiResponse<User>> => {
   try {
     const { data } = await API.post<LoginResponse>("/users/login", dataLogin);
     const cookieOptions = {
@@ -37,10 +45,11 @@ export const handleLogin = async (
       message: data.message,
       data: data.user,
     };
-  } catch (error: any) {
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
     const errorMessage =
-      error.response?.data?.message ||
-      error.message ||
+      axiosError.response?.data?.message ||
+      axiosError.message ||
       "Error Obteniendo Productos";
     return {
       wasValid: false,
@@ -59,18 +68,19 @@ export const handleRegister = async (
       wasValid: true,
       message: "¡Usuario registrado exitosamente!",
     };
-  } catch (error: any) {
-    if (error.response?.status === 409) {
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+
+    if (axiosError.response?.status === 409) {
       return {
         wasValid: false,
         message: "Ya existe una cuenta con ese correo electrónico.",
       };
     }
-
     return {
       wasValid: false,
       message:
-        error.response?.data?.message ||
+        axiosError.response?.data?.message ||
         "Hubo un error al registrar el usuario.",
     };
   }
@@ -86,18 +96,18 @@ export const handleLogout = async (): Promise<ApiResponse> => {
     const { delData } = useUserStore.getState();
     delData();
 
-    logoutHandler();
-
     return {
       wasValid: true,
       message: "¡Sesión cerrada exitosamente!",
     };
-  } catch (error: any) {
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
     return {
       wasValid: false,
       message:
-        error.response?.data?.message ||
+        axiosError.response?.data?.message ||
         "Hubo un error al intentar cerrar la sesión.",
     };
   }
 };
+
