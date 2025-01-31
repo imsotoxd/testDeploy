@@ -1,7 +1,6 @@
 "use client";
 
-import { deleteProduct } from "@/app/api/product.api";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useProducts } from "@/hooks/useProduct";
 import Swal from "sweetalert2";
 
 interface DeleteProps {
@@ -11,28 +10,8 @@ interface DeleteProps {
 }
 
 function ProductDelete({ productID, closeModal, productName }: DeleteProps) {
-  const qc = useQueryClient();
+  const { deleteError, deleteProduct, isDeleting } = useProducts();
 
-  const { mutateAsync } = useMutation({
-    mutationFn: (id: string) => deleteProduct(id),
-    onSuccess: async (res) => {
-      await qc.invalidateQueries({ queryKey: ["products", productID] });
-      Swal.fire({
-        title: "Producto eliminado",
-        text: res.message,
-        icon: "success",
-        confirmButtonColor: "var(--primary)",
-      });
-    },
-    onError: (error: any) => {
-      Swal.fire({
-        title: "Error al eliminar",
-        text: error.response.data.message,
-        icon: "error",
-        confirmButtonColor: "var(--primary)",
-      });
-    },
-  });
   const handleDelete = () => {
     Swal.fire({
       title: "Eliminar producto",
@@ -44,15 +23,31 @@ function ProductDelete({ productID, closeModal, productName }: DeleteProps) {
       confirmButtonColor: "var(--primary)",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await mutateAsync(productID);
+        deleteProduct(productID);
+        if (deleteError) {
+          return Swal.fire({
+            title: "Error",
+            text: deleteError.error,
+            icon: "error",
+            confirmButtonColor: "var(--primary)",
+          });
+        }
         closeModal();
+        return Swal.fire({
+          title: "Eliminado",
+          text: "El producto ha sido eliminado",
+          icon: "success",
+          confirmButtonColor: "var(--primary)",
+        });
       }
     });
   };
+
   return (
     <>
       <button
         onClick={handleDelete}
+        disabled={isDeleting}
         className="btn-sm w-full btn btn-ghost rounded-none flex items-center justify-between"
       >
         <span>Eliminar</span>

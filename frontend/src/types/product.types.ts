@@ -1,3 +1,4 @@
+
 export interface ProductsResponse {
   Category: {
     name: string
@@ -22,13 +23,12 @@ export interface ProductsResponse {
 // Server action return types
 export type QueriesResponse = {
   data: ProductsResponse[];
-  pagination: {
+  pagination?: {
     currentPage: number;
     totalPages: number;
   } | null;
   error?: string;
 };
-
 
 // For single contact queries
 export type SingleQueryResponse = {

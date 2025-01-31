@@ -44,7 +44,7 @@ export const postProduct = async (
   } catch (error: any) {
     return {
       success: false,
-      error: error.response.data.message || error.message,
+      error: error.response.data.errors[0].msg || error.message,
     };
   }
 };
@@ -56,7 +56,7 @@ export const deleteProduct = async (id: string): Promise<MutationResponse> => {
   } catch (error: any) {
     return {
       success: false,
-      error: error.response.data.message || error.message,
+      error: error.response.data.errors[0].msg || error.message,
     };
   }
 };
@@ -65,12 +65,12 @@ export const putProduct = async (
   product: ProductsResponse
 ): Promise<MutationResponse> => {
   try {
-    const { data } = await API.put(`/products/update`, product);
+    const { data } = await API.put(`/products/update/` + product.id, product);
     return { success: true, data };
   } catch (error: any) {
     return {
       success: false,
-      error: error.response.data.message || error.message,
+      error: error.response.data.errors[0].msg || error.message,
     };
   }
 };

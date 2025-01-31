@@ -22,6 +22,7 @@ export function useProducts() {
     hasPreviousPage,
     isLoading,
     error,
+    isFetching,
   } = useInfiniteQuery<QueriesResponse>({
     queryKey: ["infinityProducts"],
     queryFn: ({ pageParam = 1 }) => getAllProducts(Number(pageParam)),
@@ -61,6 +62,7 @@ export function useProducts() {
     fetchNextPage,
     hasNextPage,
     hasPreviousPage,
+    isFetching,
 
     createProduct: addProductQuery.mutate,
     updateProduct: updateProductQuery.mutate,
@@ -70,8 +72,8 @@ export function useProducts() {
     isUpdating: updateProductQuery.isPending,
     isDeleting: deleteProductQuery.isPending,
 
-    hasCreated: addProductQuery.isSuccess,
-    hasUpdated: updateProductQuery.isSuccess,
-    hasDeleted: deleteProductQuery.isSuccess,
+    updateError: updateProductQuery.data,
+    deleteError: deleteProductQuery.data,
+    createError: addProductQuery.data,
   };
 }

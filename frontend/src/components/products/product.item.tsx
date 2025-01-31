@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, Variants } from "framer-motion";
 import { FC, useRef, useState } from "react";
 import ProductEdit from "./product.edit";
 import ProductDelete from "./product.delete";
@@ -56,7 +56,7 @@ const ProductItem: FC<ProductoProps> = ({
   };
 
   return (
-    <li className="relative">
+    <div className="relative">
       <div ref={containerRef} onClick={handleOptions} className={statusClass}>
         <span
           title={data.name}
@@ -111,7 +111,7 @@ const ProductItem: FC<ProductoProps> = ({
           </motion.div>
         )}
       </AnimatePresence>
-    </li>
+    </div>
   );
 };
 

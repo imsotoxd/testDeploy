@@ -1,27 +1,19 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
+
 import ProductoModal from "./product.modal";
-import { getAllCategories } from "@/app/api/categories.api";
-import { Categorie } from "@/types/categories.type";
 import { ChangeEvent, useEffect, useState } from "react";
-import { useCategoriesStore, useFilterProduct } from "@/store/product.store";
+import { useFilterProduct } from "@/store/product.store";
 import { useDebounce } from "use-debounce";
+import { useCategories } from "@/hooks/useCategories";
 
 function ProductFilter() {
-  const { data, isError, isLoading, error } = useQuery<CategoriesResponse>({
-    queryKey: ["categories"],
-    queryFn: getAllCategories,
-    refetchOnWindowFocus: false,
-  });
+  const { categoriesData, categoriesError, isFetchingCategorie } =
+    useCategories();
 
-  const { setData } = useCategoriesStore();
-  const { setFilter, cleanFilter } = useFilterProduct();
-  const [selectValue, setSelectValue] = useState<string>("0");
+  const { setFilter, cleanFilter, filter } = useFilterProduct();
+  const [selectValue, setSelectValue] = useState<string>(filter);
   const [inputValue, setInputValue] = useState<string>("");
   const [debouncedInputValue] = useDebounce(inputValue, 600);
-
-  if (isLoading) return <p>Loading...</p>;
-  if (isError && !data) return <p>{error.message}</p>;
 
   const handleChangeSelect = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectValue(event.target.value);
@@ -37,10 +29,6 @@ function ProductFilter() {
     setInputValue("");
     setSelectValue("");
   };
-
-  useEffect(() => {
-    if (data) setData(data.data);
-  }, [data]);
 
   useEffect(() => {
     setFilter(debouncedInputValue);
@@ -74,21 +62,32 @@ function ProductFilter() {
             value={selectValue}
             className="select select-bordered bg-primary text-white"
           >
-            <option className="bg-white text-primary" value="0" disabled>
-              Categoria
-            </option>
-            <option className="bg-white text-primary" value="">
-              Todos
-            </option>
-            {data?.data.map((categoria, index) => (
-              <option
-                className="bg-white text-primary"
-                value={categoria.id}
-                key={index}
-              >
-                {categoria.name}
+            {isFetchingCategorie && (
+              <option className="bg-white text-primary" value="" disabled>
+                Cargando...
               </option>
-            ))}
+            )}
+            {categoriesError && (
+              <option className="bg-white text-primary" value="" disabled>
+                Error loading categories
+              </option>
+            )}
+            {categoriesData && (
+              <>
+                <option className="bg-white text-primary" value="" disabled>
+                  Categoria
+                </option>
+                {categoriesData?.map((categoria, index) => (
+                  <option
+                    className="bg-white text-primary"
+                    value={categoria.id}
+                    key={index}
+                  >
+                    {categoria.name}
+                  </option>
+                ))}
+              </>
+            )}
           </select>
           <button
             onClick={handleClean}
@@ -109,7 +108,3 @@ function ProductFilter() {
 }
 
 export default ProductFilter;
-
-export interface CategoriesResponse {
-  data: Categorie[];
-}
