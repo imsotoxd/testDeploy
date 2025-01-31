@@ -4,8 +4,9 @@ import { getDatabaseConfig } from "./config";
 import { cookies } from "next/headers";
 
 const jwt = cookies().get("authToken");
-
 const { API_URL } = getDatabaseConfig;
+
+let isLoggedOut = false;
 
 export const API = axios.create({
   baseURL: API_URL,
@@ -16,8 +17,9 @@ export const API = axios.create({
 
 API.interceptors.request.use(
   (config) => {
-    if (jwt) {
+    if (!isLoggedOut && jwt) {
       const value = jwt.value;
+      console.log("token", value);
       config.headers.Authorization = `Bearer ${value}`;
     }
     return config;
@@ -27,3 +29,6 @@ API.interceptors.request.use(
   }
 );
 
+export const logoutHandler = () => {
+  isLoggedOut = true;
+};

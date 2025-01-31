@@ -1,6 +1,6 @@
 "use server";
 import { cookies } from "next/headers";
-import { API } from ".";
+import { API, logoutHandler } from ".";
 import { useUserStore } from "@/store/user.store";
 import { ApiResponse, LoginProps, RegisterProps } from "./config";
 
@@ -16,7 +16,6 @@ export interface User {
   lastname: string;
   email: string;
 }
-
 
 export const handleLogin = async (
   dataLogin: LoginProps
@@ -36,13 +35,16 @@ export const handleLogin = async (
     return {
       wasValid: true,
       message: data.message,
-      data: data.user
+      data: data.user,
     };
   } catch (error: any) {
-    const errorMessage = error.response?.data?.message || error.message || "Error Obteniendo Productos"
+    const errorMessage =
+      error.response?.data?.message ||
+      error.message ||
+      "Error Obteniendo Productos";
     return {
       wasValid: false,
-      message: errorMessage
+      message: errorMessage,
     };
   }
 };
@@ -83,6 +85,8 @@ export const handleLogout = async (): Promise<ApiResponse> => {
 
     const { delData } = useUserStore.getState();
     delData();
+
+    logoutHandler();
 
     return {
       wasValid: true,
