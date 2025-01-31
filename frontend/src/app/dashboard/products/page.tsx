@@ -11,7 +11,7 @@ async function LandingPage() {
 
   return (
     <div
-      style={{ height: "calc(100vh - 300px)" }}
+      // style={{ height: "calc(100vh - 300px)" }}
       className="max-w-4xl mx-auto"
     >
       <HydrationBoundary state={dehydratedState}>

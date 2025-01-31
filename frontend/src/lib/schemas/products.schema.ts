@@ -2,6 +2,7 @@
 import { useCategoriesStore } from '@/store/product.store';
 import { z } from 'zod'
 
+
 const { data } = useCategoriesStore.getState()
 
 const validIds = data.map(item => item.id);
