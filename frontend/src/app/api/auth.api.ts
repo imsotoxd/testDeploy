@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 import { cookies } from "next/headers";
 import { API } from ".";
@@ -17,7 +18,6 @@ export interface User {
   email: string;
 }
 
-
 export const handleLogin = async (
   dataLogin: LoginProps
 ): Promise<ApiResponse> => {
@@ -36,13 +36,16 @@ export const handleLogin = async (
     return {
       wasValid: true,
       message: data.message,
-      data: data.user
+      data: data.user,
     };
   } catch (error: any) {
-    const errorMessage = error.response?.data?.message || error.message || "Error Obteniendo Productos"
+    const errorMessage =
+      error.response?.data?.message ||
+      error.message ||
+      "Error Obteniendo Productos";
     return {
       wasValid: false,
-      message: errorMessage
+      message: errorMessage,
     };
   }
 };

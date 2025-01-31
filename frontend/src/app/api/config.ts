@@ -1,10 +1,9 @@
-const {
-  API_URL
-} = process.env
+/* eslint-disable @typescript-eslint/no-explicit-any */
+const { API_URL } = process.env;
 
 export const getDatabaseConfig = {
-  API_URL
-}
+  API_URL,
+};
 
 export interface LoginProps {
   email: string;
