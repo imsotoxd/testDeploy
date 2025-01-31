@@ -19,7 +19,7 @@ API.interceptors.request.use(
   (config) => {
     if (!isLoggedOut && jwt) {
       const value = jwt.value;
-      console.log("token", value);
+
       config.headers.Authorization = `Bearer ${value}`;
     }
     return config;

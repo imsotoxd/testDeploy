@@ -1,4 +1,4 @@
-"use client";
+/* "use client";
 
 import { Doughnut } from "react-chartjs-2";
 import {
@@ -96,12 +96,19 @@ export default function MostSellChart() {
         textAlign: "center" as const,
         listeners: {
           enter: (context: any) => {
-            context.element.$context.element.options.backgroundColor =
-              "#005599";
+            if (context.chart) {
+              context.chart.tooltip.setActiveElements(
+                [{ datasetIndex: context.datasetIndex, index: context.index }],
+                { x: context.element.x, y: context.element.y }
+              );
+              context.chart.update();
+            }
           },
           leave: (context: any) => {
-            context.element.$context.element.options.backgroundColor =
-              context.dataset.backgroundColor[context.dataIndex];
+            if (context.chart) {
+              context.chart.tooltip.setActiveElements([], { x: 0, y: 0 });
+              context.chart.update();
+            }
           },
         },
       },
@@ -119,3 +126,18 @@ export default function MostSellChart() {
     </div>
   );
 }
+ */
+
+//!
+
+import React from "react";
+
+const MostSellChart = () => {
+  return (
+    <div>
+      <p>Grafico</p>
+    </div>
+  );
+};
+
+export default MostSellChart;
