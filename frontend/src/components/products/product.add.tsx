@@ -9,6 +9,7 @@ import { useCategoriesStore } from "@/store/product.store";
 import Swal from "sweetalert2";
 import { useUserStore } from "@/store/user.store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useProducts } from "@/hooks/useProduct";
 
 interface Props {
   close: () => void;
@@ -28,22 +29,30 @@ function ProductAdd({ close }: Props) {
   const { data } = useCategoriesStore();
   const { data: userData } = useUserStore();
 
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: (data: ProductSchema) => postProduct(data, userData?.id),
-    mutationKey: ["products"],
-    onSuccess: async ({ message, wasValid, data, errors }) => {
-      Swal.fire({
-        title: wasValid ? "Producto agregado" : "Error al agregar",
-        text: message || errors?.[0]?.msg || "Error desconocido",
-        icon: wasValid ? "success" : "error",
-        confirmButtonColor: "var(--primary)",
-      });
+  const { createProduct, isCreating, error } = useProducts();
+
+  const handleSave: SubmitHandler<ProductSchema> = (data) => {
+    createProduct({ ...data, userId: userData?.id });
+    if (!error) {
       qc.invalidateQueries({ queryKey: ["products"] });
-      wasValid && close();
-    },
-  });
-  const handleSave: SubmitHandler<ProductSchema> = async (data) => {
-    await mutateAsync(data);
+      Swal.fire({
+        icon: "success",
+        title: "Producto agregado",
+        html: "<small>Producto agregado</small>",
+        showConfirmButton: false,
+        timer: 3000,
+        toast: true,
+        position: "bottom-end",
+        timerProgressBar: true,
+      });
+      close();
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.message,
+      });
+    }
   };
 
   return (
@@ -151,7 +160,7 @@ function ProductAdd({ close }: Props) {
         />
         <div className="col-span-8 mt-5 mx-auto grid border place-content-center">
           <button
-            disabled={isPending}
+            disabled={isCreating}
             type="submit"
             className="btn btn-primary"
           >
