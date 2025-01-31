@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { FC, useRef, useState } from "react";
 import ProductEdit from "./product.edit";
 import ProductDelete from "./product.delete";

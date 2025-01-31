@@ -42,13 +42,13 @@ function ProductEdit({ product, closeModal }: EditProps) {
   const { categoriesData } = useCategories();
   const { data: userData } = useUserStore();
 
-  const { updateProduct, isUpdating, updateError, error } = useProducts();
+  const { updateProduct, isUpdating, updateError } = useProducts();
 
   const handleSave: SubmitHandler<OptionalProductSchema> = async (data) => {
     const fulldata: ProductsResponse = {
       ...product,
       ...data,
-      userId: userData?.id!,
+      userId: userData?.id ?? "",
     };
     updateProduct(fulldata);
     if (updateError) {

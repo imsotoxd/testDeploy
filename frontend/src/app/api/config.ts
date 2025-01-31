@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 const { API_URL } = process.env;
 
 export const getDatabaseConfig = {
@@ -18,8 +17,8 @@ export interface RegisterProps {
   birthdate: string;
 }
 
-export interface ApiResponse {
+export interface ApiResponse<T = void> {
   wasValid: boolean;
   message: string;
-  data?: any;
+  data?: T;
 }

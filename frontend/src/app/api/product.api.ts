@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 import { ProductSchema } from "@/lib/schemas/products.schema";
 import { API } from ".";
@@ -8,6 +7,14 @@ import {
   ProductsResponse,
   QueriesResponse,
 } from "@/types/product.types";
+import { AxiosError } from "axios";
+
+interface ProductErrorResponse {
+  message?: string;
+  errors?: Array<{
+    msg: string;
+  }>;
+}
 
 export const getAllProducts = async (
   pageParam: number
@@ -23,11 +30,12 @@ export const getAllProducts = async (
         totalPages: data.totalPages,
       },
     };
-  } catch (error: any) {
+  } catch (error) {
+    const axiosError = error as AxiosError<ProductErrorResponse>;
     return {
       data: [],
       pagination: null,
-      error: error.response?.data?.message || error.message,
+      error: axiosError.response?.data?.message || axiosError.message,
     };
   }
 };
@@ -42,10 +50,11 @@ export const postProduct = async (
   try {
     const { data } = await API.post("/products", newProduct);
     return { success: true, data };
-  } catch (error: any) {
+  } catch (error) {
+    const axiosError = error as AxiosError<ProductErrorResponse>;
     return {
       success: false,
-      error: error.response.data.errors[0].msg || error.message,
+      error: axiosError.response?.data?.errors?.[0]?.msg || axiosError.message,
     };
   }
 };
@@ -54,10 +63,11 @@ export const deleteProduct = async (id: string): Promise<MutationResponse> => {
   try {
     const { data } = await API.delete(`/products/delete/${id}`);
     return { success: true, data };
-  } catch (error: any) {
+  } catch (error) {
+    const axiosError = error as AxiosError<ProductErrorResponse>;
     return {
       success: false,
-      error: error.response.data.errors[0].msg || error.message,
+      error: axiosError.response?.data?.errors?.[0]?.msg || axiosError.message,
     };
   }
 };
@@ -68,14 +78,14 @@ export const putProduct = async (
   try {
     const { data } = await API.put(`/products/update/` + product.id, product);
     return { success: true, data };
-  } catch (error: any) {
+  } catch (error) {
+    const axiosError = error as AxiosError<ProductErrorResponse>;
     return {
       success: false,
-      error: error.response.data.errors[0].msg || error.message,
+      error: axiosError.response?.data?.errors?.[0]?.msg || axiosError.message,
     };
   }
 };
-
 const fetchProductsByFilter = async (filter: string) => {
   try {
     const { data } = await API.get(`/product/query?filter[${filter}]=10`);

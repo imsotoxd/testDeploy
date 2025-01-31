@@ -6,7 +6,6 @@ import Link from "next/link";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState("#hero");
 
   const navItems = [
     { name: "Inicio", href: "#hero" },
@@ -32,12 +31,7 @@ const Navbar = () => {
 
       <div className="hidden lg:flex lg:justify-center lg:items-center space-x-2">
         {navItems.map((item) => (
-          <Link
-            key={item.name}
-            href={item.href}
-            onClick={() => setActiveItem(item.href)}
-            className="btn btn-ghost"
-          >
+          <Link key={item.name} href={item.href} className="btn btn-ghost">
             {item.name}
           </Link>
         ))}

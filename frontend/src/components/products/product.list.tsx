@@ -31,7 +31,7 @@ const itemVarians: Variants = {
 
 export function ProductList() {
   const [isVisible, setIsVisible] = useState<string | null>(null);
-  const [hasMounted, setHasMounted] = useState(false);
+  const [, setHasMounted] = useState(false);
   const openModal = (code: string) => {
     setIsVisible(code);
   };
