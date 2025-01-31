@@ -1,9 +1,10 @@
-
 import axios from "axios";
 import { getDatabaseConfig } from "./config";
 import { cookies } from "next/headers";
 
-const jwt = cookies().get("authToken");
+export const getAuthToken = () => {
+  return cookies().get("authToken")?.value;
+};
 
 const { API_URL } = getDatabaseConfig;
 
@@ -16,17 +17,14 @@ export const API = axios.create({
 
 API.interceptors.request.use(
   (config) => {
-    if (jwt) {
-      const value = jwt.value;
-      config.headers.Authorization = `Bearer ${value}`;
+    const token = getAuthToken(); // Obtener el token dentro de cada request
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
-
 
 API.interceptors.response.use(
   (response) => {
