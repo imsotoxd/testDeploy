@@ -1,12 +1,14 @@
+import WidgetsCards from "@/components/dashboard/main/WidgetsCards";
+import React from "react";
+import MostSellChart from "@/components/dashboard/main/MostSellChart";
 
-function DashBoardPage() {
+const Page = () => {
   return (
     <div>
-      <span>dashboard page</span>
-      <button className="btn btn-neutral">Button</button>
-
+      <WidgetsCards />
+      <MostSellChart />
     </div>
-  )
-}
+  );
+};
 
-export default DashBoardPage
+export default Page;

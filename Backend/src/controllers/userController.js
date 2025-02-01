@@ -12,39 +12,38 @@ import { generateAuthToken } from '../utils/jwt.js';
 
 export const registerUser = async (req, res) => {
   try {
-    const { firstname, lastname, email, password, birthdate } = req.body;
+    const { firstname, lastname, email, password, birthdate, nameCompany, businessArea } = req.body;
 
     const newUser = await createUser(
       firstname,
       lastname,
       email,
       password,
-      birthdate
+      birthdate,
+      nameCompany,
+      businessArea
     );
 
-    res
-      .status(201)
-      .json({ message: 'User created successfully', user: newUser });
+    res.status(201).json({ message: 'Usuario creado con éxito', user: newUser });
   } catch (error) {
-    if (error.message === 'Email already registered') {
+    if (error.message === 'El correo ya está registrado') {
       return res.status(409).json({
-        message:
-          'The email is already registered. Please use a different email.',
+        message: 'El correo ya está registrado. Por favor, utiliza otro correo.',
       });
     }
     if (error.name === 'ValidationError') {
       return res.status(422).json({
-        message: 'Validation error',
+        message: 'Error de validación',
         errors: error.errors,
       });
     }
-    // Manejo de errores desconocidos
-    console.error('Error in registerUser:', error);
+    console.error('Error en registerUser:', error);
     res.status(500).json({
-      message: 'Internal server error',
+      message: 'Error interno del servidor',
     });
   }
 };
+
 
 export const loginUserController = async (req, res) => {
   try {
@@ -65,6 +64,8 @@ export const loginUserController = async (req, res) => {
         firstname: user.firstname,
         lastname: user.lastname,
         email: user.email,
+        nameCompany: user.nameCompany,
+        businessArea: user.businessArea
       },
     });
   } catch (error) {
@@ -74,10 +75,11 @@ export const loginUserController = async (req, res) => {
         errors: error.errors,
       });
     }
-    // Manejo de errores desconocidos
-    console.error('Error in loginUserController:', error);
-    res.status(500).json({
-      message: 'Internal server error',
+    const statusCode = error.statusCode || 500;
+    const message = error.message || 'Error interno del servidor';
+    res.status(statusCode).json({
+      success: false,
+      message: message,
     });
   }
 };
@@ -86,10 +88,10 @@ export const logoutUserController = async (req, res) => {
   try {
     const userId = req.userId;
     await logoutUserService(userId); // Llamar al servicio de logout
-    res.status(200).json({ message: 'Logout successful' });
+    res.status(200).json({ message: 'Cierre de sesión exitoso' });
   } catch (error) {
     console.error('Error in logoutUserController:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
 
@@ -127,7 +129,8 @@ export const getUserById = async (req, res) => {
 export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstname, lastname, email, password, birthdate } = req.body;
+    const { firstname, lastname, email, password, birthdate, nameCompany,
+  businessArea } = req.body;
 
     // Realizar la actualización
     const updated = await updateUserService(
@@ -136,7 +139,9 @@ export const updateUser = async (req, res) => {
       lastname,
       email,
       password,
-      birthdate
+      birthdate,
+      nameCompany,
+      businessArea,
     );
 
     if (!updated) {
@@ -144,7 +149,9 @@ export const updateUser = async (req, res) => {
         .status(404)
         .json({ message: 'Usuario no encontrado para actualizar' });
     }
-    res.status(200).json({ message: 'Usuario actualizado correctamente', updated });
+    res
+      .status(200)
+      .json({ message: 'Usuario actualizado correctamente', updated });
   } catch (error) {
     if (error.name === 'ValidationError') {
       return res.status(422).json({

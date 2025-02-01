@@ -16,36 +16,86 @@ import deleteUser from './paths/user/deleteUser.js';
 import restoreUser from './paths/user/restoreUser.js';
 import logoutUser from './paths/user/logoutUser.js';
 
-const swaggerSpec = {
-    openapi: '3.0.0',
-    info,
-    servers,
-    paths: {
-        // Users
-        '/users/register': UserRegisterP,
-        '/users/login': UserLoginP,
-        '/users/logout': logoutUser,
-        '/users': getAllUsers,
-        '/users/{id}': getUserById,
-        '/users/update/{id}': updateUser,
-        '/users/delete/{id}': deleteUser,
-        '/users/restore/{id}': restoreUser,
+// Category
+import CategoryDelete from './components/schemas/categories/CategoryDelete.js';
+import CategoryInput from './components/schemas/categories/CategoryInput.js';
+import CategoryOutput from './components/schemas/categories/CategoryOutput.js';
+import CategoryUpdate from './components/schemas/categories/CategoryUpdate.js';
+import createCategory from './paths/categories/createCategory.js';
+import getAllCategories from './paths/categories/getAllCategories.js';
+import getCategoryById from './paths/categories/getCategoryById.js';
+import updateCategory from './paths/categories/updateCategory.js';
+import deleteCategory from './paths/categories/deleteCategory.js';
+import bulkCreateCategories from './paths/categories/bulkCreateCategories.js';
+import createDefaultCategories from './paths/categories/createDefaultCategories.js';
 
+// Product
+import ProductInput from './components/schemas/products/ProductInput.js';
+import ProductOutput from './components/schemas/products/ProductOutput.js';
+import ProductUpdate from './components/schemas/products/ProductUpdate.js';
+import createProduct from './paths/products/createProduct.js';
+import getAllProducts from './paths/products/getAllProducts.js';
+import getProductById from './paths/products/getProductById.js';
+import updateProduct from './paths/products/updateProduct.js';
+import deleteProduct from './paths/products/deleteProduct.js';
+import restoreProduct from './paths/products/restoreProduct.js';
+import queryProducts from './paths/products/queryProducts.js';
+
+const swaggerSpec = {
+  openapi: '3.0.0',
+  info,
+  servers,
+  paths: {
+    // Users
+    '/users/register': UserRegisterP,
+    '/users/login': UserLoginP,
+    '/users/logout': logoutUser,
+    '/users': getAllUsers,
+    '/users/{id}': getUserById,
+    '/users/update/{id}': updateUser,
+    '/users/delete/{id}': deleteUser,
+    '/users/restore/{id}': restoreUser,
+    // Categories
+    '/categories': createCategory,
+    '/categories/bulk': bulkCreateCategories,
+    '/categories/defaults': createDefaultCategories,
+    '/categories/all': getAllCategories,
+    '/categories/{id}': getCategoryById,
+    '/categories/update/{id}': updateCategory,
+    '/categories/delete/{id}': deleteCategory,
+    // Products
+    '/products': createProduct,
+    '/products/all': getAllProducts,
+    '/products/{id}': getProductById,
+    '/products/update/{id}': updateProduct,
+    '/products/delete/{id}': deleteProduct,
+    '/products/restore/{id}': restoreProduct,
+    '/product/query': queryProducts,
+  },
+  components: {
+    schemas: {
+      // User
+      User,
+      UserLogin,
+      UserRegister,
+      // Category
+      CategoryInput,
+      CategoryOutput,
+      CategoryUpdate,
+      CategoryDelete,
+      // Product
+      ProductInput,
+      ProductOutput,
+      ProductUpdate,
     },
-    components: {
-        schemas: {
-            User,
-            UserLogin,
-            UserRegister,
-        },
-        securitySchemes: {
-            BearerAuth: {
-                type: 'http',
-                scheme: 'bearer',
-                bearerFormat: 'JWT',
-            }
-        }
-    }
+    securitySchemes: {
+      BearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+    },
+  },
 };
 
 export default swaggerSpec;

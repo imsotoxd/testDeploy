@@ -9,11 +9,13 @@ import { handleLogin } from "@/app/api/auth.api";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useUserStore } from "@/store/user.store";
+import { BasicUserInfo } from "@/types/user.type";
 
 const LoginForm = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-
+  const { setData } = useUserStore();
   const {
     register,
     handleSubmit,
@@ -26,22 +28,44 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = async (data: LoginSchemaType) => {
-    const { message, wasValid } = await handleLogin(data);
-    if (!wasValid)
+  const onSubmit = async (LoginData: LoginSchemaType) => {
+    const response = await handleLogin(LoginData);
+
+    if (!response.wasValid) {
       return Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: message,
+        text: response.message,
         confirmButtonColor: "var(--primary)",
       });
+    }
+
+    if (!response.data) {
+      return Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se recibieron datos del usuario",
+        confirmButtonColor: "var(--primary)",
+      });
+    }
+
+    const userData: BasicUserInfo = {
+      id: response.data.id,
+      firstname: response.data.firstname,
+      lastname: response.data.lastname,
+      email: response.data.email,
+      nameCompany: response.data.nameCompany,
+      businessArea: response.data.businessArea,
+    };
 
     Swal.fire({
       icon: "success",
       title: "Bienvenido",
-      text: message,
+      text: response.message,
       confirmButtonColor: "var(--primary)",
     });
+
+    setData(userData);
     router.push("/dashboard");
   };
 
@@ -56,7 +80,7 @@ const LoginForm = () => {
       >
         <div className="flex flex-col">
           <input
-            className=" border-[1px] h-14 border-primary  rounded-xl p-2 "
+            className=" border-[1px] h-12 border-primary  rounded-xl p-2 "
             type="email"
             placeholder="Email"
             {...register("email")}
@@ -68,7 +92,7 @@ const LoginForm = () => {
 
         <div className="relative flex flex-col">
           <input
-            className="border-[1px] h-14 rounded-xl border-primary p-2 pr-10"
+            className="border-[1px] h-12 rounded-xl border-primary p-2 pr-10"
             type={showPassword ? "text" : "password"}
             placeholder="Contraseña"
             {...register("password")}

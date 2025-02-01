@@ -1,55 +1,66 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 import { cookies } from "next/headers";
 import { API } from ".";
+import { useUserStore } from "@/store/user.store";
+import { ApiResponse, LoginProps, RegisterProps } from "./config";
+import { AxiosError } from "axios";
 
-interface LoginProps {
-  email: string;
-  password: string;
+export interface LoginResponse {
+  message: string;
+  token: string;
+  user: User;
 }
 
-interface RegisterProps {
+export interface User {
+  id: string;
   firstname: string;
   lastname: string;
   email: string;
-  password: string;
-  birthdate: string;
+  nameCompany: string;
+  businessArea: string;
 }
 
-interface LoginResponse {
-  wasValid: boolean;
+export interface ErrorResponse {
   message: string;
+  statusCode?: number;
 }
 
 export const handleLogin = async (
   dataLogin: LoginProps
-): Promise<LoginResponse> => {
+): Promise<ApiResponse<User>> => {
   try {
-    const { data } = await API.post("/users/login", dataLogin);
+    const { data } = await API.post<LoginResponse>("/users/login", dataLogin);
     const cookieOptions = {
       path: "/",
       domain: "localhost",
       httpOnly: true,
       secure: false,
-      maxAge: 60 * 60,
+      maxAge: 60 * 60 * 24,
     };
     const token = data.token;
     cookies().set("authToken", token, cookieOptions);
+
     return {
       wasValid: true,
       message: data.message,
+      data: data.user,
     };
-  } catch (error: any) {
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    const errorMessage =
+      axiosError.response?.data?.message ||
+      axiosError.message ||
+      "Error Obteniendo Productos";
     return {
       wasValid: false,
-      message: error.response.data.message,
+      message: errorMessage,
     };
   }
 };
 
 export const handleRegister = async (
   dataRegister: RegisterProps
-): Promise<LoginResponse> => {
+): Promise<ApiResponse> => {
   try {
     await API.post("/users/register", dataRegister);
 
@@ -57,19 +68,46 @@ export const handleRegister = async (
       wasValid: true,
       message: "¡Usuario registrado exitosamente!",
     };
-  } catch (error: any) {
-    if (error.response?.status === 409) {
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+
+    if (axiosError.response?.status === 409) {
       return {
         wasValid: false,
         message: "Ya existe una cuenta con ese correo electrónico.",
       };
     }
-
     return {
       wasValid: false,
       message:
-        error.response?.data?.message ||
+        axiosError.response?.data?.message ||
         "Hubo un error al registrar el usuario.",
     };
   }
 };
+
+export const handleLogout = async (): Promise<ApiResponse> => {
+  try {
+    await API.post("/users/logout");
+
+    const cookieStore = cookies();
+    cookieStore.delete("authToken");
+
+    const { delData } = useUserStore.getState();
+    delData();
+
+    return {
+      wasValid: true,
+      message: "¡Sesión cerrada exitosamente!",
+    };
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    return {
+      wasValid: false,
+      message:
+        axiosError.response?.data?.message ||
+        "Hubo un error al intentar cerrar la sesión.",
+    };
+  }
+};
+

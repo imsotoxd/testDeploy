@@ -10,12 +10,12 @@ const User = {
         },
         firstname: {
             type: "string",
-            description: "Nombre de usuario",
+            description: "Nombre del usuario",
             example: "john"
         },
         lastname: {
             type: "string",
-            description: "Apellido de usuario",
+            description: "Apellido del usuario",
             example: "doe"
         },
         email: {
@@ -34,6 +34,17 @@ const User = {
             description: "Contraseña del usuario",
             example: "P@ssw0rd123"
         },
+        nameCompany: {
+            type: "string",
+            description: "Nombre de la empresa",
+            example: "Tech Innovators Inc."
+        },
+        businessArea: {
+            type: "string",
+            description: "Área de negocio del usuario",
+            example: "Tecnología",
+            enum: ["Alimentos y bebidas", "Bienes e insumos", "Tecnología", "Salud"]
+        },
         created_at: {
             type: "string",
             format: "date-time",
@@ -48,11 +59,11 @@ const User = {
         },
         activated: {
             type: "boolean",
-            description: "Estado de eliminación del usuario (si está marcado como eliminado)",
-            example: 1
+            description: "Estado de activación del usuario",
+            example: true
         }
     },
-    required: ["id", "username", "email", "created_at"]
+    required: ["id", "firstname", "lastname", "email", "birthdate", "nameCompany", "businessArea", "created_at"]
 };
 
 export default User;

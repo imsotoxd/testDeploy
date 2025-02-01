@@ -8,12 +8,12 @@ export const authenticateToken = (req, res, next) => {
   if (!token) {
     return res
       .status(401)
-      .json({ message: 'Access denied. No token provided.' });
+      .json({ message: 'Acceso denegado. Token no proporcionado.' });
   }
 
   const decoded = verifyAuthToken(token);
   if (!decoded) {
-    return res.status(400).json({ message: 'Invalid token' });
+    return res.status(400).json({ message: 'Token invalido' });
   }
 
   req.userId = decoded.userId;

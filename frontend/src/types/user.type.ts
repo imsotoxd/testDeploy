@@ -1,13 +1,14 @@
-
 export interface LoginTypeResponseData {
   message: string;
   token: string;
-  user: BasicUserInfo
+  user: BasicUserInfo;
 }
 
 export interface BasicUserInfo {
+  id: string;
   firstname: string;
   lastname: string;
   email: string;
-  password: string;
+  nameCompany: string;
+  businessArea: string;
 }

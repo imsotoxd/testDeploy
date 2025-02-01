@@ -6,7 +6,6 @@ import Link from "next/link";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState("#hero");
 
   const navItems = [
     { name: "Inicio", href: "#hero" },
@@ -23,7 +22,7 @@ const Navbar = () => {
   return (
     <div className="flex justify-between items-center px-5 py-3 sticky top-0 bg-white z-10">
       <Image
-        src="/logo.svg"
+        src="/logo.png"
         alt="logo"
         className="max-w-40 w-full"
         width={900}
@@ -32,12 +31,7 @@ const Navbar = () => {
 
       <div className="hidden lg:flex lg:justify-center lg:items-center space-x-2">
         {navItems.map((item) => (
-          <Link
-            key={item.name}
-            href={item.href}
-            onClick={() => setActiveItem(item.href)}
-            className="btn btn-ghost"
-          >
+          <Link key={item.name} href={item.href} className="btn btn-ghost">
             {item.name}
           </Link>
         ))}

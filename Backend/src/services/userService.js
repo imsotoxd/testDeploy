@@ -1,6 +1,8 @@
 import { User } from '../models/index.js'; // Importar el modelo de usuario inicializado
 import { hashPassword, comparePassword } from '../utils/bcrypt.js';
 import { generateAuthToken } from '../utils/jwt.js';
+import { createCategory } from './categoriesService.js';
+import {predefinedCategories} from '../utils/categoryTypes.js';
 
 // Crear un nuevo usuario
 export const createUser = async (
@@ -8,46 +10,75 @@ export const createUser = async (
   lastname,
   email,
   password,
-  birthdate
+  birthdate,
+  nameCompany,
+  businessArea
 ) => {
-  if (!firstname || !lastname || !email || !password || !birthdate) {
-    throw new Error('All fields are required');
+  if (!firstname || !lastname || !email || !password || !birthdate || !nameCompany || !businessArea) {
+    throw new Error('Todos los campos son obligatorios');
   }
 
   // Verificar si el correo electrónico ya está registrado
   const existingUser = await User.findOne({ where: { email } });
   if (existingUser) {
-    throw new Error('Email already registered');
+    throw new Error('El correo ya está registrado');
   }
 
   // Cifrar la contraseña
   const hashedPassword = await hashPassword(password);
 
   // Guardar el nuevo usuario en la base de datos
-  return await User.create({
+  const user = await User.create({
     firstname,
     lastname,
     email,
     password: hashedPassword,
     birthdate,
+    nameCompany,
+    businessArea,
   });
+
+  if (!user.id) {
+    throw new Error('Error al crear el usuario');
+  }
+
+  // Crear categorías predeterminadas basadas en el businessArea
+  
+  const categoriesToCreate = predefinedCategories[businessArea];
+  if (categoriesToCreate && user.id) {
+    for (const categoryName of categoriesToCreate) {
+      await createCategory({
+        name: String(categoryName), // Asegúrate de que categoryName es una cadena
+        description: '', // Puedes agregar una descripción si es necesario
+        custom: false, // Categorías predeterminadas
+        userId: user.id, // Asocia la categoría con el usuario
+      });
+    }
+  }
+
+  return user;
 };
 
 // Iniciar sesión de un usuario
 export const loginUser = async (email, password) => {
   const user = await User.findOne({
-    where: { email, activated: true, session: false },
+    where: { email, activated: true },
   });
-  console.log(user);
-  if (!user) {
-    return null;
-  }
   // Comparar la contraseña
   const isMatch = await comparePassword(password, user.password);
   if (isMatch) {
     // Actualizar `activated` a `true`
-    await user.update({ session: true });
-    return user;
+    if (!user.session) {
+      await user.update({ session: true });
+      return user;
+    } else {
+      await user.update({ session: false });
+      const error = new Error(
+        'El usuario ya estaba conectado. Se ha cerrado la sesión correctamente.'
+      );
+      error.statusCode = 400;
+      throw error;
+    }
   }
   return null;
 };
@@ -65,7 +96,7 @@ export const logoutUserService = async (userId) => {
 // Obtener todos los usuarios
 export const getAllUsersService = async () => {
   return await User.findAll({
-    attributes: ['id', 'firstname', 'lastname', 'email', 'birthdate'],
+    attributes: ['id', 'firstname', 'lastname', 'email', 'birthdate', 'nameCompany', 'businessArea'],
     where: { activated: true },
   });
 };
@@ -74,7 +105,7 @@ export const getAllUsersService = async () => {
 export const getUserByIdService = async (id) => {
   return await User.findOne({
     where: { id, activated: true },
-    attributes: ['id', 'firstname', 'lastname', 'email', 'birthdate'],
+    attributes: ['id', 'firstname', 'lastname', 'email', 'birthdate', 'nameCompany', 'businessArea'],
   });
 };
 
@@ -85,7 +116,9 @@ export const updateUserService = async (
   lastname,
   email,
   password,
-  birthdate
+  birthdate,
+  nameCompany,
+  businessArea,
 ) => {
   const user = await User.findOne({ where: { id, activated: true } });
   if (!user) {
@@ -102,6 +135,8 @@ export const updateUserService = async (
     email,
     password: passwordHash,
     birthdate,
+    nameCompany,
+    businessArea,
   };
   await User.update(data, { where: { id } });
   return data;

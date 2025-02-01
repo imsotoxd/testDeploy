@@ -11,12 +11,17 @@ const CategoryModel = (sequelize) => {
       },
       name: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       description: {
         type: DataTypes.STRING,
       },
       custom: {
         type: DataTypes.BOOLEAN,
+      },
+      userId: {
+        type: DataTypes.UUID,
+        allowNull: false,
       },
     },
     {
