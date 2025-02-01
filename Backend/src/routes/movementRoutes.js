@@ -13,8 +13,8 @@ import { handleValidationErrors } from '../middleware/handleValidationErrors.js'
 
 const router = express.Router();
 
-router.post('/movement', handleValidationErrors, createMovementController);
-router.get('/movement', getMovementController);
+router.post('/movement',authenticateToken, handleValidationErrors, createMovementController);
+router.get('/movement',authenticateToken, handleValidationErrors,getMovementController);
 router.get('/movement/:id', authenticateToken, getIdMovementController);
 router.put('/movements/update/:id', authenticateToken, handleValidationErrors, updateMovementController);
 router.delete('/movements/delete/:id', authenticateToken, deleteMovementController);
