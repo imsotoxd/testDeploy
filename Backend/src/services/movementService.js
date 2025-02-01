@@ -1,9 +1,9 @@
 // movementService.js
+import { Movement } from '../models/index.js';
 
 // Servicio para crear un movimiento
 export const createMovementService = async ({ sku, name, type, userId, productId }) => {
     try {
-        // Crea y retorna el nuevo movimiento
         const movement = await Movement.create({
             sku,
             name,
@@ -20,7 +20,6 @@ export const createMovementService = async ({ sku, name, type, userId, productId
 // Servicio para obtener todos los movimientos
 export const getMovementService = async () => {
     try {
-        // Retorna la lista de movimientos
         const movements = await Movement.findAll();
         return movements;
     } catch (error) {

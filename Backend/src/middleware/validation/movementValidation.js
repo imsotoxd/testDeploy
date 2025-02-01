@@ -44,5 +44,3 @@ export const validateMovement = [
     userIdValidation,
     productIdValidation,
 ];
-
-export default validateMovement;

@@ -1,6 +1,6 @@
 // movementController.js
 
-import { createMovementService, getMovementService } from '../services/movementService.js';
+import { createMovementService, getMovementService, deleteMovementService, getIdMovementService, productMovementService, updateMovementService } from '../services/movementService.js';
 
 export const createMovementController = async (req, res) => {
     try {
