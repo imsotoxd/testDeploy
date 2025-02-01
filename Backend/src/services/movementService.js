@@ -1,10 +1,32 @@
 // movementService.js
 
-// Crear un movimiento
-export const createMovementService = async (movementData) => { };
+// Servicio para crear un movimiento
+export const createMovementService = async ({ sku, name, type, userId, productId }) => {
+    try {
+        // Crea y retorna el nuevo movimiento
+        const movement = await Movement.create({
+            sku,
+            name,
+            type,
+            userId,
+            productId,
+        });
+        return movement;
+    } catch (error) {
+        throw new Error(`Error al crear movimiento: ${error.message}`);
+    }
+};
 
-// Obtener todos los movimientos
-export const getMovementService = async () => { };
+// Servicio para obtener todos los movimientos
+export const getMovementService = async () => {
+    try {
+        // Retorna la lista de movimientos
+        const movements = await Movement.findAll();
+        return movements;
+    } catch (error) {
+        throw new Error(`Error al obtener movimientos: ${error.message}`);
+    }
+};
 
 // Obtener un movimiento por ID
 export const getIdMovementService = async (id) => { };
