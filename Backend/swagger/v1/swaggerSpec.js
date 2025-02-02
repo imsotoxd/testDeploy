@@ -48,6 +48,9 @@ import getIdMovement from './paths/movement/getIdMovement.js';
 import updateMovement from './paths/movement/updateMovement.js';
 import deleteMovement from './paths/movement/deleteMovement.js';
 import getProductMovement from './paths/movement/getProductMovement.js';
+import MovementInput from './components/schemas/movement/MovementInput.js';
+import MovementCreate from './components/schemas/movement/MovementCreate.js';
+import MovementUpdate from './components/schemas/movement/MovementUpdate.js';
 
 const swaggerSpec = {
   openapi: '3.0.0',
@@ -102,6 +105,10 @@ const swaggerSpec = {
       ProductInput,
       ProductOutput,
       ProductUpdate,
+      // Movement
+      MovementInput,
+      MovementCreate,
+      MovementUpdate,
     },
     securitySchemes: {
       BearerAuth: {

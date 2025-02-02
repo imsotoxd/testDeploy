@@ -1,4 +1,4 @@
-export const MovementCreate = {
+const MovementCreate = {
     type: 'object',
     properties: {
         type: {
@@ -33,3 +33,5 @@ export const MovementCreate = {
     },
     required: ['type', 'amount', 'date', 'categoryId']
 }
+
+export default MovementCreate;

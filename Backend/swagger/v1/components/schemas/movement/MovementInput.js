@@ -1,4 +1,4 @@
-export const Movement = {
+const MovementInput = {
     type: 'object',
     properties: {
         id: {
@@ -45,3 +45,5 @@ export const Movement = {
     },
     required: ['type', 'amount', 'date', 'categoryId', 'userId']
 }
+
+export default MovementInput;

@@ -1,4 +1,4 @@
-export const MovementUpdate = {
+const MovementUpdate = {
     type: 'object',
     properties: {
         type: {
@@ -32,3 +32,5 @@ export const MovementUpdate = {
         }
     }
 }
+
+export default MovementUpdate;
