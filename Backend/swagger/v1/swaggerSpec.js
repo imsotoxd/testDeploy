@@ -48,6 +48,7 @@ import getIdMovement from './paths/movement/getIdMovement.js';
 import updateMovement from './paths/movement/updateMovement.js';
 import deleteMovement from './paths/movement/deleteMovement.js';
 import getProductMovement from './paths/movement/getProductMovement.js';
+import getFilteredProducts from './paths/movement/getFilteredProducts.js';
 import MovementInput from './components/schemas/movement/MovementInput.js';
 import MovementCreate from './components/schemas/movement/MovementCreate.js';
 import MovementUpdate from './components/schemas/movement/MovementUpdate.js';
@@ -84,6 +85,7 @@ const swaggerSpec = {
     '/product/query': queryProducts,
     // Movement
     '/movements': createMovement,
+    '/movement/query': getFilteredProducts,
     '/movements/all': getAllMovement,
     '/movements/{id}': getIdMovement,
     '/movements/update/{id}': updateMovement,
