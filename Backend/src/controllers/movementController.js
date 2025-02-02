@@ -2,9 +2,11 @@
 
 import { createMovementService, getMovementService, deleteMovementService, getIdMovementService, productMovementService, updateMovementService } from '../services/movementService.js';
 
+// Crear un movimiento
 export const createMovementController = async (req, res) => {
     try {
-        const { sku, name, type, userId, productId } = req.body;
+        const userId = req.userId;
+        const { sku, name, type, productId } = req.body;
 
         const movement = await createMovementService({ sku, name, type, userId, productId });
 
