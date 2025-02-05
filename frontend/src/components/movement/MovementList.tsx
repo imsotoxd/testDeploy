@@ -70,7 +70,7 @@ function MovementList() {
         </tbody>
       </motion.table>
 
-      {isFetchingMovement && <TableListSkeleton />}
+      {isFetchingMovement && !movements && <TableListSkeleton />}
       {movementError && (
         <div role="alert" className="alert alert-error">
           <span className="icon-[simple-line-icons--close]" role="img" aria-hidden="true" />

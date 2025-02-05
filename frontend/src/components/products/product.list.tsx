@@ -99,7 +99,7 @@ export function ProductList() {
           </tbody>
 
         </motion.table>
-        {isFetching && <TableListSkeleton />}
+        {isFetching && !currentPage && <TableListSkeleton />}
         {error && (
           <div role="alert" className="alert alert-error">
             <span className="icon-[simple-line-icons--close]" role="img" aria-hidden="true" />
