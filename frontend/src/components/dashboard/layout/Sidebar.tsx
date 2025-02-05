@@ -34,18 +34,17 @@ const Sidebar = () => {
 
   const { screen, isSm, isMd, isLg, isXl, is2Xl } = useScreen();
   const sideClass = clsx("bg-primary", {
-    "h-14 p-1 justify-center items-center w-full flex fixed bottom-0 z-10": isSm || screen === undefined,
+    "h-14 p-1 justify-center items-center w-full flex fixed bottom-0 z-10":
+      isSm || screen === undefined,
     "flex flex-col w-20 px-4 text-white py-10 h-screen sty top-0 sticky": isMd,
-    "flex flex-col w-[250px] px-4 text-white py-10 h-screen top-0 sticky": isLg || isXl || is2Xl
-  })
+    "flex flex-col w-[250px] px-4 text-white py-10 h-screen top-0 sticky":
+      isLg || isXl || is2Xl,
+  });
 
   const ulClass = clsx("relative", {
     "grid grid-cols-5": isSm || screen === undefined,
-    "space-y-2": isLg || isMd || isXl || is2Xl
-  })
-
-
-
+    "space-y-2": isLg || isMd || isXl || is2Xl,
+  });
 
   return (
     <div className={sideClass}>
@@ -62,10 +61,15 @@ const Sidebar = () => {
       )}
       <ul className={ulClass}>
         {pahts.map((item) => (
-          <SidebarItem key={item.name} text={item.name} icon={item.icon} path={item.path} />
+          <SidebarItem
+            key={item.name}
+            text={item.name}
+            icon={item.icon}
+            path={item.path}
+          />
         ))}
       </ul>
-      <div onClick={logout} className="md:mt-auto ">
+      <div onClick={logout} className="md:mt-auto hidden md:block ">
         <SidebarItem
           text="Cerrar sesión"
           icon="icon-[material-symbols--logout]"
