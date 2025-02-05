@@ -49,4 +49,5 @@ export interface ProductoProps {
   isActive: boolean;
   openModal: () => void;
   closeModal: () => void;
+  custom: number
 }
