@@ -56,6 +56,9 @@ export const loginUserController = async (req, res) => {
     // Generación del token JWT
     const token = await generateAuthToken(user.id);
     // Respuesta exitosa con token
+
+    res.setHeader('Set-Cookie', `authToken=${token}; HttpOnly; Secure; SameSite=None; Path=/; Max-Age=${60 * 60 * 24}`);
+
     res.status(200).json({
       message: 'Login successful',
       token,

@@ -46,11 +46,7 @@ export const handleLogin = async (
       data: data.user,
     };
   } catch (error) {
-    const axiosError = error as AxiosError<ErrorResponse>;
-    const errorMessage =
-      axiosError.response?.data?.message ||
-      axiosError.message ||
-      "Error Obteniendo Productos";
+    const errorMessage = error ? "Error al iniciar sesión" : "Error al iniciar sesión";
     return {
       wasValid: false,
       message: errorMessage,
