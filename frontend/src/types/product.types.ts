@@ -36,10 +36,18 @@ export type SingleQueryResponse = {
   error?: string;
 };
 
+
+export interface PostProductResponse {
+  message: string;
+  product: ProductsResponse;
+}
+
+
+
 // For mutation operations
 export type MutationResponse = {
   success: boolean;
-  data?: ProductsResponse;
+  data?: PostProductResponse;
   error?: string;
 };
 

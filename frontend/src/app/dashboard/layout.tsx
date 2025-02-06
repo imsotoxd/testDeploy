@@ -6,6 +6,8 @@ import prefetchTanstackData from "@/lib/tanstack/prefetchers";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 async function DashboardLayout({ children }: { children: ReactNode }) {
+
+
   const queryClient = getQueryClient();
   await prefetchTanstackData(queryClient);
   const dehydratedState = dehydrate(queryClient);

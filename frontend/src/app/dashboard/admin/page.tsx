@@ -1,35 +1,95 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUserStore } from "@/store/user.store";
+import { getAllCategories } from "@/app/api/categories.api";
+
+interface Category {
+  id: string;
+  name: string;
+}
 
 const Page = () => {
   const { data } = useUserStore();
+  const [categories, setCategories] = useState<Category[]>([]);
 
-  type Category = string;
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  interface FieldState {
-    field: string;
-  }
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const response = await getAllCategories();
 
-  const defaultCategories: Category[] = ["Categoría 1", "Categoría 2"];
+      if (response.error) {
+        setError(response.error);
+      } else {
+        setCategories(response.data);
+      }
+      setLoading(false);
+    };
 
-  const [customFields, setCustomFields] = useState<string[]>(defaultCategories);
-  const [newField, setNewField] = useState<FieldState>({ field: "" });
+    fetchCategories();
+  }, []);
 
-  const addField = () => {
-    if (newField.field.trim() && customFields.length < 10) {
-      setCustomFields([...customFields, newField.field.trim()]);
-      setNewField({ field: "" });
-    }
-  };
-
-  const removeField = (field: string) => {
-    setCustomFields(customFields.filter((f) => f !== field));
-  };
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
-    <div className="p-8 bg-white shadow-md rounded-lg">
+    <div className="p-8 bg-white  rounded-lg">
+      <p className="text-2xl font-bold text-primary mb-4">
+        Información del usuario
+      </p>
+      <div className="mb-4">
+        <label
+          className="block text-sm font-semibold mb-2 text-primary"
+          htmlFor="name"
+        >
+          Nombre
+        </label>
+        <input
+          disabled
+          id="name"
+          type="text"
+          readOnly
+          className="input input-ghost input-primary placeholder:text-gray-700 w-full sm:w-96 md:w-[500px] lg:w-[600px] max-w-full px-4 py-2 bg-background"
+          placeholder={data?.firstname}
+        />
+      </div>
+
+      <div className="mb-4">
+        <label
+          className="block text-sm font-semibold mb-2 text-primary"
+          htmlFor="lastname"
+        >
+          Apellido
+        </label>
+        <input
+          disabled
+          id="lastname"
+          type="text"
+          readOnly
+          className="input input-ghost input-primary placeholder:text-gray-700 w-full sm:w-96 md:w-[500px] lg:w-[600px] max-w-full px-4 py-2 bg-background"
+          placeholder={data?.lastname}
+        />
+      </div>
+
+      <div className="mb-4">
+        <label
+          className="block text-sm font-semibold mb-2 text-primary"
+          htmlFor="email"
+        >
+          Email
+        </label>
+        <input
+          disabled
+          id="email"
+          type="text"
+          readOnly
+          className="input input-ghost input-primary placeholder:text-gray-700 w-full sm:w-96 md:w-[500px] lg:w-[600px] max-w-full px-4 py-2 bg-background"
+          placeholder={data?.email}
+        />
+      </div>
+
       <div className="mb-4">
         <label
           className="block text-sm font-semibold mb-2 text-primary"
@@ -38,9 +98,10 @@ const Page = () => {
           Nombre de la Empresa
         </label>
         <input
+          disabled
           id="nombre"
           type="text"
-          disabled
+          readOnly
           className="input input-ghost input-primary placeholder:text-gray-700 w-full sm:w-96 md:w-[500px] lg:w-[600px] max-w-full px-4 py-2 bg-background"
           placeholder={data?.nameCompany}
         />
@@ -53,82 +114,28 @@ const Page = () => {
           Rubro de la Empresa
         </label>
         <input
+          disabled
           id="rubro"
           type="text"
-          disabled
-          className="input  input-ghost input-primary w-full sm:w-96 md:w-[500px] lg:w-[600px] max-w-full px-4 py-2 bg-background"
+          readOnly
+          className="input input-ghost input-primary w-full sm:w-96 md:w-[500px] lg:w-[600px] max-w-full px-4 py-2 bg-background"
           placeholder={data?.businessArea}
         />
       </div>
-      <div className="mb-6">
-        <h3 className="font-semibold mb-2 text-primary">Creación de campos</h3>
-        <div className="mb-4">
-          <label className="flex items-center mb-2">
-            <input
-              type="radio"
-              name="fieldType"
-              className="radio mr-2 input-primary"
-            />
-            <span className="text-sm">
-              Automático (Código, Nombre del Producto, Categoría, Caducidad,
-              Precio Inicial, Precio Venta, Cantidad, Estado)
-            </span>
-          </label>
-          <label className="flex items-center">
-            <input
-              type="radio"
-              name="fieldType"
-              className="radio mr-2 border-primary"
-            />
-            <span className="text-sm">Personalizado (Máximo 10 campos)</span>
-          </label>
-        </div>
-        <div className="flex items-center gap-2 mb-4">
-          <input
-            type="text"
-            className="input   input-ghost input-primary w-full sm:w-96 md:w-[500px] lg:w-[600px] max-w-full px-4 py-2 bg-background"
-            placeholder="Agregar campo personalizado"
-            value={newField.field}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setNewField({ field: e.target.value })
-            }
-          />
-          <button
-            className="btn btn-circle size-10 btn-outline btn-sm border-2 border-primary text-primary hover:bg-primary hover:text-white"
-            onClick={addField}
-            disabled={!newField.field.trim() || customFields.length >= 10}
-          >
-            +
-          </button>
-        </div>
-      </div>
-      <hr className="h-px my-4 border-primary border-2" />
-      <div className="p-4 bg-background shadow-md rounded-lg flex flex-col items-start">
-        {/* Título de la sección */}
+
+      <div className="p-4 bg-background   rounded-lg flex flex-col items-start">
         <h3 className="text-lg font-semibold mb-4 text-primary">
-          Campos creados
+          Categorias actuales
         </h3>
-        {/* Lista de campos creados */}
         <div className="flex flex-wrap gap-4 mb-8">
-          {customFields.map((field, index) => (
+          {categories.map((category) => (
             <div
-              key={index}
+              key={category.id}
               className="flex items-center bg-primary text-white py-2 px-4 rounded-lg"
             >
-              <span>{field}</span>
-              <button
-                className="btn btn-sm btn-circle btn-ghost ml-2 text-white hover:text-gray-300"
-                onClick={() => removeField(field)}
-              >
-                ✕
-              </button>
+              <span>{category.name}</span>
             </div>
           ))}
-        </div>
-
-        {/* Botón Guardar Cambios */}
-        <div className="flex justify-end w-full">
-          <button className="btn bg-primary text-white">Guardar Cambios</button>
         </div>
       </div>
     </div>

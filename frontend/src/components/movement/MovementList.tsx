@@ -74,7 +74,7 @@ function MovementList() {
             role="img"
             aria-hidden="true"
           />
-          <span>{movementError.message}</span>
+          <span>{movementError}</span>
         </div>
       )}
     </section>
