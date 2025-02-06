@@ -18,6 +18,9 @@ const config: Config = {
         success: "var(--success)",
         warning: "var(--warning)",
       },
+      textColor: {
+        "disabled-placeholder": "rgba(26, 61, 94, 0.5)",
+      },
     },
   },
   plugins: [daisyui, addDynamicIconSelectors()],
