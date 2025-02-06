@@ -10,10 +10,9 @@ import {
   type ChartData,
   type ChartOptions,
 } from "chart.js";
-import ChartDataLabels from "chartjs-plugin-datalabels";
 import { getTopSoldProducts } from "@/app/api/movements.api";
 
-ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface ProductData {
   productId: string;
@@ -21,20 +20,24 @@ interface ProductData {
   product_name: string;
 }
 
-export default function MostSellChart() {
+export default function MostSoldProductsChart() {
   const [chartData, setChartData] = useState<ChartData<"doughnut"> | null>(
     null
   );
+  const [productList, setProductList] = useState<ProductData[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await getTopSoldProducts();
+      console.log("data", response);
+
       if (response.error) {
         setError(response.error);
         return;
       }
       if (response.data) {
+        setProductList(response.data);
         const labels = response.data.map(
           (product: ProductData) => product.product_name
         );
@@ -72,17 +75,14 @@ export default function MostSellChart() {
   const options: ChartOptions<"doughnut"> = {
     plugins: {
       legend: { display: false },
-      tooltip: { enabled: false },
-      datalabels: {
-        color: "#333333",
-        formatter: (value: number, context: any) => {
-          return `${context.chart.data.labels[context.dataIndex]}: ${value}`;
+      tooltip: {
+        callbacks: {
+          label: (context) => {
+            const label = context.label || "";
+            const value = context.formattedValue;
+            return `${label}: ${value}`;
+          },
         },
-        font: { size: 11, weight: "bold" },
-        anchor: "end",
-        align: "end",
-        offset: 8,
-        textAlign: "center",
       },
     },
     cutout: "60%",
@@ -90,16 +90,69 @@ export default function MostSellChart() {
   };
 
   if (error) {
-    return <div>Error al cargar los datos: {error}</div>;
+    return (
+      <div className="alert alert-error">
+        Error al cargar los datos: {error}
+      </div>
+    );
   }
 
   if (!chartData) {
-    return <div>Cargando datos...</div>;
+    return <div className="alert alert-info">Cargando datos...</div>;
   }
 
   return (
-    <div style={{ width: "200px", height: "200px" }}>
-      <Doughnut data={chartData} options={options} />
+    <div className="card w-full  bg-base-100">
+      <div className="card-body">
+        <p className="text-primary font-bold my-3">Productos más vendidos</p>
+
+        {productList.length === 0 ? (
+          <p className="text-center text-gray-500 font-semibold">
+            No se han registrado ventas
+          </p>
+        ) : (
+          <div className="flex flex-col md:flex-row items-center">
+            <div className="w-full md:w-1/2 mb-4 md:mb-0 flex items-center justify-center">
+              <div className="w-60 h-60">
+                <Doughnut data={chartData} options={options} />
+              </div>
+            </div>
+            <div className="w-full md:w-1/2">
+              <div className="grid grid-cols-2 gap-2 overflow-auto">
+                {[0, 1].map((columnIndex) => (
+                  <table key={columnIndex} className="table table-zebra w-full">
+                    <thead className="sticky top-0 bg-base-100 z-10">
+                      <tr>
+                        <th className="text-primary text-lg font-bold">
+                          Producto
+                        </th>
+                        <th className="text-primary text-lg font-bold">
+                          Vendidos
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Array(5)
+                        .fill(null)
+                        .map((_, index) => {
+                          const product = productList[columnIndex * 5 + index];
+                          return (
+                            <tr key={index}>
+                              <td>{product ? product.product_name : ""}</td>
+                              <td className="text-center">
+                                {product ? product.total_quantity : ""}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
