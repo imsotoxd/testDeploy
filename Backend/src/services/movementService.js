@@ -5,7 +5,7 @@ import { Sequelize } from 'sequelize';
 export const createMovementService = async (data) => {
   const { sku, name, type, motive, movQuantity, userId, productId } = data;
 
-  const product = await Product.findOne({where:{id:productId, userId}});
+  const product = await Product.findOne({ where: { id: productId, userId } });
   if (!product) {
     throw new Error('Producto no encontrado o no pertenece al usuario.');
   }
@@ -30,7 +30,14 @@ export const createMovementService = async (data) => {
 // Servicio para obtener todos los movimientos
 export const getMovementService = async (userId) => {
   try {
-    const movements = await Movement.findAll({where: {userId}});
+    const movements = await Movement.findAll({
+      where: { userId }, include: [
+        {
+          model: Product,
+          attributes: ['name'],
+        },
+      ],
+    });
     return movements;
   } catch (error) {
     throw new Error(`Error al obtener movimientos: ${error.message}`);
@@ -40,7 +47,7 @@ export const getMovementService = async (userId) => {
 // Obtener un movimiento por ID
 export const getIdMovementService = async (id, userId) => {
   try {
-    const movement = await Movement.findOne({where: {id, userId}});
+    const movement = await Movement.findOne({ where: { id, userId } });
     return movement;
   } catch (error) {
     throw new Error(`Error al obtener el movimiento: ${error.message}`);
@@ -95,7 +102,7 @@ export const updateMovementService = async (id, movementData, userId) => {
 // Eliminar un movimiento
 export const deleteMovementService = async (id, userId) => {
   try {
-    const movement = await Movement.findOne({where:{id, userId}});
+    const movement = await Movement.findOne({ where: { id, userId } });
     if (!movement) {
       throw new Error('Movimiento no encontrado.');
     }

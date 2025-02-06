@@ -26,4 +26,10 @@ export default async function prefetchTanstackData(queryClient: QueryClient) {
     queryFn: AllProductsEndpoint,
   })
 
+
+  // await queryClient.prefetchQuery({
+  //   queryKey: ["topsoldproducts"],
+  //   queryFn: getTopSoldProducts
+  // })
+
 }

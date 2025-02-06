@@ -33,7 +33,7 @@ const Sidebar = () => {
   ];
 
   const { screen, isSm, isMd, isLg, isXl, is2Xl } = useScreen();
-  const sideClass = clsx("bg-primary", {
+  const sideClass = clsx("bg-primary z-40", {
     "h-14 p-1 justify-center items-center w-full flex fixed bottom-0 z-10":
       isSm || screen === undefined,
     "flex flex-col w-20 px-4 text-white py-10 h-screen sty top-0 sticky": isMd,

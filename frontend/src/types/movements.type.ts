@@ -1,4 +1,7 @@
 export interface MovementItem {
+  Product: {
+    name: string
+  }
   id: string,
   sku: string,
   name: string,

@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
 export async function middleware(req: NextRequest) {
+
   const SECRET = process.env.JWT_SECRET;
   if (!SECRET) {
     console.error("JWT_SECRET no está definido");
@@ -28,6 +29,8 @@ export async function middleware(req: NextRequest) {
     const errMessage = error instanceof Error ? error.message : "Invalid token";
     return NextResponse.redirect(new URL("/auth/signin?error=" + errMessage, req.url));
   }
+
+
 }
 
 

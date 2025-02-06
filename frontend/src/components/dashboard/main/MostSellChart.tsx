@@ -11,37 +11,32 @@ import {
   type ChartOptions,
 } from "chart.js";
 import { getTopSoldProducts } from "@/app/api/movements.api";
+import { TopSoldProduct } from "@/types/product.types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-interface ProductData {
-  productId: string;
-  total_quantity: string;
-  product_name: string;
-}
 
 export default function MostSoldProductsChart() {
   const [chartData, setChartData] = useState<ChartData<"doughnut"> | null>(
     null
   );
-  const [productList, setProductList] = useState<ProductData[]>([]);
+  const [productList, setProductList] = useState<TopSoldProduct[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getTopSoldProducts();
-      console.log("data", response);
+      const { data, error } = await getTopSoldProducts();
 
-      if (response.error) {
-        setError(response.error);
+      if (error) {
+        setError(error);
         return;
       }
-      if (response.data) {
-        setProductList(response.data);
-        const labels = response.data.map(
-          (product: ProductData) => product.product_name
+      if (data) {
+        setProductList(data);
+        const labels = data.map(
+          (product: TopSoldProduct) => product.product_name
         );
-        const values = response.data.map((product: ProductData) =>
+        const values = data.map((product: TopSoldProduct) =>
           Number.parseInt(product.total_quantity, 10)
         );
 
@@ -61,8 +56,8 @@ export default function MostSoldProductsChart() {
                 "#00ddcc",
                 "#00eecc",
                 "#00ffcc",
-              ].slice(0, response.data.length),
-              borderColor: Array(response.data.length).fill("#ffffff"),
+              ].slice(0, data.length),
+              borderColor: Array(data.length).fill("#ffffff"),
               borderWidth: 1,
             },
           ],
@@ -98,7 +93,7 @@ export default function MostSoldProductsChart() {
   }
 
   if (!chartData) {
-    return <div className="alert alert-info">Cargando datos...</div>;
+    return <div className="alert alert-info mt-10 mx-5">Cargando datos...</div>;
   }
 
   return (

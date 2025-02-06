@@ -51,3 +51,16 @@ export interface ProductoProps {
   closeModal: () => void;
   custom: number
 }
+
+
+
+export type TopSoldProduct = {
+  "productId": string,
+  "product_name": string,
+  "total_quantity": string
+}
+
+export type QueryFilterTopSoldProductResponse = {
+  data: TopSoldProduct[]
+  error?: string
+}

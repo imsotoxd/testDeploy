@@ -1,25 +1,23 @@
+"use server"
 import axios from "axios";
 import { getDatabaseConfig } from "./config";
 import { cookies } from "next/headers";
-
-export const getAuthToken = () => {
-  return cookies().get("authToken")?.value;
-};
 
 const { API_URL } = getDatabaseConfig;
 
 export const API = axios.create({
   baseURL: API_URL,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
 API.interceptors.request.use(
-  (config) => {
-    const token = getAuthToken(); // Obtener el token dentro de cada request
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+  async (config) => {
+    const token = cookies().get("authToken")
+    if (token?.value) {
+      config.headers.Authorization = `Bearer ${token?.value}`;
     }
     return config;
   },

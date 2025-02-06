@@ -14,6 +14,7 @@ import {
 } from "@/app/api/product.api";
 import { ProductsResponse, QueriesResponse } from "@/types/product.types";
 import { useUserStore } from "@/store/user.store";
+// import { getTopSoldProducts } from "@/app/api/movements.api";
 
 
 interface AllProductsResponse {
@@ -79,6 +80,15 @@ export function useProducts() {
       });
     },
   });
+
+
+
+  // const { } = useQuery({
+  //   queryKey: ["topsoldproducts"],
+  //   queryFn: getTopSoldProducts
+  // })
+
+
 
   return {
     products: productsQuery,

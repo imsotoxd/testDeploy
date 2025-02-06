@@ -30,16 +30,14 @@ export const handleLogin = async (
 ): Promise<ApiResponse<User>> => {
   try {
     const { data } = await API.post<LoginResponse>("/users/login", dataLogin);
-    const cookieOptions = {
+    const token = data.token;
+    cookies().set("authToken", token, {
       path: "/",
-      domain: "localhost",
       httpOnly: true,
       secure: false,
       maxAge: 60 * 60 * 24,
-    };
-    const token = data.token;
-    cookies().set("authToken", token, cookieOptions);
-
+      sameSite: false
+    })
     return {
       wasValid: true,
       message: data.message,

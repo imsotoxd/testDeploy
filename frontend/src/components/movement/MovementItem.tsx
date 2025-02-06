@@ -44,7 +44,7 @@ function MovementItemx({ mov }: ItemProps) {
 
   return (
     <>
-      <td data-label="Producto">{mov.productId}</td>
+      <td data-label="Producto">{mov.Product.name}</td>
       <td data-label="Cantidad">{mov.movQuantity}</td>
       <td data-label="Tipo" >
         <div className="flex justify-end md:justify-start">

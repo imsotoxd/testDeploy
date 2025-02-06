@@ -7,6 +7,7 @@ import {
   QuerieMovementResponse,
 } from "@/types/movements.type";
 import { AxiosError } from "axios";
+import { QueryFilterTopSoldProductResponse } from "@/types/product.types";
 
 interface axiosResponse {
   message?: string;
@@ -38,7 +39,6 @@ export const postOneMovement = async (
     return { data: data.data, success: true };
   } catch (error) {
     const axiosError = error as AxiosError<axiosResponse>;
-    console.log("error", axiosError.response);
 
     return {
       success: false,
@@ -51,7 +51,7 @@ export const postOneMovement = async (
   }
 };
 
-export const getTopSoldProducts = async (): Promise<QuerieMovementResponse> => {
+export const getTopSoldProducts = async (): Promise<QueryFilterTopSoldProductResponse> => {
   try {
     const { data } = await API.get("/movement/query?type=Salida&motive=venta");
     return { data: data.data };
