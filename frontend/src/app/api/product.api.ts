@@ -131,3 +131,25 @@ export const handleLowStock = async () =>
   fetchProductsByFilter("minimumQuantity");
 export const handleZeroStock = async () =>
   fetchProductsByFilter("zeroQuantity");
+
+export const getRecentProducts = async (): Promise<QueriesResponse> => {
+  try {
+    const { data } = await API.get(
+      `/product/query?sort={"createdAt":-1}&limit=3&page=1`
+    );
+    return {
+      data: data.products,
+      pagination: {
+        currentPage: data.currentPage,
+        totalPages: data.totalPages,
+      },
+    };
+  } catch (error) {
+    const axiosError = error as AxiosError<ProductErrorResponse>;
+    return {
+      data: [],
+      pagination: null,
+      error: axiosError.response?.data?.message || axiosError.message,
+    };
+  }
+};
