@@ -21,6 +21,7 @@ export const getAllCategories = async (): Promise<QueryCategoryResponse> => {
     return {
       data: [],
       error:
+        axiosError.response?.data?.message ||
         axiosError.response?.data?.errors?.[0]?.msg ||
         axiosError.message ||
         "Error al obtener categorías",

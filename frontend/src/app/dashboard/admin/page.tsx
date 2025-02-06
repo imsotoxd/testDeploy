@@ -47,6 +47,7 @@ const Page = () => {
           Nombre
         </label>
         <input
+          disabled
           id="name"
           type="text"
           readOnly
@@ -63,6 +64,7 @@ const Page = () => {
           Apellido
         </label>
         <input
+          disabled
           id="lastname"
           type="text"
           readOnly
@@ -79,6 +81,7 @@ const Page = () => {
           Email
         </label>
         <input
+          disabled
           id="email"
           type="text"
           readOnly
@@ -95,6 +98,7 @@ const Page = () => {
           Nombre de la Empresa
         </label>
         <input
+          disabled
           id="nombre"
           type="text"
           readOnly
@@ -110,6 +114,7 @@ const Page = () => {
           Rubro de la Empresa
         </label>
         <input
+          disabled
           id="rubro"
           type="text"
           readOnly

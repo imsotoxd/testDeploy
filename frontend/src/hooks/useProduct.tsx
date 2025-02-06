@@ -12,14 +12,8 @@ import {
   postProduct,
   AllProductsEndpoint,
 } from "@/app/api/product.api";
-import { ProductsResponse, QueriesResponse } from "@/types/product.types";
+import { QueriesResponse } from "@/types/product.types";
 import { useUserStore } from "@/store/user.store";
-// import { getTopSoldProducts } from "@/app/api/movements.api";
-
-
-interface AllProductsResponse {
-  data: ProductsResponse[]
-}
 
 export function useProducts() {
   const queryClient = useQueryClient();
@@ -45,27 +39,37 @@ export function useProducts() {
     },
   });
 
-  const allProducts = useQuery<AllProductsResponse>({
-    queryKey: ["allProducts"],
-    queryFn: AllProductsEndpoint,
-  })
-
 
   const addProductQuery = useMutation({
     mutationFn: postProduct,
+    mutationKey: ["addInfinityProduct", data?.id],
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["infinityProducts", data?.id],
+        refetchType: "active",
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["allProducts", data?.id],
         refetchType: "active"
       });
     },
   });
 
+
   const updateProductQuery = useMutation({
     mutationFn: putProduct,
+    mutationKey: ["editInfinityProduct"],
     onSuccess: () => {
       queryClient.invalidateQueries({
+        queryKey: ["moves", data?.id],
+        refetchType: "active",
+      });
+      queryClient.invalidateQueries({
         queryKey: ["infinityProducts", data?.id],
+        refetchType: "active"
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["allProducts", data?.id],
         refetchType: "active"
       });
     },
@@ -73,22 +77,27 @@ export function useProducts() {
 
   const deleteProductQuery = useMutation({
     mutationFn: deleteProduct,
+    mutationKey: ["deleteInfinityProduct"],
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["infinityProducts", data?.id],
         refetchType: "active"
       });
+      queryClient.invalidateQueries({
+        queryKey: ["allProducts", data?.id],
+        refetchType: "active"
+      });
     },
   });
 
-
-
-  // const { } = useQuery({
-  //   queryKey: ["topsoldproducts"],
-  //   queryFn: getTopSoldProducts
-  // })
-
-
+  const AllProductData = useQuery({
+    queryKey: ["allProducts", data?.id],
+    queryFn: () => {
+      if (!data?.id) return Promise.reject("No hay ID disponible");
+      return AllProductsEndpoint();
+    },
+    enabled: !!data?.id,
+  });
 
   return {
     products: productsQuery,
@@ -99,9 +108,9 @@ export function useProducts() {
     hasPreviousPage,
     isFetching,
 
-    createProduct: addProductQuery.mutateAsync,
-    updateProduct: updateProductQuery.mutateAsync,
-    deleteProduct: deleteProductQuery.mutateAsync,
+    createProduct: addProductQuery.mutate,
+    updateProduct: updateProductQuery.mutate,
+    deleteProduct: deleteProductQuery.mutate,
 
 
     isCreating: addProductQuery.isPending,
@@ -113,11 +122,9 @@ export function useProducts() {
     deleteResponse: deleteProductQuery.data,
 
 
-    allProducts: allProducts?.data?.data.map((product) => {
-      return { id: product.id, name: product.name }
-    }) ?? [],
-    isLoadingAllProducts: allProducts.isLoading,
-    errorAllProducts: allProducts.error,
+    allProducts: AllProductData.data?.data ?? [],
+    isLoadingAllProducts: AllProductData.isLoading,
+    errorAllProducts: AllProductData.data?.error,
 
   };
 }

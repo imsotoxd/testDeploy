@@ -8,10 +8,10 @@ import InputGroup from "@/ui/input.group";
 import { useUserStore } from "@/store/user.store";
 import { useProducts } from "@/hooks/useProduct";
 import { ProductsResponse } from "@/types/product.types";
-import { useCategoriesStore } from "@/store/product.store";
 import { Toast } from "../toast";
 import SelectGroup from "@/ui/SelectGroup";
 import Modal from "../modal";
+import { useCategories } from "@/hooks/useCategories";
 
 interface EditProps {
   product: ProductsResponse;
@@ -40,7 +40,7 @@ function ProductEdit({ product, closeModal }: EditProps) {
     resolver: zodResolver(OptionalProductSchema),
   });
 
-  const { data } = useCategoriesStore();
+  const { categoriesData, isFetchingCategorie } = useCategories();
   const { data: userData } = useUserStore();
 
   const { updateProduct, isUpdating, updateResponse } = useProducts();
@@ -71,6 +71,11 @@ function ProductEdit({ product, closeModal }: EditProps) {
     }
   }, [updateResponse, closeModal])
 
+  if (isFetchingCategorie) return <button disabled type="button" className="btn-sm w-full btn btn-ghost rounded-none flex items-center skeleton justify-between">
+    <span>Editar</span>
+    <span className="icon-[prime--pencil]" role="img" aria-hidden="true" />
+  </button>
+
   return (
     <>
       <button
@@ -98,7 +103,7 @@ function ProductEdit({ product, closeModal }: EditProps) {
               errors={errors.name}
             />
 
-            <SelectGroup {...register("categoryId")} data={data} label="Categoria" errors={errors.categoryId} extendClass="col-span-4" />
+            <SelectGroup {...register("categoryId")} data={categoriesData} label="Categoria" errors={errors.categoryId} extendClass="col-span-4" />
 
 
             <InputGroup

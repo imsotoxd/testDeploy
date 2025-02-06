@@ -24,11 +24,11 @@ function ProductAdd() {
 
   const { data: userData } = useUserStore();
   const { createProduct, isCreating, createResponse } = useProducts();
-  const { categoriesData } = useCategories();
+  const { categoriesData, isFetchingCategorie, categoriesError } = useCategories();
 
 
   const handleSave: SubmitHandler<ProductSchema> = async (data) => {
-    await createProduct({ ...data, userId: userData?.id });
+    createProduct({ ...data, userId: userData?.id });
   };
 
   useEffect(() => {
@@ -55,17 +55,11 @@ function ProductAdd() {
 
   return (
     <>
-      <button
-        onClick={openAgg}
-        className="btn btn-primary flex items-center gap-2"
-      >
-        <span>Agregar</span>
-        <span
-          className="icon-[si--add-to-library-duotone]"
-          role="img"
-          aria-hidden="true"
-        />
-      </button>
+      <div className="tooltip" data-tip="Agregar Producto">
+        <button disabled={isFetchingCategorie || !!categoriesError} onClick={openAgg} className="btn btn-primary" type="submit">
+          <span className="icon-[ooui--add]" role="img" aria-hidden="true" />
+        </button>
+      </div>
       <Modal
         close={closeAgg}
         show={agg}

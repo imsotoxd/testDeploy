@@ -17,12 +17,8 @@ app.use(express.json());
 
 // Configurar CORS
 const allowedOrigin = [
-<<<<<<< HEAD
   'http://localhost:3001', // React local
   'http://localhost:3000', // React local
-=======
-  `http://localhost:3001`, // React local
->>>>>>> db3cd0b78294a1569027a396c81702bfc0498ef1
   'http://127.0.0.1:3001', // Alternativa local
   'http://localhost:4000', // Swagger UI u otro puerto
   process.env.CLIENT_URL, // URL en producción

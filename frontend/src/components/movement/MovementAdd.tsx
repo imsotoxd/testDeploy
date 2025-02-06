@@ -5,12 +5,13 @@ import InputGroup from "@/ui/input.group"
 import SelectGroup from "@/ui/SelectGroup"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SubmitHandler, useForm } from "react-hook-form"
-import MovementAddSkeleton from "./MovementAddSkeleton"
 import { useMovements } from "@/hooks/useMovements"
 import { useEffect, useState } from "react"
 import { Toast } from "../toast"
 import { useUserStore } from "@/store/user.store"
 import Modal from "../modal"
+import clsx from "clsx"
+
 
 
 function MovementAdd() {
@@ -18,13 +19,13 @@ function MovementAdd() {
     resolver: zodResolver(MovementSchema)
   })
 
-  const { allProducts, isLoadingAllProducts } = useProducts()
-  const { createMovement, createMovementResponse, isCreatinMovement } = useMovements()
+  const { allProducts, isLoadingAllProducts, errorAllProducts } = useProducts()
+  const { createMovement, createMovementResponse, isCreatinMovement, refetchMoves, isRefetchinMoves } = useMovements()
   const { data: userData } = useUserStore()
 
   const handleSubmitForm: SubmitHandler<MovementSchema> = async (data) => {
     const newMovement = ({ ...data, userId: userData?.id })
-    await createMovement(newMovement)
+    createMovement(newMovement)
   }
 
   const typeValidation = watch('type')
@@ -69,21 +70,33 @@ function MovementAdd() {
   const openAdd = () => setAdd(true)
   const closeAdd = () => setAdd(false)
 
-  if (isLoadingAllProducts) return <MovementAddSkeleton />
+
+  const reloadClass = clsx("icon-[ci--arrows-reload-01]",
+    {
+      "animate-spin": isRefetchinMoves
+    }
+  )
 
   return (
     <>
-      <button onClick={openAdd} className="btn btn-primary" type="submit">
-        <span>Agregar</span>
-        <span className="icon-[ooui--add]" role="img" aria-hidden="true" />
-      </button>
+      <div className="flex items-center gap-3">
+        <div className="tooltip" data-tip="Actualizar movimientos">
+          <button disabled={isRefetchinMoves} onClick={() => refetchMoves()} className="btn btn-primary" type="submit">
+            <span className={reloadClass} role="img" aria-hidden="true" />
+          </button>
+        </div>
+        <div className="tooltip" data-tip="Agregar movimiento">
+          <button disabled={isLoadingAllProducts || !!errorAllProducts} onClick={openAdd} className="btn btn-primary" type="submit">
+            <span className="icon-[ooui--add]" role="img" aria-hidden="true" />
+          </button>
+        </div>
+      </div>
 
 
       <Modal close={closeAdd} show={add} >
         <div className="bg-white flex flex-col items-center p-5 rounded gap-10">
           <span className="text-2xl text-primary font-semibold">Agregar Movimiento</span>
           <form className="grid grid-cols-6 gap-3 px-5" onSubmit={handleSubmit(handleSubmitForm)} >
-
             <SelectGroup disabled={isCreatinMovement} extendClass="col-span-2" {...register('productId')} data={allProducts} label="Producto" errors={errors.productId} />
             <SelectGroup disabled={isCreatinMovement} extendClass="col-span-2" {...register('type')} data={movementTypes} label="Tipo movimiento" errors={errors.type} />
             <SelectGroup disabled={!typeValidation || isCreatinMovement} extendClass="col-span-2" {...register('motive')} data={typeData} label="Motivo" errors={errors.motive} />
